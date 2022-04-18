@@ -3,51 +3,46 @@ import { IScene, Manager } from "../Manager";
 import { CaveEntranceScene } from "./CaveEntranceScene";
 
 export class BridgeScene extends Container implements IScene {
+    
     private backdrop: Sprite;
+    private lamp: Sprite;
+    
     constructor() {
         super();
 
-        // Inside assets.ts we have a line that says `{ name: "Clampy from assets.ts!", url: "./clampy.png" }`
+        // Backdrop
         this.backdrop = Sprite.from("Bridge");
-
-        this.backdrop.anchor.set(0.5);
-        this.backdrop.x = Manager.width / 2;
-        this.backdrop.y = Manager.height / 2;
+        this.backdrop.on("pointertap", this.onClickBackdrop, this);        
+        this.backdrop.interactive = true;   // Super important or the object will never receive mouse events!
         this.addChild(this.backdrop);
-
-        this.backdrop.on("pointertap", this.onClicky, this);
-        // Super important or the object will never receive mouse events!
-        this.backdrop.interactive = true;
+        
+        this.lamp = Sprite.from("Lamp");
+        this.lamp.scale.x = 0.25;
+        this.lamp.scale.y = 0.25;
+        this.lamp.anchor.set(0.5);
+        this.lamp.x = 1425;
+        this.lamp.y = 780;
+        this.lamp.on("pointertap", this.onClickLamp, this);        
+        this.lamp.interactive = true;   // Super important or the object will never receive mouse events!
+        this.addChild(this.lamp);
     }
+
     public update(_framesPassed: number): void {
-        // Lets move clampy!
-        // this.clampy.x += this.clampyVelocity * framesPassed;
-
-        // if (this.clampy.x > Manager.width) {
-        //     this.clampy.x = Manager.width;
-        //     this.clampyVelocity = -this.clampyVelocity;
-        // }
-
-        // if (this.clampy.x < 0) {
-        //     this.clampy.x = 0;
-        //     this.clampyVelocity = -this.clampyVelocity;
-        // }
+        // Do any movement here...
     }
 
     public resize(_screenWidth: number, _screenHeight: number): void {
 
     }
 
-    private onClicky(e: InteractionEvent): void {
+    private onClickLamp(_e: InteractionEvent): void {
+        console.log("You interacted with Lamp!")
+        // TODO: Pickup lamp
+        this.removeChild(this.lamp);
+    }
+
+    private onClickBackdrop(_e: InteractionEvent): void {
         console.log("You interacted with Backdrop!")
-        console.log("The data of your interaction is super interesting", e)
-
-        // Global position of the interaction
-        // e.data.global
-
-        // Local (inside clampy) position of the interaction
-        // e.data.getLocalPosition(this.clampy) 
-        // Remember Clampy has the 0,0 in its center because we set the anchor to 0.5!
 
         // Change scene to the game scene!
         Manager.changeScene(new CaveEntranceScene());

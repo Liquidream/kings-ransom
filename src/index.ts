@@ -1,19 +1,14 @@
-import { Application, Sprite } from 'pixi.js'
+//import { Application } from "pixi.js";
+import { Manager } from './Manager';
+import { LoaderScene } from "./scenes/LoaderScene";
 
-const app = new Application({
-	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
-	resolution: window.devicePixelRatio || 1,
-	autoDensity: true,
-	backgroundColor: 0x6495ed,
-	width: 640,
-	height: 480
-});
+// current screen size
+const gameWidth = 1920;
+const gameHeight = 1080;
 
-const clampy: Sprite = Sprite.from("clampy.png");
+Manager.initialize(gameWidth, gameHeight, 0x6495ed);
 
-clampy.anchor.set(0.5);
+// pass in the screen size to avoid "asking up"
+const sceny: LoaderScene = new LoaderScene();
 
-clampy.x = app.screen.width / 2;
-clampy.y = app.screen.height / 2;
-
-app.stage.addChild(clampy);
+Manager.changeScene(sceny);

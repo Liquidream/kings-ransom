@@ -2,6 +2,7 @@ import { Tween, Group } from "tweedle.js";
 import { Container, Sprite, InteractionEvent } from "pixi.js";
 import { IScene, Manager } from "../Manager";
 import { CaveEntranceScene } from "./CaveEntranceScene";
+import { Dialog } from "../Dialog";
 
 export class BridgeScene extends Container implements IScene {
     
@@ -47,8 +48,11 @@ export class BridgeScene extends Container implements IScene {
         new Tween(this.lamp.scale).to({ x: 0.3, y: 0.3 }, 1000).start()
         .onComplete( ()=> { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any
             this.removeChild(this.lamp);    // remove when tween completes
+            Dialog.clearMessage();
         })
         //this.removeChild(this.lamp);
+
+        Dialog.showMessage("You picked up the lamp");
     }
 
     private onClickBackdrop(_e: InteractionEvent): void {

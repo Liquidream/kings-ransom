@@ -4,12 +4,10 @@ import { DisplayObject } from "@pixi/display";
 export class Manager {
     private constructor() { /*this class is purely static. No constructor to see here*/ }
 
-    private static app: Application;
-    private static currentScene: IScene;
-
+    private static _app: Application;
     private static _width: number;
     private static _height: number;
-
+    private static currentScene: IScene;
 
     public static get width(): number {
         return Manager._width;
@@ -18,13 +16,18 @@ export class Manager {
         return Manager._height;
     }
 
+    // PN: Expose the Application object (for now)
+    // TODO: Prob come up with a better structure so top "cage" class creates it, then nested classes uses it (e.g. cage.dialog)
+    public static get app(): Application {
+        return Manager._app;
+    }
 
     public static initialize(width: number, height: number, background: number): void {
 
         Manager._width = width;
         Manager._height = height;
 
-        Manager.app = new Application({
+        Manager._app = new Application({
             view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
             resolution: window.devicePixelRatio || 1,
             autoDensity: true,
@@ -33,7 +36,7 @@ export class Manager {
             height: height
         });
 
-        Manager.app.ticker.add(Manager.update)
+        Manager._app.ticker.add(Manager.update)
 
         // listen for the browser telling us that the screen size changed
         window.addEventListener("resize", Manager.resize);
@@ -59,10 +62,10 @@ export class Manager {
         const verticalMargin = (screenHeight - enlargedHeight) / 2;
 
         // now we use css trickery to set the sizes and margins
-        Manager.app.view.style.width = `${enlargedWidth}px`;
-        Manager.app.view.style.height = `${enlargedHeight}px`;
-        Manager.app.view.style.marginLeft = Manager.app.view.style.marginRight = `${horizontalMargin}px`;
-        Manager.app.view.style.marginTop = Manager.app.view.style.marginBottom = `${verticalMargin}px`;
+        Manager._app.view.style.width = `${enlargedWidth}px`;
+        Manager._app.view.style.height = `${enlargedHeight}px`;
+        Manager._app.view.style.marginLeft = Manager._app.view.style.marginRight = `${horizontalMargin}px`;
+        Manager._app.view.style.marginTop = Manager._app.view.style.marginBottom = `${verticalMargin}px`;
     }
 
     /* More code of your Manager.ts like `changeScene` and `update`*/
@@ -71,13 +74,13 @@ export class Manager {
     public static changeScene(newScene: IScene): void {
         // Remove and destroy old scene... if we had one..
         if (Manager.currentScene) {
-            Manager.app.stage.removeChild(Manager.currentScene);
+            Manager._app.stage.removeChild(Manager.currentScene);
             Manager.currentScene.destroy();
         }
 
         // Add the new one
         Manager.currentScene = newScene;
-        Manager.app.stage.addChild(Manager.currentScene);
+        Manager._app.stage.addChild(Manager.currentScene);
     }
 
     // This update will be called by a pixi ticker and tell the scene that a tick happened

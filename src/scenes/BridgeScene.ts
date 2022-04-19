@@ -40,12 +40,11 @@ export class BridgeScene extends Container implements IScene {
     }
 
     private onClickLamp(_e: InteractionEvent): void {
-        console.log("You interacted with Lamp!")
+        console.log("You interacted with Lamp!!!!")
         // TODO: Pickup lamp
         
-        //new Tween(this.lamp.alpha).to( 0.1, 1000).start();
-        
-        new Tween(this.lamp.scale).to({ x: 0.1, y: 0.1 }, 1000).start()
+        new Tween(this.lamp).to({ alpha: 0 }, 1000).start()
+        new Tween(this.lamp.scale).to({ x: 0.3, y: 0.3 }, 1000).start()
         .onComplete( ()=> { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any
             this.removeChild(this.lamp);    // remove when tween completes
         })

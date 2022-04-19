@@ -37,6 +37,9 @@ export class Manager {
         });
 
         Manager._app.ticker.add(Manager.update)
+        
+        // Lock to 30fps (for cinematic effect?)
+        Manager._app.ticker.maxFPS = 30;
 
         // listen for the browser telling us that the screen size changed
         window.addEventListener("resize", Manager.resize);

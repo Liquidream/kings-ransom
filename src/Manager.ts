@@ -1,5 +1,6 @@
 import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
+import { World } from "./cage/World";
 
 export class Manager {
     private constructor() { /*this class is purely static. No constructor to see here*/ }
@@ -46,6 +47,19 @@ export class Manager {
 
         // call it manually once so we are sure we are the correct size after starting
         Manager.resize();
+
+
+        // debug init game data
+        var jsonString = `{
+            "title" : "King's Ransom",
+            "furniture" : {
+                "price": 3000
+            }
+        }`;
+        World.initialize(JSON.parse(jsonString));
+        //var world = new World().deserialize(JSON.parse(jsonString))
+        console.log(World.title);
+
     }
 
     public static resize(): void {

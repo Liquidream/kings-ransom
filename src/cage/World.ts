@@ -1,14 +1,25 @@
 import { Scene } from "./Scene";
 
-export class World {
+// interface Serializable<T> {
+//     deserialize(input : Object) : T;
+// }
+
+export class World { //implements Serializable<World> {
     private constructor() { /*this class is purely static. No constructor to see here*/ }
 
-    private static scenes: Array<Scene>;
+    public static scenes: Array<Scene>;
+    public static title: string | undefined;
 
-    public static initialize(): void {
-        // Anything?
+    private static deserialize(input:any) {
+        World.title = input.title;
+        //return this;
+    }
 
-        World.scenes[0] = new Scene();
+    public static initialize(input:any): void {
+        
+        World.deserialize(input);
+
+        //World.scenes[0] = new Scene();
     }
 
     

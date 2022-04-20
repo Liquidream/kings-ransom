@@ -1,13 +1,14 @@
-import { Serializable } from "./Serializable";
+import { Serialization } from "./Serialization";
 import { Prop } from "./Prop";
 
-export class Scene implements Serializable<Scene> {
+export class Scene implements Serialization<Scene> {
     public constructor() { 
         // Anything?
     }
 
     public id: number | undefined;
     public image: string | undefined;
+    public name: string | undefined;
 
     public props: Array<Prop> = [];
     //private actors: [];
@@ -19,9 +20,14 @@ export class Scene implements Serializable<Scene> {
     deserialize(input: any) {
         this.id =  input.id;
         this.image =  input.image;
+        this.name =  input.name;
         for(let prop of input.props){
             this.props.push(new Prop().deserialize(prop))
         }
         return this;
+    }
+
+    serialize(): string {
+        return JSON.stringify(this);
     }
 }

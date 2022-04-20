@@ -11,6 +11,8 @@ export class Manager {
     private static _height: number;
     private static currentScene: IScene;
 
+    public static World: World;
+
     public static get width(): number {
         return Manager._width;
     }
@@ -59,11 +61,13 @@ export class Manager {
         // }`;
         //let jsonString = JSON.stringify(gamedata)
         //World.initialize(JSON.parse(jsonString));
-        World.initialize(gamedata);
+        Manager.World = new World().deserialize(gamedata);
         //var world = new World().deserialize(JSON.parse(jsonString))
-        console.log(World.title);
-        console.log(World.scenes[0].image);
+        console.log(Manager.World.title);
+        console.log(Manager.World.scenes[0].image);
 
+        console.log("------------------");
+        console.log(Manager.World.serialize());
     }
 
     public static resize(): void {

@@ -1,24 +1,31 @@
+import { Serialization } from "./Serialization";
 import { Scene } from "./Scene";
 
 
 
-export class World {
-    private constructor() { /*this class is purely static. No constructor to see here*/ }
+export class World implements Serialization<World> {
+    public constructor() { 
+        // Anything?
+    }
+    public title: string | undefined;
+    public scenes: Array<Scene> = [];
 
-    public static title: string | undefined;
-    public static scenes: Array<Scene> = [];
-
-    public static initialize(input:any): void {
+    // public initialize(input:any): void {
         
-        World.deserialize(input);
+    //     this.deserialize(input);
 
-        //World.scenes[0] = new Scene();
+    //     //World.scenes[0] = new Scene();
+    // }
+
+    deserialize(input: any) {
+        this.title = input.title;
+        for(let scene of input.scenes){
+            this.scenes.push(new Scene().deserialize(scene))
+        }
+        return this;
     }
 
-    private static deserialize(input: any) {
-        World.title = input.title;
-        for(let scene of input.scenes){
-            World.scenes.push(new Scene().deserialize(scene))
-        }
+    serialize(): string {
+        return JSON.stringify(this);
     }
 }

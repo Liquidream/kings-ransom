@@ -1,6 +1,7 @@
 import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
 import { World } from "./cage/World";
+import gamedata from './gamedata.json';
 
 export class Manager {
     private constructor() { /*this class is purely static. No constructor to see here*/ }
@@ -50,15 +51,18 @@ export class Manager {
 
 
         // debug init game data
-        var jsonString = `{
-            "title" : "King's Ransom",
-            "furniture" : {
-                "price": 3000
-            }
-        }`;
-        World.initialize(JSON.parse(jsonString));
+        // var jsonString = `{
+        //     "title" : "King's Ransom",
+        //     "furniture" : {
+        //         "price": 3000
+        //     }
+        // }`;
+        //let jsonString = JSON.stringify(gamedata)
+        //World.initialize(JSON.parse(jsonString));
+        World.initialize(gamedata);
         //var world = new World().deserialize(JSON.parse(jsonString))
         console.log(World.title);
+        console.log(World.scenes[0].image);
 
     }
 

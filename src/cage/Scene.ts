@@ -1,34 +1,27 @@
-export class Scene {
+import { Serializable } from "./Serializable";
+import { Prop } from "./Prop";
+
+export class Scene implements Serializable<Scene> {
     public constructor() { 
         // Anything?
     }
 
-    //private props: [];
+    public id: number | undefined;
+    public image: string | undefined;
+
+    public props: Array<Prop> = [];
     //private actors: [];
 
-    public initialize(): void {
-        // Anything?
-    }
+    // public initialize(): void {
+    //     // Anything?
+    // }
 
-    
-    // public showMessage(message: string): void {
-    //     const styly: TextStyle = new TextStyle({
-    //         align: "center",
-    //         fill: "#fff",
-    //         fontSize: 48,
-    //         dropShadow: true
-    //     });
-    //     this.currentDialogText = new Text(message, styly); // Text supports unicode!
-    //     this.currentDialogText.anchor.set(0.5);
-    //     this.currentDialogText.x = Manager.width / 2;
-    //     this.currentDialogText.y = Manager.height - 75;
-    //     //texty.text = "This is expensive to change, please do not abuse";
-        
-    //     Manager.app.stage.addChild(this.currentDialogText);
-    // }
-    
-    // public clearMessage(): void {
-    //     Manager.app.stage.removeChild(this.currentDialogText);
-    //     //this.currentDialogText = null;
-    // }
+    deserialize(input: any) {
+        this.id =  input.id;
+        this.image =  input.image;
+        for(let prop of input.props){
+            this.props.push(new Prop().deserialize(prop))
+        }
+        return this;
+    }
 }

@@ -1,5 +1,5 @@
-import { Tween, Group, Easing } from "tweedle.js";
-import { Container, Sprite, InteractionEvent, filters } from "pixi.js";
+import { Tween, Group } from "tweedle.js"; //Easing
+import { Container, Sprite, InteractionEvent} from "pixi.js"; //filters
 
 import { IScene, Manager } from "../Manager";
 import { CaveEntranceScene } from "./CaveEntranceScene";
@@ -9,7 +9,6 @@ export class BridgeScene extends Container implements IScene {
     
     private backdrop: Sprite;
     private lamp: Sprite;
-    private foreground: Sprite;
 
     constructor() {
         super();
@@ -22,7 +21,9 @@ export class BridgeScene extends Container implements IScene {
         this.backdrop.on("pointertap", this.onClickBackdrop, this);        
         this.backdrop.interactive = true;   // Super important or the object will never receive mouse events!
         this.addChild(this.backdrop);
-        new Tween(this.backdrop.scale).to({ x: 1.05, y: 1.05 }, 1000).easing(Easing.Quadratic.Out).start()
+        
+        //new Tween(this.backdrop.scale).to({ x: 1.05, y: 1.05 }, 1000).easing(Easing.Quadratic.Out).start()
+        //this.foreground.filters = [ new filters.BlurFilter(8) ]
         
         this.lamp = Sprite.from("Lamp");
         this.lamp.scale.x = 0.25;
@@ -32,16 +33,7 @@ export class BridgeScene extends Container implements IScene {
         this.lamp.y = 780;
         this.lamp.on("pointertap", this.onClickLamp, this);        
         this.lamp.interactive = true;   // Super important or the object will never receive mouse events!
-        //this.addChild(this.lamp);
-
-        // Foreground
-        this.foreground = Sprite.from("Foreground1");   
-        this.foreground.y = 540;
-        this.foreground.filters = [ new filters.BlurFilter(8) ]
-        this.addChild(this.foreground);
-
-        new Tween(this.foreground).to({ x: -100 }, 1000).easing(Easing.Quadratic.Out).start()
-        new Tween(this.foreground.scale).to({ x: 1.1, y: 1.1 }, 1000).easing(Easing.Quadratic.Out).start()
+        this.addChild(this.lamp);
     }
 
     public update(_framesPassed: number): void {

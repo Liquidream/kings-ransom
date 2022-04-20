@@ -56,6 +56,10 @@ export class BridgeScene extends Container implements IScene {
         new Tween(this.lamp.scale).to({ x: 0.3, y: 0.3 }, 1000).start()
         .onComplete( ()=> { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any
             this.removeChild(this.lamp);    // remove when tween completes
+            // https://medium.com/swlh/a-game-any-web-dev-can-build-in-10-mins-using-pixijs-47f8bcd85700
+            // remove() {
+            //     app.stage.removeChild(this.circle);
+            // }
             Dialog.clearMessage();
         })
         //this.removeChild(this.lamp);

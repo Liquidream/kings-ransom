@@ -1,5 +1,6 @@
-import { Tween, Group } from "tweedle.js";
+import { Tween, Group, Easing } from "tweedle.js";
 import { Container, Sprite, InteractionEvent, filters } from "pixi.js";
+
 import { IScene, Manager } from "../Manager";
 import { CaveEntranceScene } from "./CaveEntranceScene";
 import { Dialog } from "../Dialog";
@@ -21,7 +22,7 @@ export class BridgeScene extends Container implements IScene {
         this.backdrop.on("pointertap", this.onClickBackdrop, this);        
         this.backdrop.interactive = true;   // Super important or the object will never receive mouse events!
         this.addChild(this.backdrop);
-        new Tween(this.backdrop.scale).to({ x: 1.05, y: 1.05 }, 1000).start()
+        new Tween(this.backdrop.scale).to({ x: 1.05, y: 1.05 }, 1000).easing(Easing.Quadratic.Out).start()
         
         this.lamp = Sprite.from("Lamp");
         this.lamp.scale.x = 0.25;
@@ -39,8 +40,8 @@ export class BridgeScene extends Container implements IScene {
         this.foreground.filters = [ new filters.BlurFilter(8) ]
         this.addChild(this.foreground);
 
-        new Tween(this.foreground).to({ x: -100 }, 1000).start()
-        new Tween(this.foreground.scale).to({ x: 1.1, y: 1.1 }, 1000).start()
+        new Tween(this.foreground).to({ x: -100 }, 1000).easing(Easing.Quadratic.Out).start()
+        new Tween(this.foreground.scale).to({ x: 1.1, y: 1.1 }, 1000).easing(Easing.Quadratic.Out).start()
     }
 
     public update(_framesPassed: number): void {

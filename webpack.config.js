@@ -12,7 +12,13 @@ module.exports = (env, argv) => {
         // Your build destination
         output: {
             path: path.resolve(__dirname, 'dist'),
-            filename: 'bundle.js'
+            filename: 'bundle.js',
+
+            // Tweak this to match your GitHub project name
+            // (https://survivejs.com/webpack/techniques/deploying/)
+            //publicPath: "/kings-ransom/",
+            // https://www.pluralsight.com/guides/fixing-broken-relative-links-on-github-pages
+            publicPath: argv.mode === 'development' ? '/' : '/kings-ransom/',
         },
 
         // Config for your testing server
@@ -27,7 +33,7 @@ module.exports = (env, argv) => {
                 },
                 progress: true,
             },
-            port: 1234, host: '0.0.0.0'
+            port: 1234, host: '0.0.0.0',
         },
 
         // Web games are bigger than pages, disable the warnings that our game is too big.

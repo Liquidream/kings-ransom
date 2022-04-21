@@ -32,7 +32,7 @@ export class CaveEntranceScene extends Container implements IScene {
     }
 
     private onClickBackdrop(_e: InteractionEvent): void {
-        console.log("You interacted with Backdrop!")
+        console.log("You interacted with Backdrop!!")
         console.log("The data of your interaction is super interesting", _e)
 
         // Change scene to the game scene!

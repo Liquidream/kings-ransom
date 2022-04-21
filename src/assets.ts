@@ -1,7 +1,7 @@
 export const assets = [
     // Scenes ---------------------------------------------------------
     { name: "Bridge", url: "./images/scenes/bridge.jpg" },
-        { name: "Foreground1", url: "./images/scenes/foreground1.png" },
+        //{ name: "Foreground1", url: "./images/scenes/foreground1.png" },
     { name: "Cave-Entrance", url: "./images/scenes/cave-entrance.jpg" },
     { name: "Cave-Tunnel", url: "./images/scenes/cave-tunnel.jpg" },
     { name: "Fortress-Exterior", url: "./images/scenes/fortress-exterior.jpg" },

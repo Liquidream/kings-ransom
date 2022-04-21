@@ -56,7 +56,7 @@ export class BridgeScene extends Container implements IScene {
     }
 
     private onClickLamp(_e: InteractionEvent): void {
-        console.log("You interacted with Lamp!!")
+        console.log("You interacted with Lamp!")
         // TODO: Pickup lamp
         new Tween(this.lamp).to({ alpha: 0 }, 1000).start()
         //new Tween(this.lamp).to({ x: 500 }, 1000).start()
@@ -64,7 +64,8 @@ export class BridgeScene extends Container implements IScene {
         .onComplete( ()=> { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any
             // remove when tween completes
             this.removeChild(this.lamp);  
-            // remove from game data            
+            // remove from game data
+            // https://stackoverflow.com/a/67953394/574415     
             this.scene.props.splice(this.scene.props.findIndex(item => item.id === "pro01"),1);
 
             // https://medium.com/swlh/a-game-any-web-dev-can-build-in-10-mins-using-pixijs-47f8bcd85700

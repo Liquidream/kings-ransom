@@ -4,9 +4,11 @@
     "start": "webpack serve --mode=development",
     "build": "run-s clean build-only",
     "build-only": "webpack --mode=production",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "gh-pages": "^3.2.3",
     "pixi.js": "^6.3.0",
     "tweedle.js": "^2.0.0"
   },

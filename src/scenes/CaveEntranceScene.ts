@@ -1,11 +1,18 @@
 import { Container, Sprite, InteractionEvent } from "pixi.js";
+import { Scene } from "../cage/Scene";
 import { IScene, Manager } from "../Manager";
 import { BridgeScene } from "./BridgeScene";
 
 export class CaveEntranceScene extends Container implements IScene {
+    private scene: Scene;
     private backdrop: Sprite;
-    constructor() {
+
+    constructor(scene: Scene) {
         super();
+
+        // Ref to scene data        
+        this.scene = scene;
+        console.log(this.scene.id);
 
         // Inside assets.ts we have a line that says `{ name: "Clampy from assets.ts!", url: "./clampy.png" }`
         this.backdrop = Sprite.from("Cave-Entrance");
@@ -29,6 +36,6 @@ export class CaveEntranceScene extends Container implements IScene {
         console.log("The data of your interaction is super interesting", _e)
 
         // Change scene to the game scene!
-        Manager.changeScene(new BridgeScene());
+        Manager.changeScene(new BridgeScene(Manager.World.scenes[0]));
     }
 }

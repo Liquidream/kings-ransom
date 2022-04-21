@@ -15,6 +15,13 @@
             "height": "50"
         }
         ]
+    },
+    {
+        "id": "scn02",
+        "name": "Cave Entrance",
+        "image": "Cave-Entrance",
+        "props": [        
+        ]
     }
     ]
   }

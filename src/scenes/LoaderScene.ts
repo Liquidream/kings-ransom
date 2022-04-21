@@ -1,7 +1,7 @@
 import { Container, Graphics, Loader } from "pixi.js";
 import { assets } from "../assets";
 import { IScene, Manager } from "../Manager";
-import { BridgeScene } from "./BridgeScene";
+//import { BridgeScene } from "./BridgeScene";
 
 export class LoaderScene extends Container implements IScene {
 
@@ -46,7 +46,8 @@ export class LoaderScene extends Container implements IScene {
 
     private gameLoaded(): void {
         // Change scene to the game scene!
-        Manager.changeScene(new BridgeScene());
+        Manager.startGame();
+        //Manager.changeScene(new BridgeScene());
     }
 
     public update(_framesPassed: number): void {

@@ -5,7 +5,7 @@ export class Prop implements Serialization<Prop> {
         // Anything?
     }
     
-    public id: number | undefined;
+    public id: string | undefined;
     public image: string | undefined;
     public x: number | undefined;
     public y: number | undefined;

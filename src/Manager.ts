@@ -2,6 +2,7 @@ import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
 import { World } from "./cage/World";
 import gamedata from './gamedata.json';
+import { BridgeScene } from "./scenes/BridgeScene";
 
 export class Manager {
     private constructor() { /*this class is purely static. No constructor to see here*/ }
@@ -94,6 +95,10 @@ export class Manager {
     }
 
     /* More code of your Manager.ts like `changeScene` and `update`*/
+    
+    public static startGame(): void {
+        Manager.changeScene(new BridgeScene(Manager.World.scenes[0]));
+    }
 
     // Call this function when you want to go to a new scene
     public static changeScene(newScene: IScene): void {

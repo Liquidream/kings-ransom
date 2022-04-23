@@ -63,7 +63,7 @@ export class BridgeScene extends Container implements IScene {
         // TODO: Pickup lamp
         new Tween(this.lamp).to({ alpha: 0 }, 1000).start()
         //new Tween(this.lamp).to({ x: 500 }, 1000).start()
-        new Tween(this.lamp.scale).to({ x: 0.3, y: 0.3 }, 1000).start()
+        new Tween(this.lamp.scale).to({ x: 0.4, y: 0.4 }, 1000).start()
         .onComplete( ()=> { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any
             // remove when tween completes
             this.removeChild(this.lamp);  

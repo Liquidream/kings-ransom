@@ -34,7 +34,7 @@ export class Manager {
 
         Manager._app = new Application({
             view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
-            resolution: window.devicePixelRatio || 1,
+            //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
             autoDensity: true,
             backgroundColor: background,
             width: width,

@@ -22,8 +22,34 @@
 			height: 100%;
 		}
 	</style>
+	<script>
+		/* Get the documentElement (<html>) to display the page in fullscreen */
+		var elem = document.documentElement;
+		
+		/* View in fullscreen */
+		function openFullscreen() {
+		  if (elem.requestFullscreen) {
+			elem.requestFullscreen();
+		  } else if (elem.webkitRequestFullscreen) { /* Safari */
+			elem.webkitRequestFullscreen();
+		  } else if (elem.msRequestFullscreen) { /* IE11 */
+			elem.msRequestFullscreen();
+		  }
+		}
+		
+		/* Close fullscreen */
+		function closeFullscreen() {
+		  if (document.exitFullscreen) {
+			document.exitFullscreen();
+		  } else if (document.webkitExitFullscreen) { /* Safari */
+			document.webkitExitFullscreen();
+		  } else if (document.msExitFullscreen) { /* IE11 */
+			document.msExitFullscreen();
+		  }
+		}
+		</script>
 
-<script defer src="/kings-ransom/bundle.js?da0456e67a952f861c29"></script></head>
+<script defer src="/kings-ransom/bundle.js?0fff8ee4c8d3b29b140d"></script></head>
 
 <body>
 	<noscript>Please enable JavaScript in your web browser to view this page.</noscript>

@@ -1,4 +1,4 @@
-import { Serialization } from "./Serialization";
+import { Serialization } from "../utils/Serialization";
 
 export class Prop implements Serialization<Prop> {
     public constructor() { 

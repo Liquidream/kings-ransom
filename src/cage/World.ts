@@ -1,4 +1,4 @@
-import { Serialization } from "./Serialization";
+import { Serialization } from "../utils/Serialization";
 import { Scene } from "./Scene";
 
 

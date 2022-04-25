@@ -1,4 +1,4 @@
-import { Serialization } from "./Serialization";
+import { Serialization } from "../utils/Serialization";
 import { Prop } from "./Prop";
 
 export class Scene implements Serialization<Scene> {

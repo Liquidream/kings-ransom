@@ -43,7 +43,7 @@ export class Manager {
 
         Manager._app.ticker.add(Manager.update)
         
-        // Lock to 30fps (for cinematic effect?)
+        // Lock to 30fps (for cinematic effect)
         Manager._app.ticker.maxFPS = 30;
 
         // listen for the browser telling us that the screen size changed
@@ -53,20 +53,10 @@ export class Manager {
         Manager.resize();
 
 
-        // debug init game data
-        // var jsonString = `{
-        //     "title" : "King's Ransom",
-        //     "furniture" : {
-        //         "price": 3000
-        //     }
-        // }`;
-        //let jsonString = JSON.stringify(gamedata)
-        //World.initialize(JSON.parse(jsonString));
+
         Manager.World = new World().deserialize(gamedata);
-        //var world = new World().deserialize(JSON.parse(jsonString))
         console.log(Manager.World.title);
         console.log(Manager.World.scenes[0].image);
-
         console.log("------------------");
         console.log(Manager.World.serialize());
     }

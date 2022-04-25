@@ -10,10 +10,8 @@ export class World implements Serialization<World> {
     public title: string | undefined;
     public scenes: Array<Scene> = [];
 
-    // public initialize(input:any): void {
-        
+    // public initialize(input:any): void {        
     //     this.deserialize(input);
-
     //     //World.scenes[0] = new Scene();
     // }
 

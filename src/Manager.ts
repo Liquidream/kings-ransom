@@ -55,6 +55,7 @@ export class Manager {
 
 
         Manager.World = new World().deserialize(gamedata);
+        
         console.log(Manager.World.title);
         console.log(Manager.World.scenes[0].image);
         console.log("------------------");

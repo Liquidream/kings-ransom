@@ -1,9 +1,9 @@
 import { Container, Sprite, InteractionEvent } from "pixi.js";
 import { Scene } from "../cage/Scene";
-import { IScene, Manager } from "../Manager";
+import { IScreen, Manager } from "../Manager";
 import { BridgeScene } from "./BridgeScene";
 
-export class CaveEntranceScene extends Container implements IScene {
+export class CaveEntranceScene extends Container implements IScreen {
     private scene: Scene;
     private backdrop: Sprite;
 
@@ -36,6 +36,6 @@ export class CaveEntranceScene extends Container implements IScene {
         console.log("The data of your interaction is super interesting", _e)
 
         // Change scene to the game scene!
-        Manager.changeScene(new BridgeScene(Manager.World.scenes[0]));
+        Manager.changeScreen(new BridgeScene(Manager.World.scenes[0]));
     }
 }

@@ -1,7 +1,7 @@
 import { Tween, Group } from "tweedle.js"; //Easing
 import { Container, Sprite, InteractionEvent} from "pixi.js"; //filters
 
-import { IScene, Manager } from "../Manager";
+import { IScreen, Manager } from "../Manager";
 import { Dialog } from "../Dialog";
 import { Scene } from "../cage/Scene";
 import { CaveEntranceScene } from "./CaveEntranceScene";
@@ -9,7 +9,7 @@ import { Fullscreen } from "../utils/Fullscreen";
 
 
 
-export class BridgeScene extends Container implements IScene {
+export class BridgeScene extends Container implements IScreen {
     private scene: Scene;
     private backdrop: Sprite;
     private lamp!: Sprite;
@@ -92,10 +92,10 @@ export class BridgeScene extends Container implements IScene {
         console.log("You interacted with Backdrop!")
 
         // Test fullscreen
-        Fullscreen.openFullscreen();
+        Fullscreen.openFullscreen(); 
         //openFullscreen(); 
 
         // Change scene to the game scene!
-        Manager.changeScene(new CaveEntranceScene(Manager.World.scenes[1]));
+        Manager.changeScreen(new CaveEntranceScene(Manager.World.scenes[1]));
     }
 }

@@ -6,9 +6,9 @@ export class Scene implements Serialization<Scene> {
         // Anything?
     }
 
-    public id: number | undefined;
-    public image: string | undefined;
-    public name: string | undefined;
+    public id: number = 0;
+    public image: string = "";
+    public name: string = "";
 
     public props: Array<Prop> = [];
     //private actors: [];
@@ -19,7 +19,7 @@ export class Scene implements Serialization<Scene> {
 
     deserialize(input: any) {
         this.id =  input.id;
-        this.image =  input.image;
+        this.image =  input.image || "";
         this.name =  input.name;
         for(let prop of input.props){
             this.props.push(new Prop().deserialize(prop))

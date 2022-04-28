@@ -1,9 +1,9 @@
 import { Container, Graphics, Loader } from "pixi.js";
 import { assets } from "../assets";
-import { IScene, Manager } from "../Manager";
+import { IScreen, Manager } from "../Manager";
 //import { BridgeScene } from "./BridgeScene";
 
-export class LoaderScene extends Container implements IScene {
+export class LoaderScreen extends Container implements IScreen {
 
     // for making our loader graphics...
     private loaderBar: Container;

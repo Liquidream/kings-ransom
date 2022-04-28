@@ -2,7 +2,8 @@ import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
 import { World } from "./cage/World";
 import gamedata from './gamedata.json';
-import { BridgeScene } from "./scenes/BridgeScene";
+//import { BridgeScene } from "./scenes/BridgeScene";
+import { SceneScreen } from "./scenes/SceneScreen";
 
 export class Manager {
     private constructor() { /*this class is purely static. No constructor to see here*/ }
@@ -10,7 +11,7 @@ export class Manager {
     private static _app: Application;
     private static _width: number;
     private static _height: number;
-    private static currentScene: IScene;
+    private static currentScreen: IScreen;
 
     public static World: World;
 
@@ -55,7 +56,7 @@ export class Manager {
 
 
         Manager.World = new World().deserialize(gamedata);
-        
+
         console.log(Manager.World.title);
         console.log(Manager.World.scenes[0].image);
         console.log("------------------");
@@ -88,28 +89,28 @@ export class Manager {
     /* More code of your Manager.ts like `changeScene` and `update`*/
     
     public static startGame(): void {
-        Manager.changeScene(new BridgeScene(Manager.World.scenes[0]));
+        Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
     }
 
     // Call this function when you want to go to a new scene
-    public static changeScene(newScene: IScene): void {
+    public static changeScreen(newScene: IScreen): void {
         // Remove and destroy old scene... if we had one..
-        if (Manager.currentScene) {
-            Manager._app.stage.removeChild(Manager.currentScene);
-            Manager.currentScene.destroy();
+        if (Manager.currentScreen) {
+            Manager._app.stage.removeChild(Manager.currentScreen);
+            Manager.currentScreen.destroy();
         }
 
         // Add the new one
-        Manager.currentScene = newScene;
-        Manager._app.stage.addChild(Manager.currentScene);
+        Manager.currentScreen = newScene;
+        Manager._app.stage.addChild(Manager.currentScreen);
     }
 
     // This update will be called by a pixi ticker and tell the scene that a tick happened
     private static update(framesPassed: number): void {
         // Let the current scene know that we updated it...
         // Just for funzies, sanity check that it exists first.
-        if (Manager.currentScene) {
-            Manager.currentScene.update(framesPassed);
+        if (Manager.currentScreen) {
+            Manager.currentScreen.update(framesPassed);
         }
 
         // as I said before, I HATE the "frame passed" approach. I would rather use `Manager.app.ticker.deltaMS`
@@ -118,7 +119,7 @@ export class Manager {
 
 // This could have a lot more generic functions that you force all your scenes to have. Update is just an example.
 // Also, this could be in its own file...
-export interface IScene extends DisplayObject {
+export interface IScreen extends DisplayObject {
     update(framesPassed: number): void;
 
     // we added the resize method to the interface

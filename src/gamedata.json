@@ -9,6 +9,7 @@
         {
             "id": "pro01",
             "image": "Lamp",
+            "name": "An old lamp",
             "x": "1425",
             "y": "780",
             "width": "50",

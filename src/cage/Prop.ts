@@ -5,12 +5,13 @@ export class Prop implements Serialization<Prop> {
         // Anything?
     }
     
-    public id: string | undefined;
-    public image: string | undefined;
-    public x: number | undefined;
-    public y: number | undefined;
-    public width: number | undefined;
-    public height: number | undefined;
+    public id: string = "";
+    public image: string = "";
+    public name: string = "";
+    public x: number = 0;
+    public y: number = 0;
+    public width: number = 0;
+    public height: number = 0;
     
     //private props: [];
     //private actors: [];
@@ -21,11 +22,12 @@ export class Prop implements Serialization<Prop> {
     
     deserialize(input: any) {
         this.id =  input.id;
+        this.image =  input.image;
+        this.name =  input.name;
         this.x = input.x;
         this.y = input.y;
         this.width = input.width;
         this.height = input.height;
-        this.image =  input.image;       
         
         return this;
     }

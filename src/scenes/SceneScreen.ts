@@ -59,8 +59,6 @@ export class SceneScreen extends Container implements IScreen {
                 
                 //console.log(propData.image);
                 let prop = Sprite.from(propData.image);
-                  prop.scale.x = 0.25;
-                  prop.scale.y = 0.25;
                 prop.anchor.set(0.5);
                 prop.x = propData.x;
                 prop.y = propData.y;

@@ -1,5 +1,5 @@
 import { Tween, Group } from "tweedle.js"; //Easing
-import { Container, Sprite, InteractionEvent} from "pixi.js"; //filters
+import { Container, Sprite, InteractionEvent, Graphics} from "pixi.js"; //filters
 
 import { IScreen, Manager } from "../Manager";
 import { Dialog } from "../Dialog";
@@ -24,6 +24,7 @@ export class SceneScreen extends Container implements IScreen {
         // Construct scene from data
         this.buildBackdrop();
         this.buildProps();
+        this.buildDoorways();
     }
 
     public update(_framesPassed: number): void {
@@ -73,16 +74,41 @@ export class SceneScreen extends Container implements IScreen {
         }
 
         Dialog.clearMessage();
+    }
 
-        // this.lamp = Sprite.from("Lamp");
-        // this.lamp.scale.x = 0.25;
-        // this.lamp.scale.y = 0.25;
-        // this.lamp.anchor.set(0.5);
-        // this.lamp.x = 1425;
-        // this.lamp.y = 780;
-        // this.lamp.on("pointertap", this.onClickLamp, this);        
-        // this.lamp.interactive = true;   // Super important or the object will never receive mouse events!
-        // this.addChild(this.lamp);
+    private buildDoorways() {        
+        console.log(this.scene.doors);
+        if (this.scene.doors.length > 0) {
+
+            for (let doorData of this.scene.doors) {
+                console.log(doorData); // 4, 5, 6
+                
+                //console.log(propData.image);
+                
+                // Initialize the pixi Graphics class
+                let graphics = new Graphics();
+                // Set the fill color
+                graphics.beginFill(0xe74c3c); // Red
+                // Draw a circle
+                graphics.drawCircle(60, 185, 40); // drawCircle(x, y, radius)
+                // Applies fill to lines and shapes since the last call to beginFill.
+                graphics.endFill();
+                
+                // let door = Shape. Sprite.from(propData.image);
+                // prop.anchor.set(0.5);
+                // prop.x = propData.x;
+                // prop.y = propData.y;
+                // prop.on("pointertap", this.onClickProp, this);   
+                // prop.interactive = true;   // Super important or the object will never receive mouse events!
+
+                //prop.PropData = 
+
+                this.addChild(graphics);
+                //this.propSprites.push(prop);
+            }            
+        }
+
+        Dialog.clearMessage();
     }
 
     private onClickProp(_e: InteractionEvent): void {

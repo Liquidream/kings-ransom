@@ -1,28 +1,39 @@
 {
     "title": "King's Ransom 2",
     "scenes": [
-    {
-        "id": "scn01",
-        "name": "Stone Bridge",
-        "image": "Bridge",
-        "props": [
         {
-            "id": "pro01",
-            "image": "Lamp",
-            "name": "An old lamp",
-            "x": "1425",
-            "y": "780",
-            "width": "50",
-            "height": "50"
+            "id": "scn01",
+            "name": "Stone Bridge",
+            "image": "Bridge",
+            "props": [
+                {
+                    "id": "prp01",
+                    "image": "Lamp",
+                    "name": "An old lamp",
+                    "x": "1425",
+                    "y": "780",
+                    "width": "50",
+                    "height": "50"
+                }
+            ],
+            "doors": [
+                {
+                    "id": "dor01",
+                    "name": "Cave Entrance",
+                    "x": "160",
+                    "y": "150",
+                    "width": "475",
+                    "height": "475",
+                    "target_scene_id": "scn02"
+                }
+            ]
+        },
+        {
+            "id": "scn02",
+            "name": "Cave Entrance",
+            "image": "Cave-Entrance",
+            "props": [],
+            "doors": []
         }
-        ]
-    },
-    {
-        "id": "scn02",
-        "name": "Cave Entrance",
-        "image": "Cave-Entrance",
-        "props": [        
-        ]
-    }
     ]
 }

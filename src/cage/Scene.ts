@@ -7,7 +7,7 @@ export class Scene implements Serialization<Scene> {
         // Anything?
     }
 
-    public id: number = 0;
+    public id: string = "";
     public image: string = "";
     public name: string = "";
 

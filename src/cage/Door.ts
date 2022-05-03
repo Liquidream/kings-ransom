@@ -14,17 +14,19 @@ export class Door implements Serialization<Door> {
     public height: number = 0;
     
     // public initialize(): void {
-        //     // Anything?
+        //     // Anything? 
     // }
     
     deserialize(input: any) {
         this.id =  input.id;
         this.image =  input.image;
         this.name =  input.name;
-        this.x = input.x;
-        this.y = input.y;
-        this.width = input.width;
-        this.height = input.height;
+        this.x = Number(input.x);
+        this.y = Number(input.y);
+        this.width = Number(input.width);
+        this.height = Number(input.height);
+
+        console.log(typeof(this.x));
         
         return this;
     }

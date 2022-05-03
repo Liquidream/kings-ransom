@@ -63,10 +63,9 @@ export class SceneScreen extends Container implements IScreen {
                 prop.anchor.set(0.5);
                 prop.x = propData.x;
                 prop.y = propData.y;
+                // Events
                 prop.on("pointertap", this.onClickProp, this);   
                 prop.interactive = true;   // Super important or the object will never receive mouse events!
-
-                //prop.PropData = 
 
                 this.addChild(prop);
                 this.propSprites.push(prop);
@@ -88,20 +87,17 @@ export class SceneScreen extends Container implements IScreen {
                 // Initialize the pixi Graphics class
                 let graphics = new Graphics();
                 // Set the fill color
-                graphics.beginFill(0xe74c3c); // Red
+                graphics.beginFill(0xe74c3c, 125); // Red
+                // Line/stroke style
+                graphics.lineStyle(10, 0xFF0000);
                 // Draw a circle
-                graphics.drawCircle(60, 185, 40); // drawCircle(x, y, radius)
+                //graphics.drawCircle(160, 185, 40); // drawCircle(x, y, radius)
+                graphics.drawCircle(doorData.x, doorData.y, doorData.width/2); // drawCircle(x, y, radius)
                 // Applies fill to lines and shapes since the last call to beginFill.
                 graphics.endFill();
-                
-                // let door = Shape. Sprite.from(propData.image);
-                // prop.anchor.set(0.5);
-                // prop.x = propData.x;
-                // prop.y = propData.y;
-                // prop.on("pointertap", this.onClickProp, this);   
-                // prop.interactive = true;   // Super important or the object will never receive mouse events!
-
-                //prop.PropData = 
+                // Events
+                graphics.on("pointertap", this.onClickDoor, this);   
+                graphics.interactive = true;   // Super important or the object will never receive mouse events!
 
                 this.addChild(graphics);
                 //this.propSprites.push(prop);
@@ -120,6 +116,18 @@ export class SceneScreen extends Container implements IScreen {
         console.log(clickedProp.name)        
 
         new Tween(clickedProp).to({ alpha: 0 }, 1000).start()
+    }
+
+    private onClickDoor(_e: InteractionEvent): void {
+        console.log("You interacted with a door!")
+        
+        let clickedProp = _e.currentTarget;
+        console.log(clickedProp)
+        
+        console.log(clickedProp.name)        
+
+        // Change scene to the game scene!
+        Manager.changeScreen(new SceneScreen(Manager.World.scenes[1]));
     }
 
     // private onClickLamp(_e: InteractionEvent): void {
@@ -152,11 +160,10 @@ export class SceneScreen extends Container implements IScreen {
     private onClickBackdrop(_e: InteractionEvent): void {
         console.log("You interacted with Backdrop!")
 
-        // Test fullscreen
-        Fullscreen.openFullscreen();
-        //openFullscreen(); 
-
-        // Change scene to the game scene!
-        Manager.changeScreen(new SceneScreen(Manager.World.scenes[1]));
+        // Test fullscreen (DISABLED for now)
+        if (false) {
+            Fullscreen.openFullscreen();
+        }
+        
     }
 }

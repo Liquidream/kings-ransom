@@ -96,7 +96,8 @@ export class SceneScreen extends Container implements IScreen {
                 // Applies fill to lines and shapes since the last call to beginFill.
                 graphics.endFill();
                 // Events
-                graphics.on("pointertap", this.onClickDoor, this);   
+                graphics.on("pointertap", doorData.onClicked, doorData);
+                //graphics.on("pointertap", this.onClickDoor, this);   
                 graphics.interactive = true;   // Super important or the object will never receive mouse events!
 
                 this.addChild(graphics);
@@ -118,17 +119,24 @@ export class SceneScreen extends Container implements IScreen {
         new Tween(clickedProp).to({ alpha: 0 }, 1000).start()
     }
 
-    private onClickDoor(_e: InteractionEvent): void {
-        console.log("You interacted with a door!")
+//     private onClickDoor(_e: InteractionEvent): void {
+//         console.log("You interacted with a door!");
         
-        let clickedProp = _e.currentTarget;
-        console.log(clickedProp)
+//         let clickedProp = _e.currentTarget;
+//         console.log(clickedProp);
+// //        console.log(this.target_scene_id);
         
-        console.log(clickedProp.name)        
+//         console.log(clickedProp.name);
 
-        // Change scene to the game scene!
-        Manager.changeScreen(new SceneScreen(Manager.World.scenes[1]));
-    }
+//         // TODO: Find the target door/scene
+//         // 👇️ const first: {id: number; language: string;} | undefined
+//         // const targetScene = Manager.World.scenes.find((obj) => {
+//         //     return target_scene_id === clickedProp.tar;
+//         // });
+
+//         // Change scene to the game scene!
+//         Manager.changeScreen(new SceneScreen(Manager.World.scenes[1]));
+//     }
 
     // private onClickLamp(_e: InteractionEvent): void {
     //     console.log("You interacted with Lamp!")

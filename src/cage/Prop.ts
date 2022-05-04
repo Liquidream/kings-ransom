@@ -3,7 +3,7 @@ import { Serialization } from "../utils/Serialization";
 export class Prop implements Serialization<Prop> {
     public constructor() { 
         // Anything?
-    }
+    } 
     
     public id: string = "";
     public image: string = "";

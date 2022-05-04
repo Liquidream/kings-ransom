@@ -33,7 +33,17 @@
             "name": "Cave Entrance",
             "image": "Cave-Entrance",
             "props": [],
-            "doors": []
+            "doors": [
+                {
+                    "id": "dor02",
+                    "name": "Bridge",
+                    "x": "360",
+                    "y": "150",
+                    "width": "475",
+                    "height": "475",
+                    "target_scene_id": "scn01"
+                }
+            ]
         }
     ]
 }

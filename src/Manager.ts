@@ -12,8 +12,9 @@ export class Manager {
     private static _width: number;
     private static _height: number;
     private static currentScreen: IScreen;
-
+    
     public static World: World;
+    public static _fps: number;
 
     public static get width(): number {
         return Manager._width;
@@ -45,7 +46,8 @@ export class Manager {
         Manager._app.ticker.add(Manager.update)
         
         // Lock to 30fps (for cinematic effect)
-        Manager._app.ticker.maxFPS = 30;
+        Manager._fps = 30;
+        Manager._app.ticker.maxFPS = Manager._fps;
 
         // listen for the browser telling us that the screen size changed
         window.addEventListener("resize", Manager.resize);

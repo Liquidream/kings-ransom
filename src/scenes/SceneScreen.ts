@@ -1,4 +1,4 @@
-import { Tween, Group } from "tweedle.js"; //Easing
+import { Group } from "tweedle.js"; //Easing
 import { Container, Sprite, InteractionEvent, Graphics} from "pixi.js"; //filters
 
 import { IScreen, Manager } from "../Manager";
@@ -32,6 +32,8 @@ export class SceneScreen extends Container implements IScreen {
         
         //You need to update a group for the tweens to do something!
         Group.shared.update()
+
+        Dialog.update();
     }
 
     public resize(_screenWidth: number, _screenHeight: number): void {
@@ -64,7 +66,8 @@ export class SceneScreen extends Container implements IScreen {
                 prop.x = propData.x;
                 prop.y = propData.y;
                 // Events
-                prop.on("pointertap", this.onClickProp, this);   
+                prop.on("pointertap", propData.onClicked, propData);   
+                //prop.on("pointertap", this.onClickProp, this);   
                 prop.interactive = true;   // Super important or the object will never receive mouse events!
 
                 this.addChild(prop);
@@ -108,16 +111,18 @@ export class SceneScreen extends Container implements IScreen {
         Dialog.clearMessage();
     }
 
-    private onClickProp(_e: InteractionEvent): void {
-        console.log("You interacted with a prop!")
+    // private onClickProp(_e: InteractionEvent): void {
+    //     console.log("You interacted with a prop!")
         
-        let clickedProp = _e.currentTarget;
-        console.log(clickedProp)
+    //     let clickedProp = _e.currentTarget;
+    //     console.log(clickedProp)
         
-        console.log(clickedProp.name)        
+    //     console.log(clickedProp.name)        
 
-        new Tween(clickedProp).to({ alpha: 0 }, 1000).start()
-    }
+    //     new Tween(clickedProp).to({ alpha: 0 }, 1000).start()
+
+    //     Dialog.showMessage("You picked up the lamp");
+    // }
 
 //     private onClickDoor(_e: InteractionEvent): void {
 //         console.log("You interacted with a door!");

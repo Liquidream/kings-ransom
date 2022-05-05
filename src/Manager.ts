@@ -55,8 +55,6 @@ export class Manager {
         // call it manually once so we are sure we are the correct size after starting
         Manager.resize();
 
-
-
         Manager.World = new World().deserialize(gamedata);
 
         console.log(Manager.World.title);

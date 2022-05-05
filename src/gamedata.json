@@ -1,5 +1,11 @@
 {
     "title": "King's Ransom 2",
+    "player":
+        {
+            "name": "Lonely wonderer",
+            "inventory": [                
+            ]
+        },
     "scenes": [
         {
             "id": "scn01",

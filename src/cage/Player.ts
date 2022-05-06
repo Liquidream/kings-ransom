@@ -1,5 +1,5 @@
 import { Serialization } from "../utils/Serialization";
-import { Prop } from "./Prop";
+import { PropData } from "./PropData";
 
 
 
@@ -8,7 +8,7 @@ export class Player implements Serialization<Player> {
         // Anything?
     }
     public name: string | undefined;
-    public inventory: Array<Prop> = [];
+    public inventory: Array<PropData> = [];
 
     // public initialize(input:any): void {        
     //     this.deserialize(input);
@@ -18,7 +18,7 @@ export class Player implements Serialization<Player> {
     deserialize(input: any) {
         this.name = input.name;
         for(let prop of input.inventory){
-            this.inventory.push(new Prop().deserialize(prop))
+            this.inventory.push(new PropData().deserialize(prop))
         }
         return this;
     }

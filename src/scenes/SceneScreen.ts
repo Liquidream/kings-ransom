@@ -6,6 +6,7 @@ import { Dialog } from "../Dialog";
 import { Scene } from "../cage/Scene";
 //import { CaveEntranceScene } from "./CaveEntranceScene";
 import { Fullscreen } from "../utils/Fullscreen";
+import { Prop } from "../cage/Prop";
 
 
 
@@ -13,7 +14,7 @@ export class SceneScreen extends Container implements IScreen {
     private scene: Scene;
     private backdrop!: Sprite;
     //private lamp!: Sprite;
-    private propSprites: Array<Sprite> = [];
+    //private propSprites: Array<Sprite> = [];
 
     constructor(scene: Scene) {
         super();
@@ -60,18 +61,22 @@ export class SceneScreen extends Container implements IScreen {
             for (let propData of this.scene.props) {
                 console.log(propData); // 4, 5, 6
                 
-                //console.log(propData.image);
-                let prop = Sprite.from(propData.image);
-                prop.anchor.set(0.5);
-                prop.x = propData.x;
-                prop.y = propData.y;
+                // Create new component obj (contains data + view)
+                let prop = new Prop();
+                let sprite = Sprite.from(propData.image);
+                sprite.anchor.set(0.5);
+                sprite.x = propData.x;
+                sprite.y = propData.y;
+                
+                prop.data = propData;
+                prop.sprite = sprite;
                 // Events
-                prop.on("pointertap", propData.onClicked, propData);   
+                prop.sprite.interactive = true;   // Super important or the object will never receive mouse events!
+                prop.sprite.on("pointertap", prop.onClicked, prop);   
                 //prop.on("pointertap", this.onClickProp, this);   
-                prop.interactive = true;   // Super important or the object will never receive mouse events!
 
-                this.addChild(prop);
-                this.propSprites.push(prop);
+                this.addChild(prop.sprite);
+                //this.propSprites.push(prop.sprite);
             }            
         }
 

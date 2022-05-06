@@ -36,8 +36,20 @@ export class Door implements Serialization<Door> {
 
         // Check door state
         if (this.state == DoorState.Locked) {
-            Dialog.showMessage(this.desc_locked || "It is locked");
-            return;
+            
+            // Does player have the key?
+            const key = Manager.World.player.inventory.find((obj) => {
+                return obj.id === this.key_prop_id;
+            });
+            if (key) {
+                // Unlock the door
+                this.state = DoorState.Unlocked;
+            }
+            else
+            {
+                Dialog.showMessage(this.desc_locked || "It is locked");
+                return;
+            }
         }
 
         // TODO: Find the target door/scene

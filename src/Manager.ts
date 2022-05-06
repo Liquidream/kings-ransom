@@ -3,7 +3,7 @@ import { DisplayObject } from "@pixi/display";
 import { World } from "./cage/World";
 import gamedata from './gamedata.json';
 //import { BridgeScene } from "./scenes/BridgeScene";
-import { SceneScreen } from "./scenes/SceneScreen";
+//import { SceneScreen } from "./scenes/SceneScreen";
 
 export class Manager {
     private constructor() { /*this class is purely static. No constructor to see here*/ }
@@ -89,7 +89,8 @@ export class Manager {
     /* More code of your Manager.ts like `changeScene` and `update`*/
     
     public static startGame(): void {
-        Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
+        Manager.World.start();
+        //Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
     }
 
     // Call this function when you want to go to a new scene

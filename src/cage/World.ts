@@ -12,10 +12,20 @@ export class World implements Serialization<World> {
     public player!: Player;
     public scenes: Array<Scene> = [];    
 
-    // public initialize(input:any): void {        
-    //     this.deserialize(input);
-    //     //World.scenes[0] = new Scene();
+    public currentScene!: Scene;
+
+    // public initialize(): void {
+        //     // Anything?
     // }
+
+    start() {
+        this.scenes[0].show();
+        
+        // this.currentScene = this.scenes[0];
+        // this.currentScene.show();
+
+        //Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
+    }
 
     deserialize(input: any) {
         this.title = input.title;

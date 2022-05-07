@@ -32,6 +32,10 @@ export class Prop { //implements Serialization<Prop> {
 
         // Add to Player's inventory
         Manager.World.player.inventory.push(this.data);
+
+
+        // DEBUG
+        console.log(Manager.World.serialize());
     }
 
 }

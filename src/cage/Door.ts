@@ -65,7 +65,7 @@ export class Door implements Serialization<Door> {
     }
 
 
-    deserialize(input: any) {
+    fromJSON(input: any) {
         this.id =  input.id;
         this.image =  input.image;
         this.name =  input.name;
@@ -84,9 +84,13 @@ export class Door implements Serialization<Door> {
         return this;
     }
 
-    serialize(): string {
-        return JSON.stringify(this);
+    toJSON(): any {
+        return this;
     }
+
+    // serialize(): string {
+    //     return JSON.stringify(this);
+    // }
 
 }
 

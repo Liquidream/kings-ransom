@@ -15,15 +15,20 @@ export class Player implements Serialization<Player> {
     //     //World.scenes[0] = new Scene();
     // }
 
-    deserialize(input: any) {
+    fromJSON(input: any) {
         this.name = input.name;
         for(let prop of input.inventory){
-            this.inventory.push(new PropData().deserialize(prop))
+            this.inventory.push(new PropData().fromJSON(prop))
         }
         return this;
     }
-
-    serialize(): string {
-        return JSON.stringify(this);
+    
+    toJSON(): any {
+        return this;
     }
+
+    // serialize(): string {
+    //     return JSON.stringify(this);
+    // }
+
 }

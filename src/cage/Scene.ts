@@ -46,25 +46,29 @@ export class Scene implements Serialization<Scene> {
 
                 // remove from game data
                 // https://stackoverflow.com/a/67953394/574415     
-                //this.scene.props.splice(this.scene.props.findIndex(item => item.id === "pro01"),1);
+                this.props.splice(this.props.findIndex(item => item.id === prop.data.id),1);
             });
     }
 
-    deserialize(input: any) {
+    fromJSON(input: any) {
         console.log(input)
         this.id =  input.id;
         this.image =  input.image || "";
         this.name =  input.name;
         for(let prop of input.props){
-            this.props.push(new PropData().deserialize(prop))
+            this.props.push(new PropData().fromJSON(prop))
         }
         for(let door of input.doors){
-            this.doors.push(new Door().deserialize(door))
+            this.doors.push(new Door().fromJSON(door))
         }
         return this;
     }
 
-    serialize(): string {
-        return JSON.stringify(this);
+    toJSON(): any {
+        return { id: this.id, image: this.image, name: this.name, props: this.props, doors: this.doors } 
     }
+    // serialize(): string {
+    //     return JSON.stringify(this, ["id","image","name","props","doors"]);
+    //     //return "";
+    // }
 }

@@ -14,9 +14,11 @@ export class World implements Serialization<World> {
 
     public currentScene!: Scene;
 
-    // public initialize(): void {
-        //     // Anything?
-    // }
+    public initialize(): void {
+        // Anything?
+
+        // TODO: Create the first scene as "void"?        
+    }
 
     start() {
         this.scenes[0].show();
@@ -27,16 +29,22 @@ export class World implements Serialization<World> {
         //Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
     }
 
-    deserialize(input: any) {
+    fromJSON(input: any) {
         this.title = input.title;
         for(let scene of input.scenes){
-            this.scenes.push(new Scene().deserialize(scene))
+            this.scenes.push(new Scene().fromJSON(scene))
         }
-        this.player = new Player().deserialize(input.player);
+        this.player = new Player().fromJSON(input.player);
         return this;
     }
 
+    toJSON(): any {
+        return { title: this.title, scenes: this.scenes, player: this.player } 
+    }
+
     serialize(): string {
+        //return JSON.stringify(this, ["title","scenes","player"]);
+        //return JSON.stringify(this.currentScene);
         return JSON.stringify(this);
     }
 }

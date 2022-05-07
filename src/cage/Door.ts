@@ -1,7 +1,7 @@
 import { InteractionEvent } from "pixi.js";
 import { Dialog } from "../Dialog";
 import { Manager } from "../Manager";
-import { SceneScreen } from "../scenes/SceneScreen";
+//import { SceneScreen } from "../scenes/SceneScreen";
 import { Serialization } from "../utils/Serialization";
 
 export class Door implements Serialization<Door> {
@@ -60,7 +60,8 @@ export class Door implements Serialization<Door> {
 
         if (targetScene) {
             // Change scene to the game scene!
-            Manager.changeScreen(new SceneScreen(targetScene));
+            targetScene.show();
+            //Manager.changeScreen(new SceneScreen(targetScene));
         }
     }
 

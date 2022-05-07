@@ -60,7 +60,7 @@ export class Manager {
         console.log(Manager.World.title);
         console.log(Manager.World.scenes[0].image);
         console.log("------------------");
-        console.log(Manager.World.serialize());
+        //console.log(Manager.World.serialize());
     }
 
     public static resize(): void {

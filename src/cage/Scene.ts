@@ -33,6 +33,8 @@ export class Scene implements Serialization<Scene> {
         this.screen = new SceneScreen(this)
         Manager.changeScreen(this.screen);
         Manager.World.currentScene = this;
+
+        console.log(Manager.World.serialize());
     }
 
     /**

@@ -1,61 +1,59 @@
 {
-    "title": "King's Ransom 2",
-    "player":
+  "title": "King's Ransom 2",
+  "player": {
+    "name": "Lonely wonderer",
+    "inventory": []
+  },
+  "scenes": [
+    {
+      "id": "scn01",
+      "name": "Stone Bridge",
+      "image": "Bridge",
+      "props": [
         {
-            "name": "Lonely wonderer",
-            "inventory": [                
-            ]
-        },
-    "scenes": [
-        {
-            "id": "scn01",
-            "name": "Stone Bridge",
-            "image": "Bridge",
-            "props": [
-                {
-                    "id": "prp_lamp",
-                    "image": "Lamp",
-                    "name": "Old Lamp",
-                    "desc": "An old Lamp",
-                    "x": "1425",
-                    "y": "780",
-                    "width": "50",
-                    "height": "50"
-                }
-            ],
-            "doors": [
-                {
-                    "id": "dor_cave",
-                    "name": "Cave Entrance",
-                    "desc": "It's a dark cave to somewhere",
-                    "desc_locked": "The cave is too dark to see without some light",
-                    "target_scene_id": "scn02",                    
-                    "state": "LOCKED",
-                    "key_prop_id": "prp_lamp",
-                    "x": "160",
-                    "y": "150",
-                    "width": "475",
-                    "height": "475"
-                }
-            ]
-        },
-        {
-            "id": "scn02",
-            "name": "Cave Entrance",
-            "image": "Cave-Entrance",
-            "props": [],
-            "doors": [
-                {
-                    "id": "dor_caveint",
-                    "name": "Bridge",
-                    "x": "360",
-                    "y": "150",
-                    "width": "475",
-                    "height": "475",
-                    "target_scene_id": "scn01",
-                    "state": "UNLOCKED"
-                }
-            ]
+          "id": "prp_lamp",
+          "name": "Old Lamp",
+          "image": "Lamp",
+          "desc": "An old Lamp",
+          "x": "1425",
+          "y": "780",
+          "width": "50",
+          "height": "50"
         }
-    ]
+      ],
+      "doors": [
+        {
+          "id": "dor_cave",
+          "name": "Cave Entrance",
+          "desc": "It's a dark cave to somewhere",
+          "desc_locked": "The cave is too dark to see without some light",
+          "target_scene_id": "scn02",
+          "state": "LOCKED",
+          "key_prop_id": "prp_lamp",
+          "x": "160",
+          "y": "150",
+          "width": "475",
+          "height": "475"
+        }
+      ]
+    },
+    {
+      "id": "scn02",
+      "name": "Cave Entrance",
+      "image": "Cave-Entrance",
+      "props": [],
+      "doors": [
+        {
+          "id": "dor_caveint",
+          "name": "Bridge",
+          "x": "360",
+          "y": "150",
+          "width": "475",
+          "height": "475",
+          "target_scene_id": "scn01",
+          "state": "UNLOCKED"
+        }
+      ]
+    }
+  ]
 }

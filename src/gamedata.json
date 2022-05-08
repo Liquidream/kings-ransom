@@ -4,7 +4,7 @@
     "name": "Lonely wonderer",
     "inventory": []
   },
-  "starting_scene_id": "scn_cave_ent",
+  "starting_scene_id": "scn_promontory",
   "scenes": [
     {
       "id": "scn_bridge",
@@ -71,6 +71,83 @@
           "y": "750",
           "width": "475",
           "height": "475",
+          "target_scene_id": "scn_cave_tunnel",
+          "state": "UNLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "scn_cave_tunnel",
+      "name": "Cave Tunnel",
+      "image": "Cave-Tunnel",
+      "props": [],
+      "doors": [
+        {
+          "id": "dor_tunnel_entrance",
+          "name": "Cave Entrance",
+          "x": "225",
+          "y": "700",
+          "width": "475",
+          "height": "475",
+          "target_scene_id": "scn_cave_ent",
+          "state": "UNLOCKED"
+        },
+        {
+          "id": "dor_tunnel_promontory",
+          "name": "Promontory",
+          "x": "1080",
+          "y": "725",
+          "width": "360",
+          "height": "360",
+          "target_scene_id": "scn_promontory",
+          "state": "UNLOCKED"
+        },
+        {
+          "id": "dor_cave_pit",
+          "name": "Tunnel",
+          "x": "1615",
+          "y": "1080",
+          "width": "620",
+          "height": "620",
+          "target_scene_id": "scn_cave_pit",
+          "state": "UNLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "scn_promontory",
+      "name": "Promontory",
+      "image": "Promontory",
+      "props": [
+        {
+          "id": "prp_tree",
+          "name": "Tree",
+          "desc": "A tree",
+          "x": "1300",
+          "y": "500",
+          "width": "825",
+          "height": "825"
+        },
+        {
+          "id": "prp_key",
+          "name": "Old Key",
+          "image": "Old-Key",
+          "desc": "An old key",
+          "x": "1480",
+          "y": "1000",
+          "width": "50",
+          "height": "50",
+          "visible": "false"
+        }
+      ],
+      "doors": [
+        {
+          "id": "dor_promontory_tunnel",
+          "name": "Cave Tunnel",
+          "x": "100",
+          "y": "980",
+          "width": "620",
+          "height": "620",
           "target_scene_id": "scn_cave_tunnel",
           "state": "UNLOCKED"
         }

@@ -1,5 +1,5 @@
 import { Group } from "tweedle.js"; //Easing
-import { Container, Sprite, InteractionEvent, Graphics} from "pixi.js"; //filters
+import { Container, Sprite, InteractionEvent, Graphics, Texture} from "pixi.js"; //filters
 
 import { IScreen, Manager } from "../Manager";
 import { Dialog } from "../Dialog";
@@ -63,13 +63,23 @@ export class SceneScreen extends Container implements IScreen {
                 
                 // Create new component obj (contains data + view)
                 let prop = new Prop();
-                let sprite = Sprite.from(propData.image);
+                
+                let sprite = undefined;
+                if (propData.image) {
+                    sprite = Sprite.from(propData.image);
+                    
+                }
+                else {
+                    sprite = new Sprite(Texture.EMPTY);
+                    sprite.width = propData.width;
+                    sprite.height = propData.height;
+                }
+                prop.sprite = sprite;
                 sprite.anchor.set(0.5);
                 sprite.x = propData.x;
                 sprite.y = propData.y;
                 
                 prop.data = propData;
-                prop.sprite = sprite;
                 // Events
                 prop.sprite.interactive = true;   // Super important or the object will never receive mouse events!
                 prop.sprite.on("pointertap", prop.onClicked, prop);   

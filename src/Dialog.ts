@@ -25,6 +25,21 @@ export class Dialog {
     }
         
     public static showMessage(message: string): void {
+        // Show a white message
+        Dialog.showMessageCore(message, "#fff")
+    }
+
+    public static showErrorMessage(errorMessage: string): void {
+        // Show a white message
+        Dialog.showMessageCore(errorMessage, "#ff0000")
+    }
+
+    public static clearMessage(): void {
+        Manager.app.stage.removeChild(this.currentDialogText);
+        //this.currentDialogText = null;
+    }
+
+    private static showMessageCore(message: string, col: string): void {
         // Are we already showing a message? If so, clear it
         if (Dialog.displayCounter > 0) {
             Dialog.clearMessage()
@@ -32,7 +47,7 @@ export class Dialog {
 
         const styly: TextStyle = new TextStyle({
             align: "center",
-            fill: "#fff",
+            fill: col || "#fff",
             fontSize: 48,
             dropShadow: true
         });
@@ -45,8 +60,4 @@ export class Dialog {
         Manager.app.stage.addChild(this.currentDialogText);
     }
     
-    public static clearMessage(): void {
-        Manager.app.stage.removeChild(this.currentDialogText);
-        //this.currentDialogText = null;
-    }
 }

@@ -4,9 +4,10 @@
     "name": "Lonely wonderer",
     "inventory": []
   },
+  "starting_scene_id": "scn_cave_ent",
   "scenes": [
     {
-      "id": "scn01",
+      "id": "scn_bridge",
       "name": "Stone Bridge",
       "image": "Bridge",
       "props": [
@@ -27,7 +28,7 @@
           "name": "Cave Entrance",
           "desc": "It's a dark cave to somewhere",
           "desc_locked": "The cave is too dark to see without some light",
-          "target_scene_id": "scn02",
+          "target_scene_id": "scn_cave_ent",
           "state": "LOCKED",
           "key_prop_id": "prp_lamp",
           "x": "160",
@@ -38,19 +39,39 @@
       ]
     },
     {
-      "id": "scn02",
+      "id": "scn_cave_ent",
       "name": "Cave Entrance",
       "image": "Cave-Entrance",
       "props": [],
       "doors": [
         {
-          "id": "dor_caveint",
-          "name": "Bridge",
-          "x": "360",
-          "y": "150",
+          "id": "dor_cave_fortress_ext",
+          "name": "Fortress",
+          "x": "80",
+          "y": "600",
           "width": "475",
           "height": "475",
-          "target_scene_id": "scn01",
+          "target_scene_id": "scn_fortress_ext",
+          "state": "UNLOCKED"
+        },
+        {
+          "id": "dor_cave_bridge",
+          "name": "Bridge",
+          "x": "800",
+          "y": "475",
+          "width": "475",
+          "height": "475",
+          "target_scene_id": "scn_bridge",
+          "state": "UNLOCKED"
+        },
+        {
+          "id": "dor_cave_tunnel",
+          "name": "Tunnel",
+          "x": "1700",
+          "y": "750",
+          "width": "475",
+          "height": "475",
+          "target_scene_id": "scn_cave_tunnel",
           "state": "UNLOCKED"
         }
       ]

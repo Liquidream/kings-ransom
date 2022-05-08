@@ -1,3 +1,4 @@
+import { Dialog } from "../Dialog";
 import { Serialization } from "../utils/Serialization";
 import { Player } from "./Player";
 import { Scene } from "./Scene";
@@ -11,6 +12,7 @@ export class World implements Serialization<World> {
     public title: string | undefined;
     public player!: Player;
     public scenes: Array<Scene> = [];    
+    public starting_scene_id: string | undefined;
 
     public currentScene!: Scene;
 
@@ -20,13 +22,21 @@ export class World implements Serialization<World> {
         // TODO: Create the first scene as "void"?        
     }
 
+    // Start the adventure!
     start() {
-        this.scenes[0].show();
+        // Find the starting scene...
+        let startingScene = this.scenes.find((obj) => {
+            return obj.id === this.starting_scene_id;
+        });
         
-        // this.currentScene = this.scenes[0];
-        // this.currentScene.show();
-
-        //Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
+        // ...and show it        
+        if (startingScene) {
+            startingScene.show();
+        }
+        else
+        {
+            Dialog.showErrorMessage(`Error: Scene with ID '${this.starting_scene_id}' is invalid`);
+        }
     }
 
     fromJSON(input: any) {
@@ -35,11 +45,16 @@ export class World implements Serialization<World> {
             this.scenes.push(new Scene().fromJSON(scene))
         }
         this.player = new Player().fromJSON(input.player);
+        this.starting_scene_id = input.starting_scene_id;
         return this;
     }
 
     toJSON(): any {
-        return { title: this.title, scenes: this.scenes, player: this.player } 
+        return { 
+            title: this.title, 
+            scenes: this.scenes, 
+            starting_scene_id: this.starting_scene_id, 
+            player: this.player } 
     }
 
     serialize(): string {

@@ -63,6 +63,10 @@ export class Door implements Serialization<Door> {
             targetScene.show();
             //Manager.changeScreen(new SceneScreen(targetScene));
         }
+        else
+        {
+            Dialog.showErrorMessage(`Error: Scene with ID '${this.target_scene_id}' is invalid`);
+        }
     }
 
 

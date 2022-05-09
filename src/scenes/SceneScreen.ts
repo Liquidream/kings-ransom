@@ -190,6 +190,9 @@ export class SceneScreen extends Container implements IScreen {
     private onClickBackdrop(_e: InteractionEvent): void {
         console.log("You interacted with Backdrop!")
 
+        // Test dynamic JS code
+        Function("Manager.World.scenes[0].show();")();
+
         // Test fullscreen (DISABLED for now)
         if (false) {
             Fullscreen.openFullscreen();

@@ -4,7 +4,7 @@
     "name": "Lonely wonderer",
     "inventory": []
   },
-  "starting_scene_id": "scn_fortress_int",
+  "starting_scene_id": "scn_promontory",
   "scenes": [
     {
       "id": "scn_bridge",
@@ -125,7 +125,8 @@
           "x": "1300",
           "y": "500",
           "width": "825",
-          "height": "825"
+          "height": "825",
+          "on_action": "Manager.World.scenes[0].show();"
         },
         {
           "id": "prp_key",

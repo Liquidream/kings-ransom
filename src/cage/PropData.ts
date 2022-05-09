@@ -15,6 +15,8 @@ export class PropData implements Serialization<PropData> {
     height: number = 0;
     pickupable: boolean = false;
     visible: boolean = true;
+    // Poss. event actions
+    on_action: string = "";
         
     // public initialize(): void {
         //     // Anything?
@@ -35,6 +37,8 @@ export class PropData implements Serialization<PropData> {
         if (input.visible) { // only parse if present (else will always = false)
             this.visible = input.visible === "true"; // https://bobbyhadz.com/blog/typescript-convert-string-to-boolean#convert-a-string-to-a-boolean-in-typescript
         }
+        // Event actions
+        this.on_action =  input.on_action;
         
         return this;
     }

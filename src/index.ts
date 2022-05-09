@@ -8,6 +8,9 @@ const gameHeight = 1080;
 
 Manager.initialize(gameWidth, gameHeight, 0x6495ed);
 
+// Expose to JavaScript/Browser console
+(window as any).Manager = Manager;
+
 // pass in the screen size to avoid "asking up"
 const sceny: LoaderScreen = new LoaderScreen();
 

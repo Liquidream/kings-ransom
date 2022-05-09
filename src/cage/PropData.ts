@@ -13,6 +13,7 @@ export class PropData implements Serialization<PropData> {
     y: number = 0;
     width: number = 0;
     height: number = 0;
+    pickupable: boolean = false;
     visible: boolean = true;
         
     // public initialize(): void {
@@ -28,7 +29,12 @@ export class PropData implements Serialization<PropData> {
         this.y = Number(input.y);
         this.width = Number(input.width);
         this.height = Number(input.height);        
-        this.visible =  input.visible === "true"; // https://bobbyhadz.com/blog/typescript-convert-string-to-boolean#convert-a-string-to-a-boolean-in-typescript
+        if (input.pickupable) { // only parse if present (else will always = false)
+            this.pickupable = input.pickupable === "true"; // https://bobbyhadz.com/blog/typescript-convert-string-to-boolean#convert-a-string-to-a-boolean-in-typescript
+        }
+        if (input.visible) { // only parse if present (else will always = false)
+            this.visible = input.visible === "true"; // https://bobbyhadz.com/blog/typescript-convert-string-to-boolean#convert-a-string-to-a-boolean-in-typescript
+        }
         
         return this;
     }

@@ -4,7 +4,7 @@
     "name": "Lonely wonderer",
     "inventory": []
   },
-  "starting_scene_id": "scn_promontory",
+  "starting_scene_id": "scn_fortress_int",
   "scenes": [
     {
       "id": "scn_bridge",
@@ -18,8 +18,7 @@
           "desc": "An old Lamp",
           "x": "1425",
           "y": "780",
-          "width": "50",
-          "height": "50"
+          "pickupable": "true"
         }
       ],
       "doors": [
@@ -135,9 +134,7 @@
           "desc": "An old key",
           "x": "1480",
           "y": "1000",
-          "width": "50",
-          "height": "50",
-          "visible": "false"
+          "pickupable": "true"
         }
       ],
       "doors": [
@@ -149,6 +146,72 @@
           "width": "620",
           "height": "620",
           "target_scene_id": "scn_cave_tunnel",
+          "state": "UNLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "scn_fortress_ext",
+      "name": "Fortress",
+      "image": "Fortress-Exterior",
+      "props": [
+        {
+          "id": "prp_rat",
+          "name": "Rat",
+          "image": "Rat",
+          "desc": "A rat",
+          "x": "265",
+          "y": "545",
+          "pickupable": "true"
+        }
+      ],
+      "doors": [
+        {
+          "id": "dor_fortress_cave",
+          "name": "Cave Entrance",
+          "x": "100",
+          "y": "980",
+          "width": "620",
+          "height": "620",
+          "target_scene_id": "scn_cave_ent",
+          "state": "UNLOCKED"
+        },
+        {
+          "id": "dor_fortress_int",
+          "name": "Fortress Interior",
+          "x": "960",
+          "y": "550",
+          "width": "720",
+          "height": "720",
+          "target_scene_id": "scn_fortress_int",
+          "state": "UNLOCKED"
+        }
+      ]
+    },
+    {
+      "id": "scn_fortress_int",
+      "name": "Fortress Interior",
+      "image": "Fortress-Interior",
+      "props": [
+        {
+          "id": "prp_gold",
+          "name": "Gold Bar",
+          "image": "Gold-Bar",
+          "desc": "A gold bar",
+          "x": "1325",
+          "y": "855",
+          "pickupable": "true"
+        }
+      ],
+      "doors": [
+        {
+          "id": "dor_fortress_cave",
+          "name": "Fortress Exterior",
+          "x": "825",
+          "y": "560",
+          "width": "620",
+          "height": "620",
+          "target_scene_id": "scn_fortress_ext",
           "state": "UNLOCKED"
         }
       ]

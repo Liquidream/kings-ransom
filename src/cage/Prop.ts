@@ -33,6 +33,8 @@ export class Prop { //implements Serialization<Prop> {
         // Add to Player's inventory
         Manager.World.player.inventory.push(this.data);
 
+        // Run code snippet (stored in string)?
+        //https://stackoverflow.com/questions/64426501/how-to-execute-strings-of-expression-in-an-array-with-ramda/64426855#64426855
 
         // DEBUG
         console.log(Manager.World.serialize());

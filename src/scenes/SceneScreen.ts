@@ -83,7 +83,9 @@ export class SceneScreen extends Container implements IScreen {
                 // Events
                 prop.sprite.interactive = true;   // Super important or the object will never receive mouse events!
                 prop.sprite.on("pointertap", prop.onClicked, prop);   
-                //prop.on("pointertap", this.onClickProp, this);   
+                
+                // visible state
+                prop.sprite.visible = propData.visible;
 
                 this.addChild(prop.sprite);
                 //this.propSprites.push(prop.sprite);

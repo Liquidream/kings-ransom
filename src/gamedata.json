@@ -30,10 +30,10 @@
           "target_scene_id": "scn_cave_ent",
           "state": "LOCKED",
           "key_prop_id": "prp_lamp",
-          "x": "160",
-          "y": "150",
-          "width": "475",
-          "height": "475"
+          "x": "340",
+          "y": "100",
+          "width": "680",
+          "height": "200"
         }
       ]
     },
@@ -46,10 +46,10 @@
         {
           "id": "dor_cave_fortress_ext",
           "name": "Fortress",
-          "x": "80",
-          "y": "600",
-          "width": "475",
-          "height": "475",
+          "x": "150",
+          "y": "540",
+          "width": "300",
+          "height": "1080",
           "target_scene_id": "scn_fortress_ext",
           "state": "UNLOCKED"
         },
@@ -57,19 +57,19 @@
           "id": "dor_cave_bridge",
           "name": "Bridge",
           "x": "800",
-          "y": "475",
-          "width": "475",
-          "height": "475",
+          "y": "550",
+          "width": "600",
+          "height": "700",
           "target_scene_id": "scn_bridge",
           "state": "UNLOCKED"
         },
         {
           "id": "dor_cave_tunnel",
           "name": "Tunnel",
-          "x": "1700",
-          "y": "750",
-          "width": "475",
-          "height": "475",
+          "x": "1770",
+          "y": "540",
+          "width": "300",
+          "height": "1080",
           "target_scene_id": "scn_cave_tunnel",
           "state": "UNLOCKED"
         }
@@ -84,30 +84,30 @@
         {
           "id": "dor_tunnel_entrance",
           "name": "Cave Entrance",
-          "x": "225",
-          "y": "700",
-          "width": "475",
-          "height": "475",
+          "x": "220",
+          "y": "640",
+          "width": "440",
+          "height": "720",
           "target_scene_id": "scn_cave_ent",
           "state": "UNLOCKED"
         },
         {
           "id": "dor_tunnel_promontory",
           "name": "Promontory",
-          "x": "1080",
-          "y": "725",
-          "width": "360",
-          "height": "360",
+          "x": "1090",
+          "y": "650",
+          "width": "500",
+          "height": "500",
           "target_scene_id": "scn_promontory",
           "state": "UNLOCKED"
         },
         {
           "id": "dor_cave_pit",
           "name": "Tunnel",
-          "x": "1615",
-          "y": "1080",
-          "width": "620",
-          "height": "620",
+          "x": "1560",
+          "y": "1000",
+          "width": "720",
+          "height": "160",
           "target_scene_id": "scn_cave_pit",
           "state": "UNLOCKED"
         }
@@ -122,10 +122,10 @@
           "id": "prp_tree",
           "name": "Tree",
           "desc": "A tree",
-          "x": "1300",
+          "x": "1200",
           "y": "500",
-          "width": "825",
-          "height": "825",
+          "width": "950",
+          "height": "800",
           "on_action": "Manager.World.scenes[0].show();"
         },
         {
@@ -142,10 +142,10 @@
         {
           "id": "dor_promontory_tunnel",
           "name": "Cave Tunnel",
-          "x": "100",
-          "y": "980",
-          "width": "620",
-          "height": "620",
+          "x": "200",
+          "y": "540",
+          "width": "400",
+          "height": "1080",
           "target_scene_id": "scn_cave_tunnel",
           "state": "UNLOCKED"
         }
@@ -170,10 +170,10 @@
         {
           "id": "dor_fortress_cave",
           "name": "Cave Entrance",
-          "x": "100",
-          "y": "980",
-          "width": "620",
-          "height": "620",
+          "x": "960",
+          "y": "1000",
+          "width": "1920",
+          "height": "150",
           "target_scene_id": "scn_cave_ent",
           "state": "UNLOCKED"
         },

@@ -13,6 +13,8 @@ export class Manager {
     private static _height: number;
     private static currentScreen: IScreen;
     
+    public static debugMode: boolean = false;
+    
     public static World: World;
     public static _fps: number;
 

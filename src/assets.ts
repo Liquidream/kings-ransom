@@ -1,4 +1,5 @@
 export const assets = [
+    { name: "DebugFill", url: "./images/debug.png" },
     // Scenes ---------------------------------------------------------
     { name: "Bridge", url: "./images/scenes/bridge.jpg" },
         //{ name: "Foreground1", url: "./images/scenes/foreground1.png" },

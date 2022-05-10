@@ -11,18 +11,21 @@ export class Manager {
     private static _app: Application;
     private static _width: number;
     private static _height: number;
+    private static _fps: number;
     private static currentScreen: IScreen;
     
     public static debugMode: boolean = false;
     
     public static World: World;
-    public static _fps: number;
 
     public static get width(): number {
         return Manager._width;
     }
     public static get height(): number {
         return Manager._height;
+    }
+    public static get fps(): number {
+        return Manager._fps;
     }
 
     // PN: Expose the Application object (for now)

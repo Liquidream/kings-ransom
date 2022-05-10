@@ -1,5 +1,5 @@
 import { Group } from "tweedle.js"; //Easing
-import { Container, Sprite, InteractionEvent, Graphics, Texture } from "pixi.js"; //filters
+import { Container, Sprite, InteractionEvent, Graphics } from "pixi.js"; //filters
 
 import { IScreen, Manager } from "../Manager";
 import { Dialog } from "../Dialog";
@@ -7,6 +7,7 @@ import { Scene } from "../cage/Scene";
 //import { CaveEntranceScene } from "./CaveEntranceScene";
 import { Fullscreen } from "../utils/Fullscreen";
 import { Prop } from "../cage/Prop";
+import { Door } from "../cage/Door";
 
 
 
@@ -59,33 +60,8 @@ export class SceneScreen extends Container implements IScreen {
         if (this.scene.props.length > 0) {
 
             for (let propData of this.scene.props) {
-                //console.log(propData);
-
                 // Create new component obj (contains data + view)
-                let prop = new Prop();
-
-                let sprite = undefined;
-                if (propData.image) {
-                    sprite = Sprite.from(propData.image);
-                }
-                else {
-                    sprite = new Sprite(Texture.EMPTY);
-                    sprite.width = propData.width;
-                    sprite.height = propData.height;
-                }
-                prop.sprite = sprite;
-                sprite.anchor.set(0.5);
-                sprite.x = propData.x;
-                sprite.y = propData.y;
-
-                prop.data = propData;
-                // Events
-                prop.sprite.interactive = true;   // Super important or the object will never receive mouse events!
-                prop.sprite.on("pointertap", prop.onClicked, prop);
-
-                // visible state
-                prop.sprite.visible = propData.visible;
-
+                let prop = new Prop(propData);
                 this.addChild(prop.sprite);
 
                 // DEBUG?
@@ -107,44 +83,12 @@ export class SceneScreen extends Container implements IScreen {
     private buildDoorways() {
         console.log(this.scene.doors);
         if (this.scene.doors.length > 0) {
-
             for (let doorData of this.scene.doors) {
-                //console.log(doorData);
-                //console.log(propData.image);
-
-                // Initialize the pixi Graphics class
-                let graphics = new Graphics();
-                // Make doors visible in debug
-                if (Manager.debugMode) {
-                    // Set the fill color
-                    graphics.beginFill(0xe74c3c, 125); // Red
-                    // Line/stroke style
-                    graphics.lineStyle(10, 0xFF0000);
-                }
-                else {
-                    // Set the fill color to barely visible 
-                    // (else won't get collision hit)
-                    // TODO: find a nicer solution to this!
-                    graphics.beginFill(0xccc, 0.00000000000001); // "Invisible"
-                }
-                // Make a center point of origin (anchor)
-                graphics.pivot.set(doorData.width/2, doorData.height/2);
-                // Draw a rectangle
-                graphics.drawRoundedRect(doorData.x, doorData.y, doorData.width, doorData.height, 30);
-                // Draw a circle
-                //graphics.drawCircle(doorData.x, doorData.y, doorData.width/2);
-                // Applies fill to lines and shapes since the last call to beginFill.
-                graphics.endFill();
-
-                // Events
-                graphics.on("pointertap", doorData.onClicked, doorData);
-                graphics.interactive = true;   // Super important or the object will never receive mouse events!
-                // https://pixijs.io/examples/#/interaction/custom-hitarea.js
-
-                this.addChild(graphics);
+                // Create new component obj (contains data + view)
+                let door = new Door(doorData);                
+                this.addChild(door.graphics);
             }
         }
-
         Dialog.clearMessage();
     }
 

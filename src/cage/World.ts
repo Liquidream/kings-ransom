@@ -1,6 +1,7 @@
 import { Dialog } from "../Dialog";
 import { Serialization } from "../utils/Serialization";
 import { Player } from "./Player";
+import { Prop } from "./Prop";
 import { Scene } from "./Scene";
 
 
@@ -37,7 +38,34 @@ export class World implements Serialization<World> {
         {
             Dialog.showErrorMessage(`Error: Scene with ID '${this.starting_scene_id}' is invalid`);
         }
+
     }
+
+    
+    /** Find and return scene with specifid id */
+    getSceneById(sceneId: string) {
+        // Find the specified scene...
+        let scene = this.scenes.find((obj) => {
+            return obj.id === sceneId;
+        });
+        return scene;
+    }
+    
+    /** Find and return prop with specifid id */
+    getPropById(propId: string) {
+        // Find the specified prop...
+        let propData = this.scenes.find((scn) => {
+            return scn.props.some((prp: any) => {
+                return prp.id === propId;
+            });
+        });
+        let prop = new Prop(propData);
+        return prop;
+    }
+
+
+    // ----------------------------------------------------------
+    // Serialisation related
 
     fromJSON(input: any) {
         this.title = input.title;
@@ -58,8 +86,6 @@ export class World implements Serialization<World> {
     }
 
     serialize(): string {
-        //return JSON.stringify(this, ["title","scenes","player"]);
-        //return JSON.stringify(this.currentScene);
         return JSON.stringify(this);
     }
 }

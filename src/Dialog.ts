@@ -56,7 +56,7 @@ export class Dialog {
         this.currentDialogText.x = Manager.width / 2;
         this.currentDialogText.y = Manager.height - 75;
         //texty.text = "This is expensive to change, please do not abuse";
-        Dialog.displayCounter = 3 * Manager._fps; 
+        Dialog.displayCounter = 3 * Manager.fps; 
         Manager.app.stage.addChild(this.currentDialogText);
     }
     

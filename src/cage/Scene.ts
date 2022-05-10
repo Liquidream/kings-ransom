@@ -2,9 +2,9 @@ import { Tween } from "tweedle.js";
 import { Manager } from "../Manager";
 import { SceneScreen } from "../scenes/SceneScreen";
 import { Serialization } from "../utils/Serialization";
-import { Door } from "./Door";
 import { Prop } from "./Prop";
 import { PropData } from "./PropData";
+import { DoorData } from "./DoorData";
 
 export class Scene implements Serialization<Scene> {
     public constructor() { 
@@ -16,7 +16,7 @@ export class Scene implements Serialization<Scene> {
     public name: string = "";
 
     public props: Array<PropData> = [];
-    public doors: Array<Door> = [];
+    public doors: Array<DoorData> = [];
     
     screen!: SceneScreen;
  
@@ -61,7 +61,7 @@ export class Scene implements Serialization<Scene> {
             this.props.push(new PropData().fromJSON(prop))
         }
         for(let door of input.doors){
-            this.doors.push(new Door().fromJSON(door))
+            this.doors.push(new DoorData().fromJSON(door))
         }
         return this;
     }

@@ -126,7 +126,7 @@
           "y": "500",
           "width": "950",
           "height": "800",
-          "on_action": "SAGE.World.scenes[0].show();"
+          "on_action": "SAGE.World.getSceneById('scn_bridge').show();"
         },
         {
           "id": "prp_key",

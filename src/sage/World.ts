@@ -17,10 +17,16 @@ export class World implements Serialization<World> {
 
     public currentScene!: Scene;
 
-    public initialize(): void {
-        // Anything?
+    public initialize(data: any): void {        
+        // TODO: Create the first scene as "void"?
+        let voidScene = Object.assign( new Scene(), {
+            id: "scn_void",
+            name: "The Void"
+        });        
+        this.scenes.push(voidScene);
 
-        // TODO: Create the first scene as "void"?        
+        // Now restore the rest from data
+        this.fromJSON(data);
     }
 
     // Start the adventure!
@@ -42,7 +48,7 @@ export class World implements Serialization<World> {
     }
 
     
-    /** Find and return scene with specifid id */
+    /** Find and return scene with specific id */
     getSceneById(sceneId: string) {
         // Find the specified scene...
         let scene = this.scenes.find((obj) => {
@@ -51,15 +57,23 @@ export class World implements Serialization<World> {
         return scene;
     }
     
-    /** Find and return prop with specifid id */
+    /** Find and return prop with specific id */
     getPropById(propId: string) {
-        // Find the specified prop...
-        let propData = this.scenes.find((scn) => {
-            return scn.props.some((prp: any) => {
-                return prp.id === propId;
-            });
-        });
+        
+        // First, find scene that contains prop...
+        let scene = this.scenes.filter(e => e.props.filter(c => c.id === propId)[0])[0]; 
+        // Then get the propdata...
+        let propData = scene ? scene.props.filter(c => c.id === propId)[0] : null;
+        // Finally, create & return "full" pop, based on data
         let prop = new Prop(propData);
+        // https://stackoverflow.com/a/57398236/574415
+
+        // (abandoned attempt to do in one go)----------
+        // let propData = this.scenes.find((scn) => {
+        //     return scn.props.find((prp: any) => {
+        //         return prp.id === propId;
+        //     });
+        // });
         return prop;
     }
 

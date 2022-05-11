@@ -1,6 +1,6 @@
 import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
-import { World } from "./cage/World";
+import { World } from "./sage/World";
 import gamedata from './gamedata.json';
 //import { BridgeScene } from "./scenes/BridgeScene";
 //import { SceneScreen } from "./scenes/SceneScreen";
@@ -60,11 +60,14 @@ export class Manager {
         // call it manually once so we are sure we are the correct size after starting
         Manager.resize();
 
-        Manager.World = new World().fromJSON(gamedata);
+        // Create and initialise game world
+        Manager.World = new World();
+        Manager.World.initialize(gamedata);
+        //Manager.World = new World().fromJSON(gamedata);
 
-        console.log(Manager.World.title);
-        console.log(Manager.World.scenes[0].image);
-        console.log("------------------");
+        // console.log(Manager.World.title);
+        // console.log(Manager.World.scenes[0].image);
+        // console.log("------------------");
         //console.log(Manager.World.serialize());
     }
 

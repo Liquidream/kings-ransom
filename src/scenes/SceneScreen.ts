@@ -3,11 +3,11 @@ import { Container, Sprite, InteractionEvent, Graphics } from "pixi.js"; //filte
 
 import { IScreen, Manager } from "../Manager";
 import { Dialog } from "../Dialog";
-import { Scene } from "../cage/Scene";
+import { Scene } from "../sage/Scene";
 //import { CaveEntranceScene } from "./CaveEntranceScene";
 import { Fullscreen } from "../utils/Fullscreen";
-import { Prop } from "../cage/Prop";
-import { Door } from "../cage/Door";
+import { Prop } from "../sage/Prop";
+import { Door } from "../sage/Door";
 
 
 

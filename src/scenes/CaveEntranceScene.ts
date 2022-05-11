@@ -1,5 +1,5 @@
 import { Container, Sprite, InteractionEvent } from "pixi.js";
-import { Scene } from "../cage/Scene";
+import { Scene } from "../sage/Scene";
 import { IScreen, Manager } from "../Manager";
 import { BridgeScene } from "./BridgeScene";
 

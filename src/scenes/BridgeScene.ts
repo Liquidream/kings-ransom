@@ -3,7 +3,7 @@ import { Container, Sprite, InteractionEvent} from "pixi.js"; //filters
 
 import { IScreen, Manager } from "../Manager";
 import { Dialog } from "../Dialog";
-import { Scene } from "../cage/Scene";
+import { Scene } from "../sage/Scene";
 import { CaveEntranceScene } from "./CaveEntranceScene";
 import { Fullscreen } from "../utils/Fullscreen";
 

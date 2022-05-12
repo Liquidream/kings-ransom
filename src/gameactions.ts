@@ -3,7 +3,12 @@ import { SAGE } from "./Manager";
 export class Actions {
 
   onCaveTunnelEnter(): void {
-    console.log("TODO: onEnterCaveTunnel()");
+    //console.log("TODO: onEnterCaveTunnel()");
+    if (SAGE.World.player.inInventory("prp_rat")) {
+      console.log("TODO: Safe! Snake ate the rat...");
+    } else {
+      console.log("TODO: DEAD!...");
+    }    
   }
 
   onTreeAction(): void {

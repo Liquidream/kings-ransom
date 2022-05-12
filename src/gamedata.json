@@ -4,7 +4,7 @@
     "name": "Lonely wonderer",
     "inventory": []
   },
-  "starting_scene_id": "scn_promontory",
+  "starting_scene_id": "scn_bridge",
   "scenes": [
     {
       "id": "scn_void",
@@ -176,6 +176,18 @@
       ],
       "doors": [
         {
+          "id": "dor_fortress_int",
+          "name": "Fortress Interior",
+          "x": "960",
+          "y": "550",
+          "width": "720",
+          "height": "720",
+          "desc_locked": "The door is locked",
+          "target_scene_id": "scn_fortress_int",
+          "state": "LOCKED",
+          "key_prop_id": "prp_key"
+        },
+        {
           "id": "dor_fortress_cave",
           "name": "Cave Entrance",
           "x": "960",
@@ -183,16 +195,6 @@
           "width": "1920",
           "height": "150",
           "target_scene_id": "scn_cave_ent",
-          "state": "UNLOCKED"
-        },
-        {
-          "id": "dor_fortress_int",
-          "name": "Fortress Interior",
-          "x": "960",
-          "y": "550",
-          "width": "720",
-          "height": "720",
-          "target_scene_id": "scn_fortress_int",
           "state": "UNLOCKED"
         }
       ]
@@ -206,7 +208,7 @@
           "id": "prp_gold",
           "name": "Gold Bar",
           "image": "Gold-Bar",
-          "desc": "A gold bar",
+          "desc": "A gold bar",          
           "x": "1325",
           "y": "855",
           "pickupable": "true"
@@ -215,7 +217,7 @@
       "doors": [
         {
           "id": "dor_fortress_cave",
-          "name": "Fortress Exterior",
+          "name": "Fortress Exterior",          
           "x": "825",
           "y": "560",
           "width": "620",

@@ -10,10 +10,16 @@ export class Player implements Serialization<Player> {
     public name: string | undefined;
     public inventory: Array<PropData> = [];
 
-    // public initialize(input:any): void {        
-    //     this.deserialize(input);
-    //     //World.scenes[0] = new Scene();
-    // }
+    /** Returns whether or not the specified prop id is in player's inventory */
+    public inInventory(propId: string): boolean {        
+        return this.inventory.some(prop => prop.id === propId)
+    }
+
+    /** Remove (and return) the specified prop, if present */
+    public removeFromInventory(propId: string): PropData | undefined {        
+        let prop = this.inventory.find(prop => prop.id === propId)
+        return prop;
+    }
 
     fromJSON(input: any) {
         this.name = input.name;

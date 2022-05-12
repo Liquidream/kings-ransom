@@ -30,10 +30,13 @@ export class Scene implements Serialization<Scene> {
      * (also destroy/release previous screen objects)
      */
     show() {
+        // Create and switch to new "screen"
         this.screen = new SceneScreen(this)
         Manager.changeScreen(this.screen);
+        // Remember the new scene
         Manager.World.currentScene = this;
-
+        
+        // DEBUG
         console.log(Manager.World.serialize());
     }
 
@@ -47,9 +50,15 @@ export class Scene implements Serialization<Scene> {
                 this.screen.removeChild(prop.sprite);  
 
                 // remove from game data
-                // https://stackoverflow.com/a/67953394/574415     
+                // https://stackoverflow.com/a/67953394/574415
                 this.props.splice(this.props.findIndex(item => item.id === prop.data.id),1);
             });
+    }
+
+    removePropDataById(propId: string){
+        // Remove data from prop list (no DisplayObject changes)
+        this.props.splice(this.props.findIndex(item => item.id === propId),1);          
+        // https://stackoverflow.com/a/67953394/574415
     }
 
     fromJSON(input: any) {

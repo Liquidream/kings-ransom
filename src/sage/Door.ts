@@ -1,5 +1,4 @@
 import { Graphics, InteractionEvent } from "pixi.js";
-import { Dialog } from "../Dialog";
 import { Manager } from "../Manager";
 import { DoorData, DoorState } from "./DoorData";
 
@@ -63,7 +62,7 @@ export class Door {
             }
             else
             {
-                Dialog.showMessage(this.data.desc_locked || "It is locked");
+                Manager.Dialog.showMessage(this.data.desc_locked || "It is locked");
                 return;
             }
         }
@@ -81,7 +80,7 @@ export class Door {
         }
         else
         {
-            Dialog.showErrorMessage(`Error: Scene with ID '${this.data.target_scene_id}' is invalid`);
+            Manager.Dialog.showErrorMessage(`Error: Scene with ID '${this.data.target_scene_id}' is invalid`);
         }
     }
 }

@@ -1,5 +1,4 @@
 import { InteractionEvent, Sprite, Texture } from "pixi.js";
-import { Dialog } from "../Dialog";
 import { Manager } from "../Manager";
 import { PropData } from "./PropData";
 
@@ -45,7 +44,7 @@ export class Prop { //implements Serialization<Prop> {
 
         // Can prop be picked up?
         if (this.data.pickupable) {
-            Dialog.showMessage("You picked up the " + this.data.name);
+            Manager.Dialog.showMessage(`You picked up the ${this.data.name}`);
 
             // Remove prop from scene
             Manager.World.currentScene.removeProp(this);

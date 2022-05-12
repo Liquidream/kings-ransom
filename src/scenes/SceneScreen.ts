@@ -2,12 +2,11 @@ import { Group } from "tweedle.js"; //Easing
 import { Container, Sprite, InteractionEvent, Graphics } from "pixi.js"; //filters
 
 import { IScreen, Manager } from "../Manager";
-import { Dialog } from "../Dialog";
 import { Scene } from "../sage/Scene";
-//import { CaveEntranceScene } from "./CaveEntranceScene";
 import { Fullscreen } from "../utils/Fullscreen";
 import { Prop } from "../sage/Prop";
 import { Door } from "../sage/Door";
+import { PropData } from "../sage/PropData";
 
 
 
@@ -35,7 +34,7 @@ export class SceneScreen extends Container implements IScreen {
         //You need to update a group for the tweens to do something!
         Group.shared.update()
 
-        Dialog.update();
+        Manager.Dialog.update();
     }
 
     public resize(_screenWidth: number, _screenHeight: number): void {
@@ -60,24 +59,32 @@ export class SceneScreen extends Container implements IScreen {
         if (this.scene.props.length > 0) {
 
             for (let propData of this.scene.props) {
-                // Create new component obj (contains data + view)
-                let prop = new Prop(propData);
-                this.addChild(prop.sprite);
-
-                // DEBUG?
-                if (Manager.debugMode) {
-                    let graphics = new Graphics();
-                    graphics.beginFill(0xe74c3c, 125); // Red
-                    graphics.lineStyle(10, 0xFF0000);
-                    graphics.pivot.set(prop.sprite.width/2, prop.sprite.height/2);
-                    graphics.drawRoundedRect(0,0, prop.sprite.width, prop.sprite.height, 30);
-                    graphics.endFill();
-                    prop.sprite.addChild(graphics);
-                }
+                this.addProp(propData);
             }
         }
 
-        Dialog.clearMessage();
+        Manager.Dialog.clearMessage();
+    }
+
+    public addProp(data: PropData) {
+        // Create new component obj (contains data + view)
+        let prop = new Prop(data);
+        this.addChild(prop.sprite);
+
+        // DEBUG?
+        if (Manager.debugMode) {
+            let graphics = new Graphics();
+            graphics.beginFill(0xe74c3c, 125); // Red
+            graphics.lineStyle(10, 0xFF0000);
+            graphics.pivot.set(prop.sprite.width/2, prop.sprite.height/2);
+            graphics.drawRoundedRect(0,0, prop.sprite.width, prop.sprite.height, 30);
+            graphics.endFill();
+            prop.sprite.addChild(graphics);
+        }
+    }
+
+    public removeProp(data: PropData) {
+        console.log(`TODO: remove prop with id ${data.id}`);
     }
 
     private buildDoorways() {
@@ -89,7 +96,7 @@ export class SceneScreen extends Container implements IScreen {
                 this.addChild(door.graphics);
             }
         }
-        Dialog.clearMessage();
+        Manager.Dialog.clearMessage();
     }
 
     private onClickBackdrop(_e: InteractionEvent): void {

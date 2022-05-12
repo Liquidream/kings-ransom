@@ -1,48 +1,48 @@
 import { Text, TextStyle } from "pixi.js";
-import { Manager } from "./Manager";
+import { Manager } from "../Manager";
 
 export class Dialog {
-    private constructor() { /*this class is purely static. No constructor to see here*/ }
+    public constructor() { /*this class is purely static. No constructor to see here*/ }
     
-    private static currentDialogText: Text;
+    private currentDialogText!: Text;
     
-    public static displayCounter: number = 0;
+    public displayCounter: number = 0;
 
-    public static initialize(): void {
+    public initialize(): void {
         // Anything?
     }
     
-    public static update() {
+    public update() {
         // Update display duration
         // TODO: See whether this could/should be done as a timer or something instead?
-        if (Dialog.displayCounter > 0) {
-            Dialog.displayCounter--;
+        if (this.displayCounter > 0) {
+            this.displayCounter--;
             //console.log(Dialog.displayCounter)
         }
-        if (Dialog.displayCounter <= 0) {
-            Dialog.clearMessage()
+        if (this.displayCounter <= 0) {
+            this.clearMessage()
         }
     }
         
-    public static showMessage(message: string): void {
+    public showMessage(message: string): void {
         // Show a white message
-        Dialog.showMessageCore(message, "#fff")
+        this.showMessageCore(message, "#fff")
     }
 
-    public static showErrorMessage(errorMessage: string): void {
+    public showErrorMessage(errorMessage: string): void {
         // Show a white message
-        Dialog.showMessageCore(errorMessage, "#ff0000")
+        this.showMessageCore(errorMessage, "#ff0000")
     }
 
-    public static clearMessage(): void {
+    public clearMessage(): void {
         Manager.app.stage.removeChild(this.currentDialogText);
         //this.currentDialogText = null;
     }
 
-    private static showMessageCore(message: string, col: string): void {
+    private showMessageCore(message: string, col: string): void {
         // Are we already showing a message? If so, clear it
-        if (Dialog.displayCounter > 0) {
-            Dialog.clearMessage()
+        if (this.displayCounter > 0) {
+            this.clearMessage()
         }
 
         const styly: TextStyle = new TextStyle({
@@ -56,7 +56,7 @@ export class Dialog {
         this.currentDialogText.x = Manager.width / 2;
         this.currentDialogText.y = Manager.height - 75;
         //texty.text = "This is expensive to change, please do not abuse";
-        Dialog.displayCounter = 3 * Manager.fps; 
+        this.displayCounter = 3 * Manager.fps; 
         Manager.app.stage.addChild(this.currentDialogText);
     }
     

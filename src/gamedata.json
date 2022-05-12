@@ -7,6 +7,22 @@
   "starting_scene_id": "scn_promontory",
   "scenes": [
     {
+      "id": "scn_void",
+      "name": "The Void",
+      "props": [
+        {
+          "id": "prp_key",
+          "name": "Old Key",
+          "image": "Old-Key",
+          "desc": "An old key",
+          "x": "1480",
+          "y": "1000",
+          "pickupable": "true"
+        }
+      ],
+      "doors": []
+    },
+    {
       "id": "scn_bridge",
       "name": "Stone Bridge",
       "image": "Bridge",
@@ -126,16 +142,7 @@
           "y": "500",
           "width": "950",
           "height": "800",
-          "on_action": "SAGE.World.getSceneById('scn_bridge').show();"
-        },
-        {
-          "id": "prp_key",
-          "name": "Old Key",
-          "image": "Old-Key",
-          "desc": "An old key",
-          "x": "1480",
-          "y": "1000",
-          "pickupable": "true"
+          "on_action": "SAGE.World.putPropAt('prp_key','scn_promontory');\nSAGE.Dialog.showMessage('A Key fell out of the tree');"
         }
       ],
       "doors": [

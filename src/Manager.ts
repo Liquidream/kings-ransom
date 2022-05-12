@@ -1,7 +1,8 @@
 import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
-import { World } from "./sage/World";
 import gamedata from './gamedata.json';
+import { World } from "./sage/World";
+import { Dialog } from "./sage/Dialog";
 //import { BridgeScene } from "./scenes/BridgeScene";
 //import { SceneScreen } from "./scenes/SceneScreen";
 
@@ -17,6 +18,7 @@ export class Manager {
     public static debugMode: boolean = false;
     
     public static World: World;
+    public static Dialog: Dialog;
 
     public static get width(): number {
         return Manager._width;
@@ -64,6 +66,9 @@ export class Manager {
         Manager.World = new World();
         Manager.World.initialize(gamedata);
         //Manager.World = new World().fromJSON(gamedata);
+
+        // Create and initialise game world
+        Manager.Dialog = new Dialog();
 
         // console.log(Manager.World.title);
         // console.log(Manager.World.scenes[0].image);

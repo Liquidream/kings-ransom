@@ -1,8 +1,8 @@
-import { Dialog } from "../Dialog";
 import { Serialization } from "../utils/Serialization";
 import { Player } from "./Player";
-import { Prop } from "./Prop";
 import { Scene } from "./Scene";
+import { PropData } from "./PropData";
+import { Manager } from "../Manager";
 
 
 
@@ -18,12 +18,14 @@ export class World implements Serialization<World> {
     public currentScene!: Scene;
 
     public initialize(data: any): void {        
-        // TODO: Create the first scene as "void"?
-        let voidScene = Object.assign( new Scene(), {
-            id: "scn_void",
-            name: "The Void"
-        });        
-        this.scenes.push(voidScene);
+        
+        // (Done in gamedata - else can't define hidden props)
+        // Create the first scene as "void"?
+        // let voidScene = Object.assign( new Scene(), {
+        //     id: "scn_void",
+        //     name: "The Void"
+        // });        
+        // this.scenes.push(voidScene);
 
         // Now restore the rest from data
         this.fromJSON(data);
@@ -42,7 +44,7 @@ export class World implements Serialization<World> {
         }
         else
         {
-            Dialog.showErrorMessage(`Error: Scene with ID '${this.starting_scene_id}' is invalid`);
+            Manager.Dialog.showErrorMessage(`Error: Scene with ID '${this.starting_scene_id}' is invalid`);
         }
 
     }
@@ -65,7 +67,7 @@ export class World implements Serialization<World> {
         // Then get the propdata...
         let propData = scene ? scene.props.filter(c => c.id === propId)[0] : null;
         // Finally, create & return "full" pop, based on data
-        let prop = new Prop(propData);
+        //let prop = new Prop(propData);
         // https://stackoverflow.com/a/57398236/574415
 
         // (abandoned attempt to do in one go)----------
@@ -74,7 +76,38 @@ export class World implements Serialization<World> {
         //         return prp.id === propId;
         //     });
         // });
-        return prop;
+        return propData; //prop;
+    }
+
+    /** Move prop to specfied scene id (at optional x,y position)  */
+    putPropAt(propId: string, targetSceneId: string, x?: number, y?: number) {
+        // Get prop data
+        let propData = this.getPropById(propId);
+        if (propData) {
+            // Remove prop from its current scene...
+            let scene = this.scenes.find((scn) => {
+                return scn.props.find((prp: PropData) => {
+                    return prp.id === propId;
+                });
+            });
+            scene?.removePropDataById(propId);
+            
+            // ..and place in target scene...
+            let targetScene = this.getSceneById(targetSceneId);
+            if (targetScene) {
+                // data...
+                targetScene.props.push(propData);
+
+                // sprite... (if scene is active)
+                if (targetScene === this.currentScene
+                    && scene != targetScene) {
+                    this.currentScene.screen.addProp(propData);
+                }
+            }
+            // (optionally, at position)
+            if (x) propData.x = x;
+            if (y) propData.y = y;
+        }
     }
 
 

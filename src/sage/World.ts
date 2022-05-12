@@ -2,7 +2,7 @@ import { Serialization } from "../utils/Serialization";
 import { Player } from "./Player";
 import { Scene } from "./Scene";
 import { PropData } from "./PropData";
-import { Manager } from "../Manager";
+import { SAGE } from "../Manager";
 
 
 
@@ -44,7 +44,7 @@ export class World implements Serialization<World> {
         }
         else
         {
-            Manager.Dialog.showErrorMessage(`Error: Scene with ID '${this.starting_scene_id}' is invalid`);
+            SAGE.Dialog.showErrorMessage(`Error: Scene with ID '${this.starting_scene_id}' is invalid`);
         }
 
     }

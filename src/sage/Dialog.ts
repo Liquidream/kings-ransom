@@ -1,5 +1,5 @@
 import { Text, TextStyle } from "pixi.js";
-import { Manager } from "../Manager";
+import { SAGE } from "../Manager";
 
 export class Dialog {
     public constructor() { /*this class is purely static. No constructor to see here*/ }
@@ -35,7 +35,7 @@ export class Dialog {
     }
 
     public clearMessage(): void {
-        Manager.app.stage.removeChild(this.currentDialogText);
+        SAGE.app.stage.removeChild(this.currentDialogText);
         //this.currentDialogText = null;
     }
 
@@ -53,11 +53,11 @@ export class Dialog {
         });
         this.currentDialogText = new Text(message, styly); // Text supports unicode!
         this.currentDialogText.anchor.set(0.5);
-        this.currentDialogText.x = Manager.width / 2;
-        this.currentDialogText.y = Manager.height - 75;
+        this.currentDialogText.x = SAGE.width / 2;
+        this.currentDialogText.y = SAGE.height - 75;
         //texty.text = "This is expensive to change, please do not abuse";
-        this.displayCounter = 3 * Manager.fps; 
-        Manager.app.stage.addChild(this.currentDialogText);
+        this.displayCounter = 3 * SAGE.fps; 
+        SAGE.app.stage.addChild(this.currentDialogText);
     }
     
 }

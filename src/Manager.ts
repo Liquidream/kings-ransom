@@ -1,12 +1,11 @@
 import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
-import gamedata from './gamedata.json';
 import { World } from "./sage/World";
 import { Dialog } from "./sage/Dialog";
-//import { BridgeScene } from "./scenes/BridgeScene";
-//import { SceneScreen } from "./scenes/SceneScreen";
+import gamedata from './gamedata.json';
+import { Actions } from "./gameactions";
 
-export class Manager {
+export class SAGE {
     private constructor() { /*this class is purely static. No constructor to see here*/ }
 
     private static _app: Application;
@@ -19,29 +18,30 @@ export class Manager {
     
     public static World: World;
     public static Dialog: Dialog;
+    public static Actions: Actions;
 
     public static get width(): number {
-        return Manager._width;
+        return SAGE._width;
     }
     public static get height(): number {
-        return Manager._height;
+        return SAGE._height;
     }
     public static get fps(): number {
-        return Manager._fps;
+        return SAGE._fps;
     }
 
     // PN: Expose the Application object (for now)
     // TODO: Prob come up with a better structure so top "cage" class creates it, then nested classes uses it (e.g. cage.dialog)
     public static get app(): Application {
-        return Manager._app;
+        return SAGE._app;
     }
 
     public static initialize(width: number, height: number, background: number): void {
 
-        Manager._width = width;
-        Manager._height = height;
+        SAGE._width = width;
+        SAGE._height = height;
 
-        Manager._app = new Application({
+        SAGE._app = new Application({
             view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
             //resolution: window.devicePixelRatio || 1, // This distorts/wrong on mobile
             autoDensity: true,
@@ -50,25 +50,28 @@ export class Manager {
             height: height
         });
 
-        Manager._app.ticker.add(Manager.update)
+        SAGE._app.ticker.add(SAGE.update)
         
         // Lock to 30fps (for cinematic effect)
-        Manager._fps = 30;
-        Manager._app.ticker.maxFPS = Manager._fps;
+        SAGE._fps = 30;
+        SAGE._app.ticker.maxFPS = SAGE._fps;
 
         // listen for the browser telling us that the screen size changed
-        window.addEventListener("resize", Manager.resize);
+        window.addEventListener("resize", SAGE.resize);
 
         // call it manually once so we are sure we are the correct size after starting
-        Manager.resize();
+        SAGE.resize();
 
         // Create and initialise game world
-        Manager.World = new World();
-        Manager.World.initialize(gamedata);
+        SAGE.World = new World();
+        SAGE.World.initialize(gamedata);
         //Manager.World = new World().fromJSON(gamedata);
 
+        // ... and game actions
+        SAGE.Actions = new Actions();
+
         // Create and initialise game world
-        Manager.Dialog = new Dialog();
+        SAGE.Dialog = new Dialog();
 
         // console.log(Manager.World.title);
         // console.log(Manager.World.scenes[0].image);
@@ -82,49 +85,49 @@ export class Manager {
         const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
         // uniform scale for our game
-        const scale = Math.min(screenWidth / Manager.width, screenHeight / Manager.height);
+        const scale = Math.min(screenWidth / SAGE.width, screenHeight / SAGE.height);
 
         // the "uniformly englarged" size for our game
-        const enlargedWidth = Math.floor(scale * Manager.width);
-        const enlargedHeight = Math.floor(scale * Manager.height);
+        const enlargedWidth = Math.floor(scale * SAGE.width);
+        const enlargedHeight = Math.floor(scale * SAGE.height);
 
         // margins for centering our game
         const horizontalMargin = (screenWidth - enlargedWidth) / 2;
         const verticalMargin = (screenHeight - enlargedHeight) / 2;
 
         // now we use css trickery to set the sizes and margins
-        Manager._app.view.style.width = `${enlargedWidth}px`;
-        Manager._app.view.style.height = `${enlargedHeight}px`;
-        Manager._app.view.style.marginLeft = Manager._app.view.style.marginRight = `${horizontalMargin}px`;
-        Manager._app.view.style.marginTop = Manager._app.view.style.marginBottom = `${verticalMargin}px`;
+        SAGE._app.view.style.width = `${enlargedWidth}px`;
+        SAGE._app.view.style.height = `${enlargedHeight}px`;
+        SAGE._app.view.style.marginLeft = SAGE._app.view.style.marginRight = `${horizontalMargin}px`;
+        SAGE._app.view.style.marginTop = SAGE._app.view.style.marginBottom = `${verticalMargin}px`;
     }
 
     /* More code of your Manager.ts like `changeScene` and `update`*/
     
     public static startGame(): void {
-        Manager.World.start();
+        SAGE.World.start();
         //Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
     }
 
     // Call this function when you want to go to a new scene
     public static changeScreen(newScene: IScreen): void {
         // Remove and destroy old scene... if we had one..
-        if (Manager.currentScreen) {
-            Manager._app.stage.removeChild(Manager.currentScreen);
-            Manager.currentScreen.destroy();
+        if (SAGE.currentScreen) {
+            SAGE._app.stage.removeChild(SAGE.currentScreen);
+            SAGE.currentScreen.destroy();
         }
 
         // Add the new one
-        Manager.currentScreen = newScene;
-        Manager._app.stage.addChild(Manager.currentScreen);
+        SAGE.currentScreen = newScene;
+        SAGE._app.stage.addChild(SAGE.currentScreen);
     }
 
     // This update will be called by a pixi ticker and tell the scene that a tick happened
     private static update(framesPassed: number): void {
         // Let the current scene know that we updated it...
         // Just for funzies, sanity check that it exists first.
-        if (Manager.currentScreen) {
-            Manager.currentScreen.update(framesPassed);
+        if (SAGE.currentScreen) {
+            SAGE.currentScreen.update(framesPassed);
         }
 
         // as I said before, I HATE the "frame passed" approach. I would rather use `Manager.app.ticker.deltaMS`

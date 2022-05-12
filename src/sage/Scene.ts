@@ -1,5 +1,5 @@
 import { Tween } from "tweedle.js";
-import { Manager } from "../Manager";
+import { SAGE } from "../Manager";
 import { SceneScreen } from "../scenes/SceneScreen";
 import { Serialization } from "../utils/Serialization";
 import { Prop } from "./Prop";
@@ -14,6 +14,8 @@ export class Scene implements Serialization<Scene> {
     public id: string = "";
     public image: string = "";
     public name: string = "";
+    // Events
+    public on_enter: string = "";
 
     public props: Array<PropData> = [];
     public doors: Array<DoorData> = [];
@@ -32,12 +34,18 @@ export class Scene implements Serialization<Scene> {
     show() {
         // Create and switch to new "screen"
         this.screen = new SceneScreen(this)
-        Manager.changeScreen(this.screen);
+        SAGE.changeScreen(this.screen);
         // Remember the new scene
-        Manager.World.currentScene = this;
+        SAGE.World.currentScene = this;
         
         // DEBUG
-        console.log(Manager.World.serialize());
+        //console.log(Manager.World.serialize());
+
+        // Run any OnEnter action?        /
+        if (this.on_enter) {
+            Function(this.on_enter)();
+            return;
+        }
     }
 
     /**
@@ -66,6 +74,7 @@ export class Scene implements Serialization<Scene> {
         this.id =  input.id;
         this.image =  input.image || "";
         this.name =  input.name;
+        this.on_enter =  input.on_enter;
         for(let prop of input.props){
             this.props.push(new PropData().fromJSON(prop))
         }
@@ -76,7 +85,13 @@ export class Scene implements Serialization<Scene> {
     }
 
     toJSON(): any {
-        return { id: this.id, image: this.image, name: this.name, props: this.props, doors: this.doors } 
+        return { 
+            id: this.id, 
+            image: this.image, 
+            name: this.name, 
+            on_enter: this.on_enter,
+            props: this.props, 
+            doors: this.doors } 
     }
     // serialize(): string {
     //     return JSON.stringify(this, ["id","image","name","props","doors"]);

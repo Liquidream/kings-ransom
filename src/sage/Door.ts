@@ -1,5 +1,5 @@
 import { Graphics, InteractionEvent } from "pixi.js";
-import { Manager } from "../Manager";
+import { SAGE } from "../Manager";
 import { DoorData, DoorState } from "./DoorData";
 
 export class Door {
@@ -12,7 +12,7 @@ export class Door {
         this.data = propData;
         let graphics = new Graphics();
         // Make doors visible in debug
-        if (Manager.debugMode) {
+        if (SAGE.debugMode) {
             // Set the fill color
             this.graphics.beginFill(0xe74c3c, 125); // Red
             // Line/stroke style
@@ -53,7 +53,7 @@ export class Door {
         if (this.data.state == DoorState.Locked) {
             
             // Does player have the key?
-            const key = Manager.World.player.inventory.find((obj) => {
+            const key = SAGE.World.player.inventory.find((obj) => {
                 return obj.id === this.data.key_prop_id;
             });
             if (key) {
@@ -62,14 +62,14 @@ export class Door {
             }
             else
             {
-                Manager.Dialog.showMessage(this.data.desc_locked || "It is locked");
+                SAGE.Dialog.showMessage(this.data.desc_locked || "It is locked");
                 return;
             }
         }
 
         // TODO: Find the target door/scene
         // 👇️ const first: {id: number; language: string;} | undefined
-        const targetScene = Manager.World.scenes.find((obj) => {
+        const targetScene = SAGE.World.scenes.find((obj) => {
             return obj.id === this.data.target_scene_id;
         });
 
@@ -80,7 +80,7 @@ export class Door {
         }
         else
         {
-            Manager.Dialog.showErrorMessage(`Error: Scene with ID '${this.data.target_scene_id}' is invalid`);
+            SAGE.Dialog.showErrorMessage(`Error: Scene with ID '${this.data.target_scene_id}' is invalid`);
         }
     }
 }

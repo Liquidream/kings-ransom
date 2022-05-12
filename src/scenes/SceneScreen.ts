@@ -1,7 +1,7 @@
 import { Group } from "tweedle.js"; //Easing
 import { Container, Sprite, InteractionEvent, Graphics } from "pixi.js"; //filters
 
-import { IScreen, Manager } from "../Manager";
+import { IScreen, SAGE } from "../Manager";
 import { Scene } from "../sage/Scene";
 import { Fullscreen } from "../utils/Fullscreen";
 import { Prop } from "../sage/Prop";
@@ -34,7 +34,7 @@ export class SceneScreen extends Container implements IScreen {
         //You need to update a group for the tweens to do something!
         Group.shared.update()
 
-        Manager.Dialog.update();
+        SAGE.Dialog.update();
     }
 
     public resize(_screenWidth: number, _screenHeight: number): void {
@@ -46,8 +46,8 @@ export class SceneScreen extends Container implements IScreen {
         // Backdrop
         this.backdrop = Sprite.from(this.scene.image);
         this.backdrop.anchor.set(0.5);
-        this.backdrop.x = Manager.width / 2;
-        this.backdrop.y = Manager.height / 2;
+        this.backdrop.x = SAGE.width / 2;
+        this.backdrop.y = SAGE.height / 2;
         this.backdrop.on("pointertap", this.onClickBackdrop, this);
         this.backdrop.interactive = true;   // Super important or the object will never receive mouse events!
         this.addChild(this.backdrop);
@@ -63,7 +63,7 @@ export class SceneScreen extends Container implements IScreen {
             }
         }
 
-        Manager.Dialog.clearMessage();
+        SAGE.Dialog.clearMessage();
     }
 
     public addProp(data: PropData) {
@@ -72,7 +72,7 @@ export class SceneScreen extends Container implements IScreen {
         this.addChild(prop.sprite);
 
         // DEBUG?
-        if (Manager.debugMode) {
+        if (SAGE.debugMode) {
             let graphics = new Graphics();
             graphics.beginFill(0xe74c3c, 125); // Red
             graphics.lineStyle(10, 0xFF0000);
@@ -96,7 +96,7 @@ export class SceneScreen extends Container implements IScreen {
                 this.addChild(door.graphics);
             }
         }
-        Manager.Dialog.clearMessage();
+        SAGE.Dialog.clearMessage();
     }
 
     private onClickBackdrop(_e: InteractionEvent): void {

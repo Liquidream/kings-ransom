@@ -1,5 +1,5 @@
 import { InteractionEvent, Sprite, Texture } from "pixi.js";
-import { Manager } from "../Manager";
+import { SAGE } from "../Manager";
 import { PropData } from "./PropData";
 
 export class Prop { //implements Serialization<Prop> {
@@ -44,13 +44,13 @@ export class Prop { //implements Serialization<Prop> {
 
         // Can prop be picked up?
         if (this.data.pickupable) {
-            Manager.Dialog.showMessage(`You picked up the ${this.data.name}`);
+            SAGE.Dialog.showMessage(`You picked up the ${this.data.name}`);
 
             // Remove prop from scene
-            Manager.World.currentScene.removeProp(this);
+            SAGE.World.currentScene.removeProp(this);
 
             // Add to Player's inventory
-            Manager.World.player.inventory.push(this.data);
+            SAGE.World.player.inventory.push(this.data);
         }
         // Run code snippet (stored in string)?
         //https://stackoverflow.com/questions/64426501/how-to-execute-strings-of-expression-in-an-array-with-ramda/64426855#64426855

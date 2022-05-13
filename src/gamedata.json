@@ -72,10 +72,10 @@
         {
           "id": "dor_cave_bridge",
           "name": "Bridge",
-          "x": "800",
-          "y": "550",
-          "width": "600",
-          "height": "700",
+          "x": 800,
+          "y": 550,
+          "width": 600,
+          "height": 700,
           "target_scene_id": "scn_bridge",
           "state": "UNLOCKED"
         },

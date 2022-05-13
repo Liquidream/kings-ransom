@@ -14,6 +14,8 @@ export class World implements Serialization<World> {
     public player!: Player;
     public scenes: Array<Scene> = [];    
     public starting_scene_id: string | undefined;
+    // Key-Value pair to allow properties to be set/read
+    property: { [key: string]: string | number | boolean } = {};
 
     public currentScene!: Scene;
 
@@ -116,6 +118,7 @@ export class World implements Serialization<World> {
 
     fromJSON(input: any) {
         this.title = input.title;
+        if (input.property) this.property = input.property;
         for(let scene of input.scenes){
             this.scenes.push(new Scene().fromJSON(scene))
         }
@@ -126,7 +129,8 @@ export class World implements Serialization<World> {
 
     toJSON(): any {
         return { 
-            title: this.title, 
+            title: this.title,
+            property: this.property,
             scenes: this.scenes, 
             starting_scene_id: this.starting_scene_id, 
             player: this.player } 

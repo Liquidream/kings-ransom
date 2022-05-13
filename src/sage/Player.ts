@@ -9,6 +9,8 @@ export class Player implements Serialization<Player> {
     }
     public name: string | undefined;
     public inventory: Array<PropData> = [];
+    // Key-Value pair to allow properties to be set/read
+    public property: { [key: string]: string | number | boolean } = {};
 
     /** Returns whether or not the specified prop id is in player's inventory */
     public inInventory(propId: string): boolean {        
@@ -23,6 +25,7 @@ export class Player implements Serialization<Player> {
 
     fromJSON(input: any) {
         this.name = input.name;
+        if (input.property) this.property = input.property;
         for(let prop of input.inventory){
             this.inventory.push(new PropData().fromJSON(prop))
         }

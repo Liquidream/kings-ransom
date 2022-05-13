@@ -12,8 +12,13 @@ export class Actions {
   }
 
   onTreeAction(): void {
-    SAGE.World.putPropAt('prp_key','scn_promontory');
-    SAGE.Dialog.showMessage('A Key fell out of the tree');
+    let treeProp = SAGE.World.getPropById('prp_tree');
+    if (treeProp && !treeProp.property["key-collected"]) {
+      SAGE.World.putPropAt('prp_key','scn_promontory');
+      treeProp.property["key-collected"] = true;
+      SAGE.Dialog.showMessage('A Key fell out of the tree');
+      console.log(treeProp.property["key-collected"]);
+    }
   }
 }
  

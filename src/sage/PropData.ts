@@ -14,7 +14,9 @@ export class PropData implements Serialization<PropData> {
     width: number = 0;
     height: number = 0;
     pickupable: boolean = false;
-    visible: boolean = true;
+    visible: boolean = true;    
+    // Key-Value pair to allow properties to be set/read
+    property: { [key: string]: string | number | boolean } = {};
     // Poss. event actions
     on_action: string = "";
         
@@ -23,31 +25,11 @@ export class PropData implements Serialization<PropData> {
     // }
     
     fromJSON(input: any) {
-        this.id =  input.id;
-        this.image =  input.image;
-        this.name =  input.name;
-        this.desc =  input.desc;
-        this.x = Number(input.x);
-        this.y = Number(input.y);
-        this.width = Number(input.width);
-        this.height = Number(input.height);        
-        if (input.pickupable) { // only parse if present (else will always = false)
-            this.pickupable = input.pickupable === "true"; // https://bobbyhadz.com/blog/typescript-convert-string-to-boolean#convert-a-string-to-a-boolean-in-typescript
-        }
-        if (input.visible) { // only parse if present (else will always = false)
-            this.visible = input.visible === "true"; // https://bobbyhadz.com/blog/typescript-convert-string-to-boolean#convert-a-string-to-a-boolean-in-typescript
-        }
-        // Event actions
-        this.on_action =  input.on_action;
-        
+        Object.assign(this, input);        
         return this;
     }
 
     toJSON(): any {
         return this;
     }
-
-    // serialize(): string {
-    //     return JSON.stringify(this);
-    // }
 }

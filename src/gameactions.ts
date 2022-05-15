@@ -1,4 +1,5 @@
 import { SAGE } from "./Manager";
+import { setTimeout } from "timers/promises";
 
 export class Actions {
 
@@ -23,14 +24,22 @@ export class Actions {
   }
 
   onTreeAction(): void {    
-    let treeProp = SAGE.World.getPropById('prp_tree');
+    //let treeProp = SAGE.World.getPropById('prp_tree');
     // If not collected key already...
-    if (treeProp && !treeProp.property["key-collected"]) {
-      SAGE.World.putPropAt('prp_key','scn_promontory');
-      treeProp.property["key-collected"] = true;
-      SAGE.Dialog.showMessage('A Key fell out of the tree');
-      //console.log(treeProp.property["key-collected"]);
-    }
+    // if (treeProp && !treeProp.property["key-collected"]) {
+    //   SAGE.World.putPropAt('prp_key','scn_promontory');
+    //   treeProp.property["key-collected"] = true;
+    //   SAGE.Dialog.showMessage('A Key fell out of the tree');
+    //   //console.log(treeProp.property["key-collected"]);
+    // }
+    yourFunction();
   }
 }
  
+const yourFunction = async () => {
+  await setTimeout(5000);
+  console.log("Waited 5s");
+
+  await setTimeout(5000);
+  console.log("Waited an additional 5s");
+};

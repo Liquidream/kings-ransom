@@ -104,10 +104,10 @@ export class SAGE {
         const scale = Math.min(screenWidth / SAGE.width, screenHeight / SAGE.height);
 
         // the "uniformly englarged" size for our game
-        const enlargedWidth = Math.floor(scale * SAGE.width);
+        const enlargedWidth = Math.floor(scale * SAGE.width); 
         const enlargedHeight = Math.floor(scale * SAGE.height);
 
-        // margins for centering our game
+        // margins for centering our game 
         const horizontalMargin = (screenWidth - enlargedWidth) / 2;
         const verticalMargin = (screenHeight - enlargedHeight) / 2;
 

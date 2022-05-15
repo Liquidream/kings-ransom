@@ -2,15 +2,17 @@ import { Text, TextStyle } from "pixi.js";
 import { SAGE } from "../Manager";
 
 export class Dialog {
-    public constructor() { /*this class is purely static. No constructor to see here*/ }
+    // public constructor() {
+
+    // }
     
     private currentDialogText!: Text;
     
     public displayCounter: number = 0;
 
-    public initialize(): void {
-        // Anything?
-    }
+    // public initialize(): void {
+    //     // Anything?
+    // }
     
     public update() {
         // Update display duration

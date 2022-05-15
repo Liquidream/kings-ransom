@@ -2,6 +2,7 @@ import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
 import { World } from "./sage/World";
 import { Dialog } from "./sage/Dialog";
+import { Script } from "./sage/Script";
 import { Actions } from "./gameactions";
 //import gamedata from './gamedata.json';
 
@@ -20,6 +21,7 @@ export class SAGE {
     public static World: World;
     public static Dialog: Dialog;
     public static Actions: Actions;
+    public static Script: Script;
 
     public static get width(): number {
         return SAGE._width;
@@ -79,11 +81,14 @@ export class SAGE {
         SAGE.World.initialize(gamedata);
         //Manager.World = new World().fromJSON(gamedata);
 
-        // ... and game actions
+        // ...and game actions
         SAGE.Actions = new Actions();
 
-        // Create and initialise game world
+        // ...and dialog
         SAGE.Dialog = new Dialog();
+
+        // ...and script
+        SAGE.Script = new Script();
 
         // console.log(Manager.World.title);
         // console.log(Manager.World.scenes[0].image);

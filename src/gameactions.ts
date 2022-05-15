@@ -15,6 +15,10 @@ export class Actions {
       The venom is swift and painless in its fatal effect.
       */
       SAGE.Dialog.showErrorMessage('A hungry snake strikes and bites you - YOU DIED');
+      // TODO: Add pause here...
+      // Restart game
+      SAGE.loadWorld();
+      SAGE.startGame();
     }    
   }
 

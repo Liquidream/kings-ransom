@@ -2,8 +2,9 @@ import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
 import { World } from "./sage/World";
 import { Dialog } from "./sage/Dialog";
-import gamedata from './gamedata.json';
 import { Actions } from "./gameactions";
+//import gamedata from './gamedata.json';
+
 
 export class SAGE {
     private constructor() { /*this class is purely static. No constructor to see here*/ }
@@ -62,6 +63,17 @@ export class SAGE {
         // call it manually once so we are sure we are the correct size after starting
         SAGE.resize();
 
+        // Load and start the game
+        SAGE.loadWorld();
+        //console.log(Manager.World.serialize());
+    }
+
+    public static loadWorld(): void {
+        
+        let gamedata = require("./gamedata.json");
+        //import * as gamedata from "./gamedata.json";
+        //let gamedata = JSON.parse(fs.readFileSync("./gamedata.json", "utf-8"));
+        
         // Create and initialise game world
         SAGE.World = new World();
         SAGE.World.initialize(gamedata);
@@ -76,7 +88,11 @@ export class SAGE {
         // console.log(Manager.World.title);
         // console.log(Manager.World.scenes[0].image);
         // console.log("------------------");
-        //console.log(Manager.World.serialize());
+    }
+    
+    public static startGame(): void {
+        SAGE.World.start();
+        //Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
     }
 
     public static resize(): void {
@@ -102,12 +118,6 @@ export class SAGE {
         SAGE._app.view.style.marginTop = SAGE._app.view.style.marginBottom = `${verticalMargin}px`;
     }
 
-    /* More code of your Manager.ts like `changeScene` and `update`*/
-    
-    public static startGame(): void {
-        SAGE.World.start();
-        //Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
-    }
 
     // Call this function when you want to go to a new scene
     public static changeScreen(newScene: IScreen): void {

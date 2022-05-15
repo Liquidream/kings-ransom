@@ -49,7 +49,8 @@ export class Dialog {
             align: "center",
             fill: col || "#fff",
             fontSize: 48,
-            dropShadow: true
+            strokeThickness: 6,
+            lineJoin: "round",
         });
         this.currentDialogText = new Text(message, styly); // Text supports unicode!
         this.currentDialogText.anchor.set(0.5);

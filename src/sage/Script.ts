@@ -11,8 +11,8 @@ export class Script {
    // }
 
 
-public wait(n: number): Promise<void> {
-   return new Promise<void>(res => setTimeout(res, n))
+public wait(seconds: number): Promise<void> {
+   return new Promise<void>(res => setTimeout(res, seconds * 1000))
 }
 
 //const delay = (n: number) => new Promise<void>(res => setTimeout(res, n))

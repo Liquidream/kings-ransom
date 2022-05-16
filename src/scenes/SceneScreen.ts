@@ -88,7 +88,7 @@ export class SceneScreen extends Container implements IScreen {
     }
 
     private buildDoorways() {
-        console.log(this.scene.doors);
+        //console.log(this.scene.doors);
         if (this.scene.doors.length > 0) {
             for (let doorData of this.scene.doors) {
                 // Create new component obj (contains data + view)

@@ -42,12 +42,9 @@ export class Door {
     }
     
     public onClicked(_e: InteractionEvent): void {
-        console.log(this.data.target_scene_id);
-
-        let clickedDispObj = _e.currentTarget;
-        console.log(clickedDispObj);
-        
-        console.log(this.data.state);
+        console.log(`door > target_scene_id: ${this.data.target_scene_id}, state:${this.data.state}`);
+        //let clickedDispObj = _e.currentTarget;
+        //console.log(clickedDispObj);        
 
         // Check door state
         if (this.data.state == DoorState.Locked) {

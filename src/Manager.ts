@@ -100,6 +100,13 @@ export class SAGE {
         //Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
     }
 
+    /** Restart the game 
+     * (+reset game data) */
+    public static restartGame(): void {
+        SAGE.loadWorld();
+        SAGE.startGame();
+    }
+
     public static resize(): void {
         // current screen size
         const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);

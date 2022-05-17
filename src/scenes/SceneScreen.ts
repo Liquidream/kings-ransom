@@ -1,5 +1,5 @@
-import { Group } from "tweedle.js"; //Easing
-import { Container, Sprite, InteractionEvent, Graphics } from "pixi.js"; //filters
+import { Group, Tween } from "tweedle.js"; //Easing
+import { Container, Sprite, InteractionEvent, Graphics, Text, TextStyle } from "pixi.js"; //filters
 
 import { IScreen, SAGE } from "../Manager";
 import { Scene } from "../sage/Scene";
@@ -41,6 +41,59 @@ export class SceneScreen extends Container implements IScreen {
 
     }
 
+    /**
+     * Start the player death/game over sequence
+     * @param message The message to display to player
+     */
+    public showGameOver(message: string): void {
+        // Red overlay
+        const overlay = new Graphics();
+        overlay.beginFill(0xDE3249);
+        overlay.alpha = 0;
+        overlay.drawRect(0, 0, SAGE.width, SAGE.height);
+        overlay.endFill();
+        overlay.interactive = true;   // Super important or the object will never receive mouse events!
+        overlay.on("pointertap", this.onClickGameOver, this);
+        this.addChild(overlay);
+        new Tween(overlay).to({ alpha: 0.8 }, 1000).start()
+            .onComplete( ()=> { 
+                // anything
+                // "Press to Restart"
+                const style = new TextStyle({
+                    fill: "white",
+                    fontFamily: "Impact",
+                    fontSize: 48,
+                    padding: 4,
+                    trim: true
+                });
+                const text = new Text("Press to Restart", style);
+                text.anchor.set(0.5);
+                text.x = SAGE.width / 2;
+                text.y = SAGE.height / 1.5;
+                overlay.addChild(text);
+            });
+        // "Game Over"
+        const style = new TextStyle({
+            fill: "white",
+            fontFamily: "Impact",
+            fontSize: 120,
+            padding: 4,
+            trim: true
+        });
+        const text = new Text(message, style);
+        text.anchor.set(0.5);
+        text.x = SAGE.width / 2;
+        text.y = SAGE.height / 2;
+        overlay.addChild(text);
+
+        console.log(message);
+    }
+
+    private onClickGameOver(_e: InteractionEvent): void {
+        //console.log("You interacted with game over ...overlay!")
+        // Restart game
+        SAGE.restartGame();
+    }
 
     private buildBackdrop() {
         // Backdrop
@@ -66,10 +119,19 @@ export class SceneScreen extends Container implements IScreen {
         SAGE.Dialog.clearMessage();
     }
 
-    public addProp(data: PropData) {
+    public addProp(data: PropData, fadeIn: boolean = false) {
         // Create new component obj (contains data + view)
         let prop = new Prop(data);
         this.addChild(prop.sprite);
+
+        // Fade in?
+        if (fadeIn) {
+            prop.sprite.alpha = 0;
+            new Tween(prop.sprite).to({ alpha: 1 }, 500).start()
+            .onComplete( ()=> { 
+                // ??
+            });
+        }
 
         // DEBUG?
         if (SAGE.debugMode) {
@@ -83,8 +145,20 @@ export class SceneScreen extends Container implements IScreen {
         }
     }
 
-    public removeProp(data: PropData) {
-        console.log(`TODO: remove prop with id ${data.id}`);
+    /**
+     * Removes a Prop from a scene (default = fade out).     
+     */
+     removeProp(prop: Prop){
+        new Tween(prop.sprite).to({ alpha: 0 }, 500).start()
+            .onComplete( ()=> { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any                
+                // remove when tween completes
+                this.removeChild(prop.sprite);  
+
+                // remove from game data
+                // https://stackoverflow.com/a/67953394/574415
+                this.scene.props.splice(this.scene.props.findIndex(item => item.id === prop.data.id),1);
+            });
+        new Tween(prop.sprite.scale).to({ x: 1.5, y: 1.5 }, 500).start()
     }
 
     private buildDoorways() {

@@ -1,8 +1,6 @@
-import { Tween } from "tweedle.js";
 import { SAGE } from "../Manager";
 import { SceneScreen } from "../scenes/SceneScreen";
 import { Serialization } from "../utils/Serialization";
-import { Prop } from "./Prop";
 import { PropData } from "./PropData";
 import { DoorData } from "./DoorData";
 
@@ -52,19 +50,9 @@ export class Scene implements Serialization<Scene> {
         }
     }
 
-    /**
-     * Removes a Prop from a scene (default = fade out).     
-     */
-    removeProp(prop: Prop){
-        new Tween(prop.sprite).to({ alpha: 0 }, 1000).start()
-            .onComplete( ()=> { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any                
-                // remove when tween completes
-                this.screen.removeChild(prop.sprite);  
-
-                // remove from game data
-                // https://stackoverflow.com/a/67953394/574415
-                this.props.splice(this.props.findIndex(item => item.id === prop.data.id),1);
-            });
+    addPropData(propData: PropData){
+        // add to list of props
+        this.props.push(propData);
     }
 
     removePropDataById(propId: string){
@@ -100,8 +88,5 @@ export class Scene implements Serialization<Scene> {
             props: this.props, 
             doors: this.doors } 
     }
-    // serialize(): string {
-    //     return JSON.stringify(this, ["id","image","name","props","doors"]);
-    //     //return "";
-    // }
+    
 }

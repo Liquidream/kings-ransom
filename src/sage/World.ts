@@ -62,48 +62,45 @@ export class World implements Serialization<World> {
     }
     
     /** Find and return prop with specific id */
-    getPropById(propId: string) {
-        
+    getPropById(propId: string) {        
         // First, find scene that contains prop...
         let scene = this.scenes.filter(e => e.props.filter(c => c.id === propId)[0])[0]; 
         // Then get the propdata...
         let propData = scene ? scene.props.filter(c => c.id === propId)[0] : null;
-        // Finally, create & return "full" pop, based on data
-        //let prop = new Prop(propData);
-        // https://stackoverflow.com/a/57398236/574415
-
-        // (abandoned attempt to do in one go)----------
-        // let propData = this.scenes.find((scn) => {
-        //     return scn.props.find((prp: any) => {
-        //         return prp.id === propId;
-        //     });
-        // });
-        return propData; //prop;
+        return propData;
     }
 
     /** Move prop to specfied scene id (at optional x,y position)  */
-    putPropAt(propId: string, targetSceneId: string, x?: number, y?: number) {
+    revealPropAt(propId: string, targetSceneId: string) {
+        this.putPropAt(propId,targetSceneId, undefined, undefined, true);
+    }
+
+    /** Move prop to specfied scene id (at optional x,y position)  */
+    putPropAt(propId: string, targetSceneId: string, x?: number, y?: number, fadeIn?: boolean) {
         // Get prop data
         let propData = this.getPropById(propId);
         if (propData) {
             // Remove prop from its current scene...
-            let scene = this.scenes.find((scn) => {
+            let sourceScene = this.scenes.find((scn) => {
                 return scn.props.find((prp: PropData) => {
                     return prp.id === propId;
                 });
             });
-            scene?.removePropDataById(propId);
+            if (sourceScene) {
+                sourceScene.removePropDataById(propId);
+            }
             
             // ..and place in target scene...
             let targetScene = this.getSceneById(targetSceneId);
             if (targetScene) {
                 // data...
-                targetScene.props.push(propData);
+                targetScene.addPropData(propData);
+                //targetScene.props.push(propData);
 
                 // sprite... (if scene is active)
                 if (targetScene === this.currentScene
-                    && scene != targetScene) {
-                    this.currentScene.screen.addProp(propData);
+                    && sourceScene != targetScene) {
+                    this.currentScene.screen.addProp(propData, fadeIn);
                 }
             }
             // (optionally, at position)

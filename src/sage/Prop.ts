@@ -33,7 +33,7 @@ export class Prop { //implements Serialization<Prop> {
     } 
     
     public onClicked(_e: InteractionEvent): void {
-        console.log(`You interacted with a prop! (${this.data.name})`);     
+        if (SAGE.debugMode) console.log(`You interacted with a prop! (${this.data.name})`);     
         //console.log(_e.currentTarget)
 
         // Custom action?
@@ -47,7 +47,7 @@ export class Prop { //implements Serialization<Prop> {
             SAGE.Dialog.showMessage(`You picked up the ${this.data.name}`);
 
             // Remove prop from scene
-            SAGE.World.currentScene.removeProp(this);
+            SAGE.World.currentScene.screen.removeProp(this);
 
             // Add to Player's inventory
             SAGE.World.player.inventory.push(this.data);

@@ -103,6 +103,7 @@ export class SAGE {
     /** Restart the game 
      * (+reset game data) */
     public static restartGame(): void {
+        console.log("Restarting game...")
         SAGE.loadWorld();
         SAGE.startGame();
     }

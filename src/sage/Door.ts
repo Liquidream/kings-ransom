@@ -14,7 +14,7 @@ export class Door {
         // Make doors visible in debug
         if (SAGE.debugMode) {
             // Set the fill color
-            this.graphics.beginFill(0xe74c3c, 125); // Red
+            graphics.beginFill(0xe74c3c, 125); // Red
             // Line/stroke style
             graphics.lineStyle(10, 0xFF0000);
         }
@@ -42,10 +42,7 @@ export class Door {
     }
     
     public onClicked(_e: InteractionEvent): void {
-        console.log(`door > target_scene_id: ${this.data.target_scene_id}, state:${this.data.state}`);
-        //let clickedDispObj = _e.currentTarget;
-        //console.log(clickedDispObj);        
-
+        if (SAGE.debugMode) console.log(`door > target_scene_id: ${this.data.target_scene_id}, state:${this.data.state}`);
         // Check door state
         if (this.data.state == DoorState.Locked) {
             

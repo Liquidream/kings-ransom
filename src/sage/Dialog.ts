@@ -5,8 +5,8 @@ import { SAGE } from "../Manager";
 export class Dialog {
     // "constants" 
     // (perhaps overridable in config?)
-    CHARS_PER_SEC: number = 10;
-    MIN_DURATION_SEC: number = 2;
+    CHARS_PER_SEC: number = 15;
+    MIN_DURATION_SEC: number = 1.5;
     MAX_DURATION_SEC: number = 7;
 
     // public constructor() {
@@ -23,14 +23,14 @@ export class Dialog {
         // (was prev used when using display counter, rather than async/timer)
     }
         
-    public async showMessage(message: string): Promise<void> {
+    public async showMessage(message: string, durationInSecs?: number): Promise<void> {
         // Show a white message
-        await this.showMessageCore(message, "#fff")
+        return this.showMessageCore(message, "#fff", durationInSecs)
     }
 
     public async showErrorMessage(errorMessage: string): Promise<void> {
         // Show a white message
-        await this.showMessageCore(errorMessage, "#ff0000")
+        return this.showMessageCore(errorMessage, "#ff0000")
     }
 
     public clearMessage(): void {
@@ -38,7 +38,8 @@ export class Dialog {
         this.currentDialogText = null;
     }
 
-    private async showMessageCore(message: string, col: string): Promise<void> {
+    private async showMessageCore(message: string, col: string, durationInSecs?: number): Promise<void> {
+        let waitDuration = 0;
         // Are we already showing a message? If so, clear it
         if (this.currentDialogText) this.clearMessage()
         
@@ -63,13 +64,26 @@ export class Dialog {
         
         SAGE.app.stage.addChild(this.currentDialogText);
         
-        // calc display duration (1 sec for every 7 chars, approx.)
-        let duration = clamp(message.length / this.CHARS_PER_SEC, this.MIN_DURATION_SEC, this.MAX_DURATION_SEC);
-        // wait for calc'd duration
-        await SAGE.Script.wait(duration);
-        // Remove message now duration over
-        // TODO: Unlike counter method, this could create a bug where msg changed mid-show & thread clash?
-        SAGE.app.stage.removeChild(this.currentDialogText);
+        // How long to display?
+        if (durationInSecs) {
+            // Duration specified, so use it
+            waitDuration = durationInSecs;
+        }
+        else {
+            // calc display duration (1 sec for every 7 chars, approx.)        
+            waitDuration = clamp(message.length / this.CHARS_PER_SEC, this.MIN_DURATION_SEC, this.MAX_DURATION_SEC);
+        }        
+        //console.log(`Duration = ${waitDuration}`)
+        
+        // Wait for duration
+        // ...or leave on display (e.g. if duration = -1)
+        if (waitDuration > 0) {
+            // wait for calc'd duration
+            await SAGE.Script.wait(waitDuration);
+            // Remove message now duration over
+            // TODO: Unlike counter method, this could create a bug where msg changed mid-show & thread clash?
+            SAGE.app.stage.removeChild(this.currentDialogText);
+        }
     }
     
 }

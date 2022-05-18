@@ -2,7 +2,10 @@ import { InteractionEvent, Sprite, Texture } from "pixi.js";
 import { SAGE } from "../Manager";
 import { PropData } from "./PropData";
 
-export class Prop { //implements Serialization<Prop> {
+export class Prop {
+    // "constants" 
+    // (perhaps overridable in config?)
+    TOUCH_DURATION: number = 500;
     
     public data!: PropData;    
     public sprite!: Sprite;
@@ -26,13 +29,57 @@ export class Prop { //implements Serialization<Prop> {
 
         // Events
         this.sprite.interactive = true;   // Super important or the object will never receive mouse events!
-        this.sprite.on("pointertap", this.onClicked, this);
+        this.sprite.on("click", this.onClick, this);        
+        this.sprite.on("rightclick", this.onRightClick, this);
+        this.sprite.on("touchstart", this.onTouchStart, this);
+        this.sprite.on("touchend", this.onTouchEnd , this);    // Both touch "tap" & "long-press"
+
+        this.sprite.on("pointerover", this.onPointerOver, this);
+        this.sprite.on("pointerout", this.onPointerOut, this);
 
         // visible state
         this.sprite.visible = propData.visible;
     } 
+
+    private onClick(_e: InteractionEvent) {
+        console.log(_e.data.originalEvent);
+        this.onPrimaryAction()
+    }
     
-    public onClicked(_e: InteractionEvent): void {
+    private onRightClick(_e: InteractionEvent) {
+        this.onSecondaryAction()
+    }
+
+    private touchTimer: any = undefined;
+    private longPressFired: boolean = false;
+
+    private onTouchStart(_e: InteractionEvent) {
+        console.log("onTouchStart...")
+        this.touchTimer = setTimeout(() => {
+            this.onSecondaryAction();
+            this.longPressFired = true;
+        }, this.TOUCH_DURATION);
+        // Reset state
+        this.longPressFired = false;
+    }
+    
+    private onTouchEnd(_e: InteractionEvent) {
+        console.log("onTouchEnd...")
+        if (!this.longPressFired) this.onPrimaryAction()
+        //stops short touches from firing the event
+        if (this.touchTimer)
+            clearTimeout(this.touchTimer); // clearTimeout, not cleartimeout..
+    }
+
+    private onPointerOver(_e: InteractionEvent): void {
+        SAGE.Dialog.showMessage(this.data.name, -1);
+    }
+
+    private onPointerOut(_e: InteractionEvent): void {
+        SAGE.Dialog.clearMessage();
+    }
+    
+    private onPrimaryAction() {
         if (SAGE.debugMode) console.log(`You interacted with a prop! (${this.data.name})`);     
         //console.log(_e.currentTarget)
 
@@ -58,6 +105,11 @@ export class Prop { //implements Serialization<Prop> {
 
         // DEBUG
         //console.log(Manager.World.serialize());
+    }
+
+    private onSecondaryAction() {
+        console.log("onSecondaryAction...");
+        SAGE.Dialog.showMessage(this.data.desc);
     }
 
 }

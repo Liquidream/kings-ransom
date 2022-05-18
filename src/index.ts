@@ -15,3 +15,9 @@ SAGE.initialize(gameWidth, gameHeight, 0x6495ed);
 const sceny: LoaderScreen = new LoaderScreen();
 
 SAGE.changeScreen(sceny);
+
+
+// prevent right click contextBox
+document.addEventListener('contextmenu', e => {
+  e.preventDefault();
+}); 

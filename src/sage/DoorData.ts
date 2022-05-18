@@ -23,7 +23,7 @@ export class DoorData implements Serialization<DoorData> {
 
     fromJSON(input: any) {
         Object.assign(this, input); 
-        //console.log(typeof(this.x));        
+        //console.log(typeof(this.x));
         return this;
     }
 

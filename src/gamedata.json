@@ -62,6 +62,7 @@
         {
           "id": "dor_cave_fortress_ext",
           "name": "Fortress",
+          "desc": "Looks like I can see a Fortress",
           "x": 150,
           "y": 540,
           "width": 300,
@@ -72,6 +73,7 @@
         {
           "id": "dor_cave_bridge",
           "name": "Bridge",
+          "desc": "Back to the Bridge",
           "x": 800,
           "y": 550,
           "width": 600,
@@ -82,6 +84,7 @@
         {
           "id": "dor_cave_tunnel",
           "name": "Tunnel",
+          "desc": "Along the cave tunnel",
           "x": 1770,
           "y": 540,
           "width": 300,
@@ -100,6 +103,7 @@
         {
           "id": "dor_tunnel_entrance",
           "name": "Cave Entrance",
+          "desc": "Back to the cave entrance",
           "x": 220,
           "y": 640,
           "width": 440,
@@ -110,6 +114,7 @@
         {
           "id": "dor_tunnel_promontory",
           "name": "Promontory",
+          "desc": "Looks like I can see water",
           "x": 1090,
           "y": 650,
           "width": 500,
@@ -120,6 +125,7 @@
         {
           "id": "dor_cave_pit",
           "name": "Tunnel",
+          "desc": "A pit so dark that I cannot see the bottom",
           "x": 1560,
           "y": 1000,
           "width": 720,
@@ -150,6 +156,7 @@
         {
           "id": "dor_promontory_tunnel",
           "name": "Cave Tunnel",
+          "desc": "Back to the cave tunnel",
           "x": 200,
           "y": 540,
           "width": 400,
@@ -168,7 +175,7 @@
           "id": "prp_rat",
           "name": "Rat",
           "image": "Rat",
-          "desc": "A rat",
+          "desc": "It's a rat, looks like he's dying",
           "x": 265,
           "y": 545,
           "pickupable": true
@@ -178,6 +185,7 @@
         {
           "id": "dor_fortress_int",
           "name": "Fortress Interior",
+          "desc": "The entrance door to the fortress",
           "x": 960,
           "y": 550,
           "width": 720,
@@ -190,6 +198,7 @@
         {
           "id": "dor_fortress_cave",
           "name": "Cave Entrance",
+          "desc": "Back to the cave entrance",
           "x": 960,
           "y": 1000,
           "width": 1920,
@@ -208,7 +217,7 @@
           "id": "prp_gold",
           "name": "Gold Bar",
           "image": "Gold-Bar",
-          "desc": "A gold bar",          
+          "desc": "It's a heavy gold bar - must be worth a lot",
           "x": 1325,
           "y": 855,
           "pickupable": true
@@ -217,7 +226,8 @@
       "doors": [
         {
           "id": "dor_fortress_cave",
-          "name": "Fortress Exterior",          
+          "name": "Fortress Exterior",
+          "desc": "Back to the cave entrance",
           "x": 825,
           "y": 560,
           "width": 620,

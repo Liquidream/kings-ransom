@@ -3,6 +3,10 @@ import { SAGE } from "../Manager";
 import { DoorData, DoorState } from "./DoorData";
 
 export class Door {
+    // "constants" 
+    // (perhaps overridable in config?)
+    TOUCH_DURATION: number = 500;
+
     public data!: DoorData;    
     public graphics!: Graphics;
     
@@ -34,14 +38,58 @@ export class Door {
         graphics.endFill();
 
         // Events
-        graphics.on("pointertap", this.onClicked, this);
+        graphics.on("click", this.onClick, this);        
+        graphics.on("rightclick", this.onRightClick, this);
+        graphics.on("touchstart", this.onTouchStart, this);
+        graphics.on("touchend", this.onTouchEnd , this);    // Both touch "tap" & "long-press"
+
+
+        graphics.on("pointerover", this.onPointerOver, this);
+        graphics.on("pointerout", this.onPointerOut, this);
         graphics.interactive = true;   // Super important or the object will never receive mouse events!
         // https://pixijs.io/examples/#/interaction/custom-hitarea.js
 
         this.graphics = graphics;
     }
     
-    public onClicked(_e: InteractionEvent): void {
+    private onClick(_e: InteractionEvent) {        
+        this.onPrimaryAction()
+    }
+    
+    private onRightClick(_e: InteractionEvent) {
+        this.onSecondaryAction()
+    }
+
+    private touchTimer: any = undefined;
+    private longPressFired: boolean = false;
+
+    private onTouchStart(_e: InteractionEvent) {
+        console.log("onTouchStart...")
+        this.touchTimer = setTimeout(() => {
+            this.onSecondaryAction();
+            this.longPressFired = true;
+        }, this.TOUCH_DURATION);
+        // Reset state
+        this.longPressFired = false;
+    }
+    
+    private onTouchEnd(_e: InteractionEvent) {
+        console.log("onTouchEnd...")
+        if (!this.longPressFired) this.onPrimaryAction()
+        //stops short touches from firing the event
+        if (this.touchTimer)
+            clearTimeout(this.touchTimer); // clearTimeout, not cleartimeout..
+    }
+    
+    private onPointerOver(_e: InteractionEvent) {
+        SAGE.Dialog.showMessage(this.data.name, -1);
+    }
+
+    private onPointerOut(_e: InteractionEvent) {
+        SAGE.Dialog.clearMessage();
+    }
+
+    private onPrimaryAction() {
         if (SAGE.debugMode) console.log(`door > target_scene_id: ${this.data.target_scene_id}, state:${this.data.state}`);
         // Check door state
         if (this.data.state == DoorState.Locked) {
@@ -77,4 +125,11 @@ export class Door {
             SAGE.Dialog.showErrorMessage(`Error: Scene with ID '${this.data.target_scene_id}' is invalid`);
         }
     }
+    
+    private onSecondaryAction() {
+        console.log("onSecondaryAction...");
+        SAGE.Dialog.showMessage(this.data.desc);
+    }
+
+
 }

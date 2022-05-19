@@ -5,9 +5,9 @@ import { SAGE } from "../Manager";
 export class Dialog {
     // "constants" 
     // (perhaps overridable in config?)
-    CHARS_PER_SEC: number = 15;
-    MIN_DURATION_SEC: number = 1.5;
-    MAX_DURATION_SEC: number = 7;
+    CHARS_PER_SEC = 15;
+    MIN_DURATION_SEC = 1.5;
+    MAX_DURATION_SEC = 7;
 
     // public constructor() {
     // }
@@ -60,7 +60,7 @@ export class Dialog {
             wordWrap: true,
             wordWrapWidth: SAGE.width,
         });
-        let newDialogText = new Text(message, styly); // Text supports unicode!
+        const newDialogText = new Text(message, styly); // Text supports unicode!
         newDialogText.anchor.set(0.5);
         newDialogText.x = SAGE.width / 2;
         newDialogText.y = SAGE.height - 75;

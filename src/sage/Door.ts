@@ -1,4 +1,4 @@
-import { Graphics, InteractionEvent } from "pixi.js";
+import { Graphics } from "pixi.js";
 import { SAGE } from "../Manager";
 import { DialogType } from "./Dialog";
 import { DoorData, DoorState } from "./DoorData";
@@ -6,7 +6,7 @@ import { DoorData, DoorState } from "./DoorData";
 export class Door {
     // "constants" 
     // (perhaps overridable in config?)
-    TOUCH_DURATION: number = 500;
+    TOUCH_DURATION = 500;
 
     public data!: DoorData;    
     public graphics!: Graphics;
@@ -15,7 +15,7 @@ export class Door {
     public constructor(propData: any) { 
         // Initialise from data object
         this.data = propData;
-        let graphics = new Graphics();
+        const graphics = new Graphics();
         // Make doors visible in debug
         if (SAGE.debugMode) {
             // Set the fill color
@@ -53,18 +53,18 @@ export class Door {
         this.graphics = graphics;
     }
     
-    private onClick(_e: InteractionEvent) {        
+    private onClick() { //_e: InteractionEvent      
         this.onPrimaryAction()
     }
     
-    private onRightClick(_e: InteractionEvent) {
+    private onRightClick() { //_e: InteractionEvent
         this.onSecondaryAction()
     }
 
     private touchTimer: any = undefined;
-    private longPressFired: boolean = false;
+    private longPressFired = false;
 
-    private onTouchStart(_e: InteractionEvent) {
+    private onTouchStart() { //_e: InteractionEvent
         console.log("onTouchStart...")
         this.touchTimer = setTimeout(() => {
             this.onSecondaryAction();
@@ -75,7 +75,7 @@ export class Door {
     }
     
     // https://stackoverflow.com/questions/6139225/how-to-detect-a-long-touch-pressure-with-javascript-for-android-and-iphone
-    private onTouchEnd(_e: InteractionEvent) {
+    private onTouchEnd() { //_e: InteractionEvent
         console.log("onTouchEnd...")
         if (!this.longPressFired) this.onPrimaryAction()
         //stops short touches from firing the event
@@ -83,11 +83,11 @@ export class Door {
             clearTimeout(this.touchTimer); // clearTimeout, not cleartimeout..
     }
     
-    private onPointerOver(_e: InteractionEvent) {
+    private onPointerOver() { //_e: InteractionEvent
         SAGE.Dialog.showMessage(this.data.name, DialogType.NameOnHover, -1);
     }
 
-    private onPointerOut(_e: InteractionEvent) {
+    private onPointerOut() { //_e: InteractionEvent
         // If dialog being displayed is name "on hover"...
         if (SAGE.Dialog.currentDialogType == DialogType.NameOnHover) {
             SAGE.Dialog.clearMessage();

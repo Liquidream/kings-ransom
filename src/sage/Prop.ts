@@ -1,11 +1,12 @@
 import { InteractionEvent, Sprite, Texture } from "pixi.js";
 import { SAGE } from "../Manager";
+import { DialogType } from "./Dialog";
 import { PropData } from "./PropData";
 
 export class Prop {
     // "constants" 
     // (perhaps overridable in config?)
-    TOUCH_DURATION: number = 500;
+    TOUCH_DURATION = 500;
     
     public data!: PropData;    
     public sprite!: Sprite;
@@ -42,18 +43,18 @@ export class Prop {
     } 
 
     private onClick(_e: InteractionEvent) {
-        console.log(_e.data.originalEvent);
+        //console.log(_e.data.originalEvent);
         this.onPrimaryAction()
     }
     
-    private onRightClick(_e: InteractionEvent) {
+    private onRightClick() { //_e: InteractionEvent
         this.onSecondaryAction()
     }
 
     private touchTimer: any = undefined;
-    private longPressFired: boolean = false;
+    private longPressFired = false;
 
-    private onTouchStart(_e: InteractionEvent) {
+    private onTouchStart() { //_e: InteractionEventteractionEvent) {
         console.log("onTouchStart...")
         this.touchTimer = setTimeout(() => {
             this.onSecondaryAction();
@@ -63,7 +64,7 @@ export class Prop {
         this.longPressFired = false;
     }
     
-    private onTouchEnd(_e: InteractionEvent) {
+    private onTouchEnd() { //_e: InteractionEvent
         console.log("onTouchEnd...")
         if (!this.longPressFired) this.onPrimaryAction()
         //stops short touches from firing the event
@@ -71,11 +72,11 @@ export class Prop {
             clearTimeout(this.touchTimer); // clearTimeout, not cleartimeout..
     }
 
-    private onPointerOver(_e: InteractionEvent): void {
-        SAGE.Dialog.showMessage(this.data.name, -1);
+    private onPointerOver() { //_e: InteractionEvent
+        SAGE.Dialog.showMessage(this.data.name, DialogType.NameOnHover, -1);
     }
 
-    private onPointerOut(_e: InteractionEvent): void {
+    private onPointerOut() { //_e: InteractionEvent
         SAGE.Dialog.clearMessage();
     }
     

@@ -42,8 +42,17 @@ export class Dialog {
 
     private async showMessageCore(message: string, col: string, type: DialogType = DialogType.Description, durationInSecs?: number): Promise<void> {
         let waitDuration = 0;
-        // Are we already showing a message? If so, clear it
-        if (this.currentDialogText) this.clearMessage()
+        // Are we already showing a message? 
+        if (this.currentDialogText) {
+            // If so, is incoming message low priority? (e.g. hover)
+            if (type === DialogType.NameOnHover) {
+                // Abort, leave current dialog up, as is higher priority
+                // (player can always hover again, else may lose important message)
+                return;
+            }
+            // clear existing message
+            this.clearMessage()
+        }
         
         // Useful info:
         // https://www.3playmedia.com/learn/popular-topics/closed-captioning/
@@ -91,6 +100,12 @@ export class Dialog {
             // Remove message now duration over
             // TODO: Unlike counter method, this could create a bug where msg changed mid-show & thread clash?
             SAGE.app.stage.removeChild(newDialogText);
+            
+            // Only clear dialog if we're the last message 
+            // (could have been an overlap)
+            if (newDialogText === this.currentDialogText) {
+                this.clearMessage();
+            }
         }
     }
     

@@ -124,7 +124,7 @@
         },
         {
           "id": "dor_cave_pit",
-          "name": "Tunnel",
+          "name": "Pit",
           "desc": "A pit so dark that I cannot see the bottom",
           "x": 1560,
           "y": 1000,

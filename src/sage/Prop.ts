@@ -77,7 +77,10 @@ export class Prop {
     }
 
     private onPointerOut() { //_e: InteractionEvent
-        SAGE.Dialog.clearMessage();
+        // If dialog being displayed is name "on hover"...
+        if (SAGE.Dialog.currentDialogType === DialogType.NameOnHover) {
+            SAGE.Dialog.clearMessage();
+        }
     }
     
     private onPrimaryAction() {

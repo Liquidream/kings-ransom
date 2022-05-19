@@ -89,7 +89,7 @@ export class Door {
 
     private onPointerOut() { //_e: InteractionEvent
         // If dialog being displayed is name "on hover"...
-        if (SAGE.Dialog.currentDialogType == DialogType.NameOnHover) {
+        if (SAGE.Dialog.currentDialogType === DialogType.NameOnHover) {
             SAGE.Dialog.clearMessage();
         }
     }

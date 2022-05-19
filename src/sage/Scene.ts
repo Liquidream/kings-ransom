@@ -9,14 +9,14 @@ export class Scene implements Serialization<Scene> {
         // Anything?
     }
 
-    public id: string = "";
-    public image: string = "";
-    public name: string = "";
+    public id = "";
+    public image = "";
+    public name = "";
     // Key-Value pair to allow properties to be set/read
     public property: { [key: string]: string | number | boolean } = {};
     
     // Events
-    public on_enter: string = "";
+    public on_enter = "";
 
     public props: Array<PropData> = [];
     public doors: Array<DoorData> = [];
@@ -68,10 +68,10 @@ export class Scene implements Serialization<Scene> {
         this.name =  input.name;
         if (input.property) this.property = input.property;
         this.on_enter =  input.on_enter;
-        for(let prop of input.props){
+        for(const prop of input.props){
             this.props.push(new PropData().fromJSON(prop))
         }
-        for(let door of input.doors){
+        for(const door of input.doors){
             this.doors.push(new DoorData().fromJSON(door))
         }
         return this;

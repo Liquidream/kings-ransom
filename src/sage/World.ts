@@ -36,7 +36,7 @@ export class World implements Serialization<World> {
     // Start the adventure!
     start() {
         // Find the starting scene...
-        let startingScene = this.scenes.find((obj) => {
+        const startingScene = this.scenes.find((obj) => {
             return obj.id === this.starting_scene_id;
         });
         
@@ -55,7 +55,7 @@ export class World implements Serialization<World> {
     /** Find and return scene with specific id */
     getSceneById(sceneId: string) {
         // Find the specified scene...
-        let scene = this.scenes.find((obj) => {
+        const scene = this.scenes.find((obj) => {
             return obj.id === sceneId;
         });
         return scene;
@@ -64,9 +64,9 @@ export class World implements Serialization<World> {
     /** Find and return prop with specific id */
     getPropById(propId: string) {        
         // First, find scene that contains prop...
-        let scene = this.scenes.filter(e => e.props.filter(c => c.id === propId)[0])[0]; 
+        const scene = this.scenes.filter(e => e.props.filter(c => c.id === propId)[0])[0]; 
         // Then get the propdata...
-        let propData = scene ? scene.props.filter(c => c.id === propId)[0] : null;
+        const propData = scene ? scene.props.filter(c => c.id === propId)[0] : null;
         return propData;
     }
 
@@ -78,10 +78,10 @@ export class World implements Serialization<World> {
     /** Move prop to specfied scene id (at optional x,y position)  */
     putPropAt(propId: string, targetSceneId: string, x?: number, y?: number, fadeIn?: boolean) {
         // Get prop data
-        let propData = this.getPropById(propId);
+        const propData = this.getPropById(propId);
         if (propData) {
             // Remove prop from its current scene...
-            let sourceScene = this.scenes.find((scn) => {
+            const sourceScene = this.scenes.find((scn) => {
                 return scn.props.find((prp: PropData) => {
                     return prp.id === propId;
                 });
@@ -91,7 +91,7 @@ export class World implements Serialization<World> {
             }
             
             // ..and place in target scene...
-            let targetScene = this.getSceneById(targetSceneId);
+            const targetScene = this.getSceneById(targetSceneId);
             if (targetScene) {
                 // data...
                 targetScene.addPropData(propData);
@@ -116,7 +116,7 @@ export class World implements Serialization<World> {
     fromJSON(input: any) {
         this.title = input.title;
         if (input.property) this.property = input.property;
-        for(let scene of input.scenes){
+        for(const scene of input.scenes){
             this.scenes.push(new Scene().fromJSON(scene))
         }
         this.player = new Player().fromJSON(input.player);

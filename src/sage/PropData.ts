@@ -5,20 +5,20 @@ export class PropData implements Serialization<PropData> {
         // Anything?
     } 
     
-    id: string = "";
-    image: string = "";
-    name: string = "";
-    desc: string = "";
-    x: number = 0;
-    y: number = 0;
-    width: number = 0;
-    height: number = 0;
-    pickupable: boolean = false;
-    visible: boolean = true;    
+    id = "";
+    image = "";
+    name = "";
+    desc = "";
+    x = 0;
+    y = 0;
+    width = 0;
+    height = 0;
+    pickupable = false;
+    visible = true;    
     // Key-Value pair to allow properties to be set/read
     property: { [key: string]: string | number | boolean } = {};
     // Poss. event actions
-    on_action: string = "";
+    on_action = "";
         
     // public initialize(): void {
         //     // Anything?

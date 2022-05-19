@@ -19,14 +19,14 @@ export class Player implements Serialization<Player> {
 
     /** Remove (and return) the specified prop, if present */
     public removeFromInventory(propId: string): PropData | undefined {        
-        let prop = this.inventory.find(prop => prop.id === propId)
+        const prop = this.inventory.find(prop => prop.id === propId)
         return prop;
     }
 
     fromJSON(input: any) {
         this.name = input.name;
         if (input.property) this.property = input.property;
-        for(let prop of input.inventory){
+        for(const prop of input.inventory){
             this.inventory.push(new PropData().fromJSON(prop))
         }
         return this;

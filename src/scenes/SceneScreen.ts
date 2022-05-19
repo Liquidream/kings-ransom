@@ -1,5 +1,5 @@
 import { Group, Tween } from "tweedle.js"; //Easing
-import { Container, Sprite, InteractionEvent, Graphics, Text, TextStyle } from "pixi.js"; //filters
+import { Container, Sprite, Graphics, Text, TextStyle } from "pixi.js"; //filters
 
 import { IScreen, SAGE } from "../Manager";
 import { Scene } from "../sage/Scene";
@@ -89,7 +89,7 @@ export class SceneScreen extends Container implements IScreen {
         console.log(message);
     }
 
-    private onClickGameOver(_e: InteractionEvent): void {
+    private onClickGameOver() { //_e: InteractionEvent
         //console.log("You interacted with game over ...overlay!")
         // Restart game
         SAGE.restartGame();
@@ -111,7 +111,7 @@ export class SceneScreen extends Container implements IScreen {
         // TODO: Make this all dynamic/data-based eventually, this is just a crude example!
         if (this.scene.props.length > 0) {
 
-            for (let propData of this.scene.props) {
+            for (const propData of this.scene.props) {
                 this.addProp(propData);
             }
         }
@@ -119,9 +119,9 @@ export class SceneScreen extends Container implements IScreen {
         SAGE.Dialog.clearMessage();
     }
 
-    public addProp(data: PropData, fadeIn: boolean = false) {
+    public addProp(data: PropData, fadeIn = false) {
         // Create new component obj (contains data + view)
-        let prop = new Prop(data);
+        const prop = new Prop(data);
         this.addChild(prop.sprite);
 
         // Fade in?
@@ -135,7 +135,7 @@ export class SceneScreen extends Container implements IScreen {
 
         // DEBUG?
         if (SAGE.debugMode) {
-            let graphics = new Graphics();
+            const graphics = new Graphics();
             graphics.beginFill(0xe74c3c, 125); // Red
             graphics.lineStyle(10, 0xFF0000);
             graphics.pivot.set(prop.sprite.width/2, prop.sprite.height/2);
@@ -164,16 +164,16 @@ export class SceneScreen extends Container implements IScreen {
     private buildDoorways() {
         //console.log(this.scene.doors);
         if (this.scene.doors.length > 0) {
-            for (let doorData of this.scene.doors) {
+            for (const doorData of this.scene.doors) {
                 // Create new component obj (contains data + view)
-                let door = new Door(doorData);                
+                const door = new Door(doorData);                
                 this.addChild(door.graphics);
             }
         }
         SAGE.Dialog.clearMessage();
     }
 
-    private onClickBackdrop(_e: InteractionEvent): void {
+    private onClickBackdrop() { //_e: InteractionEvent
         console.log("You interacted with Backdrop!")
 
         // Test dynamic JS code

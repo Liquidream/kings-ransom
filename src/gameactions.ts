@@ -25,7 +25,7 @@ export class Actions {
   }
 
   onTreeAction = async () => {    
-    let treeProp = SAGE.World.getPropById('prp_tree');
+    const treeProp = SAGE.World.getPropById('prp_tree');
     // If not collected key already...
     if (treeProp && !treeProp.property["key-dropped"]) {
       treeProp.property["key-dropped"] = true;

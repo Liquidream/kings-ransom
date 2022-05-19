@@ -16,7 +16,7 @@ export class SAGE {
     private static _fps: number;
     private static currentScreen: IScreen;
     
-    public static debugMode: boolean = false;
+    public static debugMode = false;
     
     public static World: World;
     public static Dialog: Dialog;
@@ -72,7 +72,7 @@ export class SAGE {
 
     public static loadWorld(): void {
         
-        let gamedata = require("./gamedata.json");
+        const gamedata = require("./gamedata.json");
         //import * as gamedata from "./gamedata.json";
         //let gamedata = JSON.parse(fs.readFileSync("./gamedata.json", "utf-8"));
         

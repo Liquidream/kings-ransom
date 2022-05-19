@@ -7,7 +7,7 @@ export class Fullscreen {
     private constructor() { /*this class is purely static. No constructor to see here*/ }
 
     public static openFullscreen() {
-        var elem = document.documentElement;
+        const elem = document.documentElement;
         if (elem.requestFullscreen) {
             elem.requestFullscreen();
         } else if (elem.mozRequestFullScreen) {

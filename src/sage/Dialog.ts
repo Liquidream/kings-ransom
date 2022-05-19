@@ -12,7 +12,8 @@ export class Dialog {
     // public constructor() {
     // }
     
-    private currentDialogText!: Text | null;
+    public currentDialogText!: Text | null;
+    public currentDialogType!: DialogType | null;
     
     // public initialize(): void {
     //     // Anything?
@@ -23,9 +24,9 @@ export class Dialog {
         // (was prev used when using display counter, rather than async/timer)
     }
         
-    public async showMessage(message: string, durationInSecs?: number): Promise<void> {
+    public async showMessage(message: string, type?: DialogType, durationInSecs?: number): Promise<void> {
         // Show a white message
-        return this.showMessageCore(message, "#fff", durationInSecs)
+        return this.showMessageCore(message, "#fff", type, durationInSecs)
     }
 
     public async showErrorMessage(errorMessage: string): Promise<void> {
@@ -36,9 +37,10 @@ export class Dialog {
     public clearMessage(): void {
         if (this.currentDialogText) SAGE.app.stage.removeChild(this.currentDialogText);        
         this.currentDialogText = null;
+        this.currentDialogType = null;
     }
 
-    private async showMessageCore(message: string, col: string, durationInSecs?: number): Promise<void> {
+    private async showMessageCore(message: string, col: string, type: DialogType = DialogType.Description, durationInSecs?: number): Promise<void> {
         let waitDuration = 0;
         // Are we already showing a message? If so, clear it
         if (this.currentDialogText) this.clearMessage()
@@ -55,14 +57,20 @@ export class Dialog {
             fontSize: 47,
             strokeThickness: 6,
             lineJoin: "round",
+            wordWrap: true,
+            wordWrapWidth: SAGE.width,
         });
-        this.currentDialogText = new Text(message, styly); // Text supports unicode!
-        this.currentDialogText.anchor.set(0.5);
-        this.currentDialogText.x = SAGE.width / 2;
-        this.currentDialogText.y = SAGE.height - 75;
+        let newDialogText = new Text(message, styly); // Text supports unicode!
+        newDialogText.anchor.set(0.5);
+        newDialogText.x = SAGE.width / 2;
+        newDialogText.y = SAGE.height - 75;
         //texty.text = "This is expensive to change, please do not abuse";
         
-        SAGE.app.stage.addChild(this.currentDialogText);
+        SAGE.app.stage.addChild(newDialogText);
+
+        // Set here, so if another dialog comes before this expires, it'll be removed
+        this.currentDialogText = newDialogText;
+        this.currentDialogType = type;
         
         // How long to display?
         if (durationInSecs) {
@@ -82,10 +90,16 @@ export class Dialog {
             await SAGE.Script.wait(waitDuration);
             // Remove message now duration over
             // TODO: Unlike counter method, this could create a bug where msg changed mid-show & thread clash?
-            SAGE.app.stage.removeChild(this.currentDialogText);
+            SAGE.app.stage.removeChild(newDialogText);
         }
     }
     
+}
+
+export enum DialogType {
+    Description,
+    NameOnHover,
+    Dialog,
 }
 
 // Clamp number between two values with the following line:

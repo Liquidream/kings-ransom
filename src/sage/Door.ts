@@ -1,5 +1,6 @@
 import { Graphics, InteractionEvent } from "pixi.js";
 import { SAGE } from "../Manager";
+import { DialogType } from "./Dialog";
 import { DoorData, DoorState } from "./DoorData";
 
 export class Door {
@@ -73,6 +74,7 @@ export class Door {
         this.longPressFired = false;
     }
     
+    // https://stackoverflow.com/questions/6139225/how-to-detect-a-long-touch-pressure-with-javascript-for-android-and-iphone
     private onTouchEnd(_e: InteractionEvent) {
         console.log("onTouchEnd...")
         if (!this.longPressFired) this.onPrimaryAction()
@@ -82,11 +84,14 @@ export class Door {
     }
     
     private onPointerOver(_e: InteractionEvent) {
-        SAGE.Dialog.showMessage(this.data.name, -1);
+        SAGE.Dialog.showMessage(this.data.name, DialogType.NameOnHover, -1);
     }
 
     private onPointerOut(_e: InteractionEvent) {
-        SAGE.Dialog.clearMessage();
+        // If dialog being displayed is name "on hover"...
+        if (SAGE.Dialog.currentDialogType == DialogType.NameOnHover) {
+            SAGE.Dialog.clearMessage();
+        }
     }
 
     private onPrimaryAction() {

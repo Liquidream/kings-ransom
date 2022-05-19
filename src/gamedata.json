@@ -42,7 +42,7 @@
           "id": "dor_cave",
           "name": "Cave Entrance",
           "desc": "It's a dark cave to somewhere",
-          "desc_locked": "The cave is too dark to see without some light",
+          "desc_locked": "The cave is too dark to see without some light - perhaps if something was lying around that could give off light then maybe I could go in there, but until then... no way jose!",
           "target_scene_id": "scn_cave_ent",
           "state": "LOCKED",
           "key_prop_id": "prp_lamp",

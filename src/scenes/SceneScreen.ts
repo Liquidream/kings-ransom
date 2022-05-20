@@ -7,14 +7,15 @@ import { Fullscreen } from "../utils/Fullscreen";
 import { Prop } from "../sage/Prop";
 import { Door } from "../sage/Door";
 import { PropData } from "../sage/PropData";
+import { InputEventEmitter } from "../sage/InputEventEmitter";
 
 
 
 export class SceneScreen extends Container implements IScreen {
     private scene: Scene;
     private backdrop!: Sprite;
-    //private lamp!: Sprite;
-    //private propSprites: Array<Sprite> = [];
+    // @ts-ignore (ignore the "declared bu never used" for now)
+    private backdropInputEvents!: InputEventEmitter;
 
     constructor(scene: Scene) {
         super();
@@ -26,8 +27,6 @@ export class SceneScreen extends Container implements IScreen {
         this.buildBackdrop();
         this.buildProps();
         this.buildDoorways();
-
-        SAGE.Events.on("bgClick", this.onTestEvent, this);
     }
 
     public update(_framesPassed: number): void {
@@ -103,9 +102,16 @@ export class SceneScreen extends Container implements IScreen {
         this.backdrop.anchor.set(0.5);
         this.backdrop.x = SAGE.width / 2;
         this.backdrop.y = SAGE.height / 2;
-        this.backdrop.on("pointertap", this.onClickBackdrop, this);
-        this.backdrop.interactive = true;   // Super important or the object will never receive mouse events!
+        //this.backdrop.on("pointertap", this.onClickBackdrop, this);
+        //this.backdrop.interactive = true;   // Super important or the object will never receive mouse events!
         this.addChild(this.backdrop);
+
+        
+        // Events
+        this.backdropInputEvents = new InputEventEmitter(this.backdrop);
+        this.backdrop.on("primaryaction", this.onTestEvent, this);  
+        this.backdrop.on("secondaryaction", this.onSecondaryAction, this); 
+        //SAGE.Events.on("bgClick", this.onTestEvent, this);
     }
 
     private buildProps() {
@@ -175,8 +181,9 @@ export class SceneScreen extends Container implements IScreen {
         SAGE.Dialog.clearMessage();
     }
 
-    private onClickBackdrop() { //_e: InteractionEvent
+    private onSecondaryAction() { //_e: InteractionEvent
         console.log("You interacted with Backdrop!")
+        throw new Error("TODO: Make all interactive objects flash (by raising 'global' event)");
 
         // Test dynamic JS code
         //Function("Manager.World.scenes[0].show();")();
@@ -190,7 +197,7 @@ export class SceneScreen extends Container implements IScreen {
         SAGE.Events.emit("bgClick");
     }
     
-    onTestEvent() {
-        console.log("test event was fires!");
+    private onTestEvent() {
+        console.log("test event was fired!");
     }
 }

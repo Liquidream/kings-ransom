@@ -2,6 +2,7 @@ import { Graphics } from "pixi.js";
 import { SAGE } from "../Manager";
 import { DialogType } from "./Dialog";
 import { DoorData, DoorState } from "./DoorData";
+import { InputEventEmitter } from "./InputEventEmitter";
 
 export class Door {
     // "constants" 
@@ -10,6 +11,8 @@ export class Door {
 
     public data!: DoorData;    
     public graphics!: Graphics;
+    // @ts-ignore (ignore the "declared bu never used" for now)
+    private doorInputEvents!: InputEventEmitter;
     
     
     public constructor(propData: any) { 
@@ -39,48 +42,16 @@ export class Door {
         graphics.endFill();
 
         // Events
-        graphics.on("click", this.onClick, this);        
-        graphics.on("rightclick", this.onRightClick, this);
-        graphics.on("touchstart", this.onTouchStart, this);
-        graphics.on("touchend", this.onTouchEnd , this);    // Both touch "tap" & "long-press"
-
+        this.doorInputEvents = new InputEventEmitter(graphics);
+        graphics.on("primaryaction", this.onPrimaryAction, this);  
+        graphics.on("secondaryaction", this.onSecondaryAction, this);  
 
         graphics.on("pointerover", this.onPointerOver, this);
         graphics.on("pointerout", this.onPointerOut, this);
-        graphics.interactive = true;   // Super important or the object will never receive mouse events!
+
         // https://pixijs.io/examples/#/interaction/custom-hitarea.js
 
         this.graphics = graphics;
-    }
-    
-    private onClick() { //_e: InteractionEvent      
-        this.onPrimaryAction()
-    }
-    
-    private onRightClick() { //_e: InteractionEvent
-        this.onSecondaryAction()
-    }
-
-    private touchTimer: any = undefined;
-    private longPressFired = false;
-
-    private onTouchStart() { //_e: InteractionEvent
-        console.log("onTouchStart...")
-        this.touchTimer = setTimeout(() => {
-            this.onSecondaryAction();
-            this.longPressFired = true;
-        }, this.TOUCH_DURATION);
-        // Reset state
-        this.longPressFired = false;
-    }
-    
-    // https://stackoverflow.com/questions/6139225/how-to-detect-a-long-touch-pressure-with-javascript-for-android-and-iphone
-    private onTouchEnd() { //_e: InteractionEvent
-        console.log("onTouchEnd...")
-        if (!this.longPressFired) this.onPrimaryAction()
-        //stops short touches from firing the event
-        if (this.touchTimer)
-            clearTimeout(this.touchTimer); // clearTimeout, not cleartimeout..
     }
     
     private onPointerOver() { //_e: InteractionEvent

@@ -1,6 +1,7 @@
-import { InteractionEvent, Sprite, Texture } from "pixi.js";
+import { Sprite, Texture } from "pixi.js";
 import { SAGE } from "../Manager";
 import { DialogType } from "./Dialog";
+import { InputEventEmitter } from "./InputEventEmitter";
 import { PropData } from "./PropData";
 
 export class Prop {
@@ -10,6 +11,8 @@ export class Prop {
     
     public data!: PropData;    
     public sprite!: Sprite;
+    // @ts-ignore (ignore the "declared bu never used" for now)
+    private propInputEvents!: InputEventEmitter;
     
     public constructor(propData: any) { 
         // Initialise from data object
@@ -29,11 +32,9 @@ export class Prop {
         sprite.y = propData.y;
 
         // Events
-        this.sprite.interactive = true;   // Super important or the object will never receive mouse events!
-        this.sprite.on("click", this.onClick, this);        
-        this.sprite.on("rightclick", this.onRightClick, this);
-        this.sprite.on("touchstart", this.onTouchStart, this);
-        this.sprite.on("touchend", this.onTouchEnd , this);    // Both touch "tap" & "long-press"
+        this.propInputEvents = new InputEventEmitter(this.sprite);
+        this.sprite.on("primaryaction", this.onPrimaryAction, this);  
+        this.sprite.on("secondaryaction", this.onSecondaryAction, this);
 
         this.sprite.on("pointerover", this.onPointerOver, this);
         this.sprite.on("pointerout", this.onPointerOut, this);
@@ -42,35 +43,6 @@ export class Prop {
         this.sprite.visible = propData.visible;
     } 
 
-    private onClick(_e: InteractionEvent) {
-        //console.log(_e.data.originalEvent);
-        this.onPrimaryAction()
-    }
-    
-    private onRightClick() { //_e: InteractionEvent
-        this.onSecondaryAction()
-    }
-
-    private touchTimer: any = undefined;
-    private longPressFired = false;
-
-    private onTouchStart() { //_e: InteractionEventteractionEvent) {
-        console.log("onTouchStart...")
-        this.touchTimer = setTimeout(() => {
-            this.onSecondaryAction();
-            this.longPressFired = true;
-        }, this.TOUCH_DURATION);
-        // Reset state
-        this.longPressFired = false;
-    }
-    
-    private onTouchEnd() { //_e: InteractionEvent
-        console.log("onTouchEnd...")
-        if (!this.longPressFired) this.onPrimaryAction()
-        //stops short touches from firing the event
-        if (this.touchTimer)
-            clearTimeout(this.touchTimer); // clearTimeout, not cleartimeout..
-    }
 
     private onPointerOver() { //_e: InteractionEvent
         SAGE.Dialog.showMessage(this.data.name, DialogType.NameOnHover, -1);

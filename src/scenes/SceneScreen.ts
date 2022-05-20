@@ -26,6 +26,8 @@ export class SceneScreen extends Container implements IScreen {
         this.buildBackdrop();
         this.buildProps();
         this.buildDoorways();
+
+        SAGE.Events.on("bgClick", this.onTestEvent, this);
     }
 
     public update(_framesPassed: number): void {
@@ -183,6 +185,12 @@ export class SceneScreen extends Container implements IScreen {
         if (false) {
             Fullscreen.openFullscreen();
         }
-
+        
+        // somewhere, when the time is right... Fire the clamp!
+        SAGE.Events.emit("bgClick");
+    }
+    
+    onTestEvent() {
+        console.log("test event was fires!");
     }
 }

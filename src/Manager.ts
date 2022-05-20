@@ -3,12 +3,17 @@ import { DisplayObject } from "@pixi/display";
 import { World } from "./sage/World";
 import { Dialog } from "./sage/Dialog";
 import { Script } from "./sage/Script";
+import { Events } from "./sage/Events";
 import { Actions } from "./gameactions";
+
+
 //import gamedata from './gamedata.json';
 
 
 export class SAGE {
-    private constructor() { /*this class is purely static. No constructor to see here*/ }
+    private constructor() {        
+        /*this class is purely static. No constructor to see here*/ 
+    }
 
     private static _app: Application;
     private static _width: number;
@@ -22,6 +27,7 @@ export class SAGE {
     public static Dialog: Dialog;
     public static Actions: Actions;
     public static Script: Script;
+    public static Events: Events;
 
     public static get width(): number {
         return SAGE._width;
@@ -89,6 +95,9 @@ export class SAGE {
 
         // ...and script
         SAGE.Script = new Script();
+
+        // ...and events
+        SAGE.Events = new Events();
 
         // console.log(Manager.World.title);
         // console.log(Manager.World.scenes[0].image);

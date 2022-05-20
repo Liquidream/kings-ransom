@@ -14,7 +14,7 @@ import { InputEventEmitter } from "../sage/InputEventEmitter";
 export class SceneScreen extends Container implements IScreen {
     private scene: Scene;
     private backdrop!: Sprite;
-    // @ts-ignore (ignore the "declared bu never used" for now)
+    // @ts-ignore (ignore the "declared but never used" for now)
     private backdropInputEvents!: InputEventEmitter;
 
     constructor(scene: Scene) {
@@ -111,7 +111,7 @@ export class SceneScreen extends Container implements IScreen {
         this.backdropInputEvents = new InputEventEmitter(this.backdrop);
         this.backdrop.on("primaryaction", this.onTestEvent, this);  
         this.backdrop.on("secondaryaction", this.onSecondaryAction, this); 
-        //SAGE.Events.on("bgClick", this.onTestEvent, this);
+        //SAGE.Events.on("scenehint", this.onTestEvent, this);
     }
 
     private buildProps() {
@@ -182,8 +182,8 @@ export class SceneScreen extends Container implements IScreen {
     }
 
     private onSecondaryAction() { //_e: InteractionEvent
-        console.log("You interacted with Backdrop!")
-        throw new Error("TODO: Make all interactive objects flash (by raising 'global' event)");
+        //console.log("You interacted with Backdrop!")
+        console.log("TODO: Make all interactive objects flash (by raising 'global' event)");
 
         // Test dynamic JS code
         //Function("Manager.World.scenes[0].show();")();
@@ -194,7 +194,7 @@ export class SceneScreen extends Container implements IScreen {
         }
         
         // somewhere, when the time is right... Fire the clamp!
-        SAGE.Events.emit("bgClick");
+        SAGE.Events.emit("scenehint");
     }
     
     private onTestEvent() {

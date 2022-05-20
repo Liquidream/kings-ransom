@@ -37,7 +37,7 @@ export class InputEventEmitter { //extends EventEmitter {
   private longPressFired = false;
 
   private onTouchStart() { //_e: InteractionEvent
-      console.log("onTouchStart...")
+      //console.log("onTouchStart...")
       this.touchTimer = setTimeout(() => {
           this.onSecondaryAction();
           this.longPressFired = true;
@@ -48,7 +48,7 @@ export class InputEventEmitter { //extends EventEmitter {
 
   // https://stackoverflow.com/questions/6139225/how-to-detect-a-long-touch-pressure-with-javascript-for-android-and-iphone
   private onTouchEnd() { //_e: InteractionEvent
-      console.log("onTouchEnd...")
+      //console.log("onTouchEnd...")
       if (!this.longPressFired) this.onPrimaryAction()
       //stops short touches from firing the event
       if (this.touchTimer)

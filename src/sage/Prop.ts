@@ -11,7 +11,7 @@ export class Prop {
     
     public data!: PropData;    
     public sprite!: Sprite;
-    // @ts-ignore (ignore the "declared bu never used" for now)
+    // @ts-ignore (ignore the "declared but never used" for now)
     private propInputEvents!: InputEventEmitter;
     
     public constructor(propData: any) { 
@@ -39,9 +39,15 @@ export class Prop {
         this.sprite.on("pointerover", this.onPointerOver, this);
         this.sprite.on("pointerout", this.onPointerOut, this);
 
+        SAGE.Events.on("scenehint", this.onSceneHint, this);
+
         // visible state
         this.sprite.visible = propData.visible;
     } 
+
+    private onSceneHint() {
+        console.log(`TODO: attrack tween for ${this.data.name}`);
+    }
 
 
     private onPointerOver() { //_e: InteractionEvent

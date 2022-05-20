@@ -11,7 +11,7 @@ export class Door {
 
     public data!: DoorData;    
     public graphics!: Graphics;
-    // @ts-ignore (ignore the "declared bu never used" for now)
+    // @ts-ignore (ignore the "declared but never used" for now)
     private doorInputEvents!: InputEventEmitter;
     
     
@@ -49,9 +49,15 @@ export class Door {
         graphics.on("pointerover", this.onPointerOver, this);
         graphics.on("pointerout", this.onPointerOut, this);
 
+        SAGE.Events.on("scenehint", this.onSceneHint, this);
+
         // https://pixijs.io/examples/#/interaction/custom-hitarea.js
 
         this.graphics = graphics;
+    }
+
+    private onSceneHint() {
+        console.log(`TODO: attrack tween for ${this.data.name}`);
     }
     
     private onPointerOver() { //_e: InteractionEvent

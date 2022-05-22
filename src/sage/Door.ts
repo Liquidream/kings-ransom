@@ -1,7 +1,7 @@
 import { Graphics } from "pixi.js";
 import { SAGE } from "../Manager";
 import { DialogType } from "./Dialog";
-import { DoorData, DoorState } from "./DoorData";
+import { DoorState, IDoorData } from "./DoorData";
 import { InputEventEmitter } from "./InputEventEmitter";
 
 export class Door {
@@ -9,15 +9,16 @@ export class Door {
     // (perhaps overridable in config?)
     TOUCH_DURATION = 500;
 
-    public data!: DoorData;    
+    public data!: IDoorData;    
     public graphics!: Graphics;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore (ignore the "declared but never used" for now)
     private doorInputEvents!: InputEventEmitter;
     
     
-    public constructor(propData: any) { 
+    public constructor(doorData: IDoorData) { 
         // Initialise from data object
-        this.data = propData;
+        this.data = doorData;
         const graphics = new Graphics();
         // Make doors visible in debug
         if (SAGE.debugMode) {

@@ -53,7 +53,7 @@ export class LoaderScreen extends Container implements IScreen {
         // To be a scene we must have the update method even if we don't use it.
     }
 
-    public resize(_screenWidth: number, _screenHeight: number): void {
+    // public resize(_screenWidth: number, _screenHeight: number): void {
 
-    }
+    // }
 }

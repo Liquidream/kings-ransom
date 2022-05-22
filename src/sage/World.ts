@@ -1,12 +1,12 @@
 import { Serialization } from "../utils/Serialization";
-import { Player } from "./Player";
-import { Scene } from "./Scene";
+import { IPlayerData, Player } from "./Player";
+import { ISceneData, Scene } from "./Scene";
 import { PropData } from "./PropData";
 import { SAGE } from "../Manager";
 
 
 
-export class World implements Serialization<World> {
+export class World implements IWorldData, Serialization<World> {
     public constructor() { 
         // Anything?
     }
@@ -19,7 +19,7 @@ export class World implements Serialization<World> {
 
     public currentScene!: Scene;
 
-    public initialize(data: any): void {        
+    public initialize(data: IWorldData): void {        
         
         // (Done in gamedata - else can't define hidden props)
         // Create the first scene as "void"?
@@ -113,7 +113,7 @@ export class World implements Serialization<World> {
     // ----------------------------------------------------------
     // Serialisation related
 
-    fromJSON(input: any) {
+    fromJSON(input: IWorldData) {
         this.title = input.title;
         if (input.property) this.property = input.property;
         for(const scene of input.scenes){
@@ -124,7 +124,7 @@ export class World implements Serialization<World> {
         return this;
     }
 
-    toJSON(): any {
+    toJSON(): IWorldData {
         return { 
             title: this.title,
             property: this.property,
@@ -136,4 +136,15 @@ export class World implements Serialization<World> {
     serialize(): string {
         return JSON.stringify(this);
     }
+}
+
+export interface IWorldData {
+    title: string | undefined;
+    player: IPlayerData;
+    scenes: Array<ISceneData>;
+    starting_scene_id: string | undefined;
+    // Key-Value pair to allow properties to be set/read
+    property: { [key: string]: string | number | boolean };
+    // Poss. event actions
+    //on_enter: string;
 }

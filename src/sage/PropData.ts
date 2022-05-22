@@ -1,6 +1,6 @@
 import { Serialization } from "../utils/Serialization";
 
-export class PropData implements Serialization<PropData> {
+export class PropData implements IPropData, Serialization<PropData> {
     constructor() { 
         // Anything?
     } 
@@ -24,12 +24,29 @@ export class PropData implements Serialization<PropData> {
         //     // Anything?
     // }
     
-    fromJSON(input: any) {
+    fromJSON(input: IPropData) {
         Object.assign(this, input);        
         return this;
     }
 
-    toJSON(): any {
+    toJSON(): IPropData {
         return this;
     }
+}
+
+export interface IPropData {
+    id: string;
+    image: string;
+    name: string;
+    desc: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    pickupable: boolean;
+    visible: boolean;    
+    // Key-Value pair to allow properties to be set/read
+    property: { [key: string]: string | number | boolean };
+    // Poss. event actions
+    on_action: string;
 }

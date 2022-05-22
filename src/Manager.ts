@@ -1,14 +1,16 @@
 import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
-import { World } from "./sage/World";
+import { IWorldData, World } from "./sage/World";
 import { Dialog } from "./sage/Dialog";
 import { Script } from "./sage/Script";
 import { Events } from "./sage/Events";
 import { Actions } from "./gameactions";
 
 
-//import gamedata from './gamedata.json';
-
+import gamedataJSON from './gamedata.json';
+const gamedata: IWorldData = <unknown>gamedataJSON as IWorldData;
+//const gamedata: IWorldData = {};
+//Object.assign(gamedata, gamedataJSON);
 
 export class SAGE {
     private constructor() {        
@@ -78,7 +80,7 @@ export class SAGE {
 
     public static loadWorld(): void {
         
-        const gamedata = require("./gamedata.json");
+        //const gamedata = require("./gamedata.json");
         //import * as gamedata from "./gamedata.json";
         //let gamedata = JSON.parse(fs.readFileSync("./gamedata.json", "utf-8"));
         
@@ -172,5 +174,5 @@ export interface IScreen extends DisplayObject {
     update(framesPassed: number): void;
 
     // we added the resize method to the interface
-    resize(screenWidth: number, screenHeight: number): void;
+    //resize(screenWidth: number, screenHeight: number): void;
 }

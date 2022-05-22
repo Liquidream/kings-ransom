@@ -1,10 +1,10 @@
 import { SAGE } from "../Manager";
 import { SceneScreen } from "../scenes/SceneScreen";
 import { Serialization } from "../utils/Serialization";
-import { PropData } from "./PropData";
-import { DoorData } from "./DoorData";
+import { IPropData, PropData } from "./PropData";
+import { DoorData, IDoorData } from "./DoorData";
 
-export class Scene implements Serialization<Scene> {
+export class Scene implements ISceneData, Serialization<Scene> {
     public constructor() { 
         // Anything?
     }
@@ -61,7 +61,7 @@ export class Scene implements Serialization<Scene> {
         // https://stackoverflow.com/a/67953394/574415
     }
 
-    fromJSON(input: any) {
+    fromJSON(input: ISceneData) {
         //console.log(input)
         this.id =  input.id;
         this.image =  input.image || "";
@@ -77,7 +77,7 @@ export class Scene implements Serialization<Scene> {
         return this;
     }
 
-    toJSON(): any {
+    toJSON(): ISceneData {
         // exclude certain properties from serialisation
         return { 
             id: this.id, 
@@ -89,4 +89,16 @@ export class Scene implements Serialization<Scene> {
             doors: this.doors } 
     }
     
+}
+
+export interface ISceneData {
+    id: string;
+    image: string;
+    name: string;    
+    // Key-Value pair to allow properties to be set/read
+    property: { [key: string]: string | number | boolean };
+    // Poss. event actions
+    on_enter: string;
+    props: Array<IPropData>;
+    doors: Array<IDoorData>;
 }

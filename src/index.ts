@@ -9,7 +9,7 @@ const gameHeight = 1080;
 SAGE.initialize(gameWidth, gameHeight, 0x6495ed);
 
 // Expose to JavaScript/Browser console
-(window as any).SAGE = SAGE;
+window.SAGE = SAGE;
 
 // pass in the screen size to avoid "asking up"
 const sceny: LoaderScreen = new LoaderScreen();

@@ -1,14 +1,14 @@
 import { Serialization } from "../utils/Serialization";
-import { PropData } from "./PropData";
+import { IPropData, PropData } from "./PropData";
 
 
 
-export class Player implements Serialization<Player> {
+export class Player implements IPlayerData, Serialization<Player> {
     public constructor() { 
         // Anything?
     }
     public name: string | undefined;
-    public inventory: Array<PropData> = [];
+    public inventory: Array<IPropData> = [];
     // Key-Value pair to allow properties to be set/read
     public property: { [key: string]: string | number | boolean } = {};
 
@@ -18,12 +18,12 @@ export class Player implements Serialization<Player> {
     }
 
     /** Remove (and return) the specified prop, if present */
-    public removeFromInventory(propId: string): PropData | undefined {        
+    public removeFromInventory(propId: string): IPropData | undefined {        
         const prop = this.inventory.find(prop => prop.id === propId)
         return prop;
     }
 
-    fromJSON(input: any) {
+    fromJSON(input: IPlayerData) {
         this.name = input.name;
         if (input.property) this.property = input.property;
         for(const prop of input.inventory){
@@ -32,7 +32,7 @@ export class Player implements Serialization<Player> {
         return this;
     }
     
-    toJSON(): any {
+    toJSON(): IPlayerData {
         return this;
     }
 
@@ -40,4 +40,13 @@ export class Player implements Serialization<Player> {
     //     return JSON.stringify(this);
     // }
 
+}
+
+export interface IPlayerData {
+    name: string | undefined;
+    inventory: Array<IPropData>;
+    // Key-Value pair to allow properties to be set/read
+    property: { [key: string]: string | number | boolean };
+    // Poss. event actions
+    //on_enter: string;
 }

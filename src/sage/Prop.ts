@@ -2,19 +2,20 @@ import { Sprite, Texture } from "pixi.js";
 import { SAGE } from "../Manager";
 import { DialogType } from "./Dialog";
 import { InputEventEmitter } from "./InputEventEmitter";
-import { PropData } from "./PropData";
+import { IPropData } from "./PropData";
 
 export class Prop {
     // "constants" 
     // (perhaps overridable in config?)
     TOUCH_DURATION = 500;
     
-    public data!: PropData;    
+    public data!: IPropData;    
     public sprite!: Sprite;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore (ignore the "declared but never used" for now)
     private propInputEvents!: InputEventEmitter;
     
-    public constructor(propData: any) { 
+    public constructor(propData: IPropData) { 
         // Initialise from data object
         let sprite = undefined;
         if (propData.image) {

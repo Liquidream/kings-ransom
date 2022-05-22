@@ -14,6 +14,7 @@ import { InputEventEmitter } from "../sage/InputEventEmitter";
 export class SceneScreen extends Container implements IScreen {
     private scene: Scene;
     private backdrop!: Sprite;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore (ignore the "declared but never used" for now)
     private backdropInputEvents!: InputEventEmitter;
 
@@ -29,7 +30,9 @@ export class SceneScreen extends Container implements IScreen {
         this.buildDoorways();
     }
 
-    public update(_framesPassed: number): void {
+    public update() { 
+        //{(_framesPassed: number): void {
+        
         // Do any movement here...
 
         //You need to update a group for the tweens to do something!
@@ -38,9 +41,9 @@ export class SceneScreen extends Container implements IScreen {
         SAGE.Dialog.update();
     }
 
-    public resize(_screenWidth: number, _screenHeight: number): void {
-
-    }
+    // public resize(_screenWidth: number, _screenHeight: number): void {
+    //     // Anything?
+    // }
 
     /**
      * Start the player death/game over sequence
@@ -189,6 +192,7 @@ export class SceneScreen extends Container implements IScreen {
         //Function("Manager.World.scenes[0].show();")();
 
         // Test fullscreen (DISABLED for now)
+        // eslint-disable-next-line no-constant-condition
         if (false) {
             Fullscreen.openFullscreen();
         }

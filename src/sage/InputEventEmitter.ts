@@ -33,7 +33,7 @@ export class InputEventEmitter { //extends EventEmitter {
       this.onSecondaryAction()
   }
 
-  private touchTimer: any = undefined;
+  private touchTimer: NodeJS.Timeout | undefined;
   private longPressFired = false;
 
   private onTouchStart() { //_e: InteractionEvent

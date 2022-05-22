@@ -11,9 +11,9 @@ interface HTMLElement {
     mozRequestFullScreen(options?: FullscreenOptions): Promise<void>;
 
     // Monitor full screen
-    onwebkitfullscreenchange: ((this: Element, ev: Event) => any) | null;
-    onmozfullscreenchange: ((this: Element, ev: Event) => any) | null;
-    MSFullscreenChange: ((this: Element, ev: Event) => any) | null;
+    onwebkitfullscreenchange: ((this: Element, ev: Event) => unknown) | null;
+    onmozfullscreenchange: ((this: Element, ev: Event) => unknown) | null;
+    MSFullscreenChange: ((this: Element, ev: Event) => unknown) | null;
 }
 
 interface Document {

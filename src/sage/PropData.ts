@@ -19,10 +19,11 @@ export class PropData implements IPropData, Serialization<PropData> {
     property: { [key: string]: string | number | boolean } = {};
     // Poss. event actions
     on_action = "";
-        
+    
     // public initialize(): void {
         //     // Anything?
     // }
+
     
     fromJSON(input: IPropData) {
         Object.assign(this, input);        

@@ -1,4 +1,5 @@
 import { Sprite, Texture } from "pixi.js";
+import { Easing, Tween } from "tweedle.js";
 import { SAGE } from "../Manager";
 import { DialogType } from "./Dialog";
 import { InputEventEmitter } from "./InputEventEmitter";
@@ -45,9 +46,31 @@ export class Prop {
         // visible state
         this.sprite.visible = propData.visible;
     } 
+    
+    tidyUp() {
+        // Unsubscribe from events, etc.
+        this.sprite.removeAllListeners();
+        SAGE.Events.off("scenehint", this.onSceneHint, this);
+    }
 
     private onSceneHint() {
-        console.log(`TODO: attrack tween for ${this.data.name}`);
+        //console.log(`TODO: attrack tween for ${this.data.name}`);
+        const attractShine: Sprite = Sprite.from("Shine");
+        attractShine.anchor.set(0.5);
+        attractShine.x = this.data.x
+        attractShine.y = this.data.y
+        attractShine.alpha = 0;
+
+        this.sprite.parent.addChild(attractShine);
+
+        new Tween(attractShine)
+            .to({ alpha: 1 }, 500)
+            .easing(Easing.Quadratic.InOut)
+            .yoyo(true).repeat(1)
+            .start()
+            .onComplete( ()=> { 
+                this.sprite.parent.removeChild(attractShine);
+            });
     }
 
 

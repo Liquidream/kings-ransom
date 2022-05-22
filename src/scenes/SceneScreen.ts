@@ -14,6 +14,9 @@ import { InputEventEmitter } from "../sage/InputEventEmitter";
 export class SceneScreen extends Container implements IScreen {
     private scene: Scene;
     private backdrop!: Sprite;
+    private props: Array<Prop> = [];
+    private doors: Array<Door> = [];
+
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore (ignore the "declared but never used" for now)
     private backdropInputEvents!: InputEventEmitter;
@@ -44,6 +47,16 @@ export class SceneScreen extends Container implements IScreen {
     // public resize(_screenWidth: number, _screenHeight: number): void {
     //     // Anything?
     // }
+
+    public tidyUp() {
+        // Unsubscribe from events, etc.
+        for(const prop of this.props){
+            prop.tidyUp();
+        }
+        for(const door of this.doors){
+            door.tidyUp();
+        }
+    }
 
     /**
      * Start the player death/game over sequence
@@ -132,8 +145,10 @@ export class SceneScreen extends Container implements IScreen {
 
     public addProp(data: PropData, fadeIn = false) {
         // Create new component obj (contains data + view)
-        const prop = new Prop(data);
+        const prop = new Prop(data);        
         this.addChild(prop.sprite);
+        this.props.push(prop);
+        // Don't add to scene.propdata here, as it likely already came from it?
 
         // Fade in?
         if (fadeIn) {
@@ -163,11 +178,13 @@ export class SceneScreen extends Container implements IScreen {
         new Tween(prop.sprite).to({ alpha: 0 }, 500).start()
             .onComplete( ()=> { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any                
                 // remove when tween completes
-                this.removeChild(prop.sprite);  
+                this.removeChild(prop.sprite);
+                this.props.splice(this.props.findIndex(item => item.data.id === prop.data.id),1);  
+                prop.tidyUp();
 
                 // remove from game data
-                // https://stackoverflow.com/a/67953394/574415
-                this.scene.props.splice(this.scene.props.findIndex(item => item.id === prop.data.id),1);
+                this.scene.removePropDataById(prop.data.id)
+                //this.scene.props.splice(this.scene.props.findIndex(item => item.id === prop.data.id),1);
             });
         new Tween(prop.sprite.scale).to({ x: 1.5, y: 1.5 }, 500).start()
     }
@@ -179,6 +196,7 @@ export class SceneScreen extends Container implements IScreen {
                 // Create new component obj (contains data + view)
                 const door = new Door(doorData);                
                 this.addChild(door.graphics);
+                this.doors.push(door);
             }
         }
         SAGE.Dialog.clearMessage();

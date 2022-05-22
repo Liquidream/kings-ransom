@@ -147,7 +147,8 @@ export class SAGE {
     public static changeScreen(newScene: IScreen): void {
         // Remove and destroy old scene... if we had one..
         if (SAGE.currentScreen) {
-            SAGE._app.stage.removeChild(SAGE.currentScreen);
+            // remove all event subscriptions            
+            SAGE._app.stage.removeChild(SAGE.currentScreen);            
             SAGE.currentScreen.destroy();
         }
 

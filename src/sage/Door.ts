@@ -1,4 +1,5 @@
-import { Graphics } from "pixi.js";
+import { Graphics, Sprite } from "pixi.js";
+import { Easing, Tween } from "tweedle.js";
 import { SAGE } from "../Manager";
 import { DialogType } from "./Dialog";
 import { DoorState, IDoorData } from "./DoorData";
@@ -56,9 +57,31 @@ export class Door {
 
         this.graphics = graphics;
     }
+    
+    tidyUp() {
+        // Unsubscribe from events, etc.
+        this.graphics.removeAllListeners();
+        SAGE.Events.off("scenehint", this.onSceneHint, this);
+    }
 
     private onSceneHint() {
         console.log(`TODO: attrack tween for ${this.data.name}`);
+        const attractShine: Sprite = Sprite.from("Shine");
+        attractShine.anchor.set(0.5);
+        attractShine.x = this.data.x
+        attractShine.y = this.data.y
+        attractShine.alpha = 0;
+
+        this.graphics.parent.addChild(attractShine);
+
+        new Tween(attractShine)
+            .to({ alpha: 1 }, 500)
+            .easing(Easing.Quadratic.InOut)
+            .yoyo(true).repeat(1)
+            .start()
+            .onComplete( ()=> { 
+                this.graphics.parent.removeChild(attractShine);
+            });
     }
     
     private onPointerOver() { //_e: InteractionEvent

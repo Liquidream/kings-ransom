@@ -34,6 +34,8 @@ export class Scene implements ISceneData, Serialization<Scene> {
      * (also destroy/release previous screen objects)
      */
     show() {
+        // Clean up current scene "screen"
+        SAGE.World.currentScene?.screen.tidyUp();        
         // Create and switch to new "screen"
         this.screen = new SceneScreen(this)
         SAGE.changeScreen(this.screen);

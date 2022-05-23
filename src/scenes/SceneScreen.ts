@@ -3,7 +3,6 @@ import { Container, Sprite, Graphics, Text, TextStyle } from "pixi.js"; //filter
 
 import { IScreen, SAGE } from "../Manager";
 import { Scene } from "../sage/Scene";
-import { Fullscreen } from "../utils/Fullscreen";
 import { Prop } from "../sage/Prop";
 import { Door } from "../sage/Door";
 import { PropData } from "../sage/PropData";
@@ -125,7 +124,7 @@ export class SceneScreen extends Container implements IScreen {
         
         // Events
         this.backdropInputEvents = new InputEventEmitter(this.backdrop);
-        this.backdrop.on("primaryaction", this.onTestEvent, this);  
+        this.backdrop.on("primaryaction", this.onPrimaryAction, this);  
         this.backdrop.on("secondaryaction", this.onSecondaryAction, this); 
         //SAGE.Events.on("scenehint", this.onTestEvent, this);
     }
@@ -202,24 +201,13 @@ export class SceneScreen extends Container implements IScreen {
         SAGE.Dialog.clearMessage();
     }
 
+    private onPrimaryAction() { //_e: InteractionEvent
+        console.log("Backdrop was clicked/tapped");
+    }
+
     private onSecondaryAction() { //_e: InteractionEvent
-        //console.log("You interacted with Backdrop!")
-        console.log("TODO: Make all interactive objects flash (by raising 'global' event)");
-
-        // Test dynamic JS code
-        //Function("Manager.World.scenes[0].show();")();
-
-        // Test fullscreen (DISABLED for now)
-        // eslint-disable-next-line no-constant-condition
-        if (false) {
-            Fullscreen.openFullscreen();
-        }
-        
-        // somewhere, when the time is right... Fire the clamp!
+        // Make all interactive objects flash (by raising 'global' event)");
         SAGE.Events.emit("scenehint");
     }
     
-    private onTestEvent() {
-        console.log("test event was fired!");
-    }
 }

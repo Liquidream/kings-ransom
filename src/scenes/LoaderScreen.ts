@@ -1,32 +1,37 @@
-import { Container, Graphics, Loader } from "pixi.js";
+import { Container, Graphics, Loader, Text, TextStyle } from "pixi.js";
 import { assets } from "../assets";
 import { IScreen, SAGE } from "../Manager";
+import { Fullscreen } from "../utils/Fullscreen";
 //import { BridgeScene } from "./BridgeScene";
 
 export class LoaderScreen extends Container implements IScreen {
+    // Colour scheme
+    readonly colPrime = 0x0a62be;
+    readonly colSecond = 0x1d2b53;
 
     // for making our loader graphics...
     private loaderBar: Container;
-    private loaderBarBoder: Graphics;
+    private loaderBarBorder: Graphics;
     private loaderBarFill: Graphics;
     constructor() {
         super();
 
-        const loaderBarWidth = SAGE.width * 0.8;
+        const loaderBarWidth = SAGE.width * 0.7;
+        const loaderBarHeight = SAGE.height * 0.1;
 
         this.loaderBarFill = new Graphics();
-        this.loaderBarFill.beginFill(0x008800, 1)
-        this.loaderBarFill.drawRect(0, 0, loaderBarWidth, 50);
+        this.loaderBarFill.beginFill(this.colPrime, 1)
+        this.loaderBarFill.drawRect(0, 0, loaderBarWidth, loaderBarHeight);
         this.loaderBarFill.endFill();
         this.loaderBarFill.scale.x = 0;
 
-        this.loaderBarBoder = new Graphics();
-        this.loaderBarBoder.lineStyle(10, 0x0, 1);
-        this.loaderBarBoder.drawRect(0, 0, loaderBarWidth, 50);
+        this.loaderBarBorder = new Graphics();
+        this.loaderBarBorder.lineStyle(10, this.colSecond, 1);
+        this.loaderBarBorder.drawRect(0, 0, loaderBarWidth, loaderBarHeight);
 
         this.loaderBar = new Container();
         this.loaderBar.addChild(this.loaderBarFill);
-        this.loaderBar.addChild(this.loaderBarBoder);
+        this.loaderBar.addChild(this.loaderBarBorder);
         this.loaderBar.position.x = (SAGE.width - this.loaderBar.width) / 2;
         this.loaderBar.position.y = (SAGE.height - this.loaderBar.height) / 2;
         this.addChild(this.loaderBar);
@@ -45,8 +50,58 @@ export class LoaderScreen extends Container implements IScreen {
     }
 
     private gameLoaded(): void {
-        // Change scene to the game scene!
-        SAGE.startGame();
+        // Remove loading bar
+        this.removeChild(this.loaderBar);
+
+        // Make a center point of origin (anchor)
+        const x = SAGE.width/2
+        const y = SAGE.height/2
+        const w = 550
+        const h = 175
+
+        const button = Object.assign( new Container(), {
+            x: x,
+            y: y,
+            width: w,
+            height: h,
+        });
+        
+        // Show "Start Game" button
+        const btnbackground = new Graphics();
+        btnbackground.lineStyle(10, this.colSecond, 1);
+        btnbackground.beginFill(this.colPrime);
+        btnbackground.pivot.set(w/2, h/2);
+        // Draw a rectangle
+        btnbackground.drawRoundedRect(0, 0, w, h, 30);
+        btnbackground.endFill();
+        button.addChild(btnbackground);
+        
+        const style: TextStyle = new TextStyle({
+            fill: "white",
+            //fontFamily: "Impact",
+            fontSize: 90,
+            fontWeight: "bold",
+            padding: 4,
+            trim: true
+        });
+        const text = new Text("Start Game", style);
+        text.anchor.set(0.5);        
+        text.x = w/2
+        text.y = h/2
+        btnbackground.addChild(text);
+        
+        button.interactive = true;// Respond to interaction 
+        button.buttonMode = true;
+        this.addChild(button)
+        
+        button.on("pointertap", () => { 
+            // Launch fullscreen
+            Fullscreen.openFullscreen();
+            // Change scene to the game scene!
+            SAGE.startGame();
+        })
+
+        
     }
 
     public update(_framesPassed: number): void {

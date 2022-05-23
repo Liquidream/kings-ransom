@@ -2,8 +2,7 @@ import { Container, Graphics, Loader } from "pixi.js";
 import { assets } from "../assets";
 import { IScreen, SAGE } from "../Manager";
 import { Button } from "../sage/ui/Button";
-import { Fullscreen } from "../utils/Fullscreen";
-//import { BridgeScene } from "./BridgeScene";
+//import { Fullscreen } from "../utils/Fullscreen";
 
 export class LoaderScreen extends Container implements IScreen {
     // Colour scheme
@@ -64,7 +63,7 @@ export class LoaderScreen extends Container implements IScreen {
         this.addChild(button)
         button.on("pointertap", () => { 
             // Launch fullscreen
-            Fullscreen.openFullscreen();
+           // Fullscreen.openFullscreen();
             // Change scene to the game scene!
             SAGE.startGame();
         })

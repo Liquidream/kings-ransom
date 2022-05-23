@@ -52,6 +52,8 @@ export class World implements IWorldData, Serialization<World> {
     }
 
     
+
+    
     /** Find and return scene with specific id */
     getSceneById(sceneId: string) {
         // Find the specified scene...

@@ -22,7 +22,7 @@
       ],
       "doors": []
     },
-    {
+    {      
       "id": "scn_bridge",
       "name": "Stone Bridge",
       "image": "Bridge",
@@ -51,7 +51,8 @@
           "width": 680,
           "height": 200
         }
-      ]
+      ],
+      "on_enter": "SAGE.Actions.onBridgeEnter();"
     },
     {
       "id": "scn_cave_ent",

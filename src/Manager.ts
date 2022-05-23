@@ -9,8 +9,6 @@ import { Actions } from "./gameactions";
 
 import gamedataJSON from './gamedata.json';
 const gamedata: IWorldData = <unknown>gamedataJSON as IWorldData;
-//const gamedata: IWorldData = {};
-//Object.assign(gamedata, gamedataJSON);
 
 export class SAGE {
     private constructor() {        
@@ -106,20 +104,28 @@ export class SAGE {
         // console.log("------------------");
     }
     
-    public static startGame(): void {
+    public static startGame() {
         SAGE.World.start();
         //Manager.changeScreen(new SceneScreen(Manager.World.scenes[0]));
     }
 
     /** Restart the game 
      * (+reset game data) */
-    public static restartGame(): void {
+    public static restartGame() {
         console.log("Restarting game...")
         SAGE.loadWorld();
         SAGE.startGame();
     }
 
-    public static resize(): void {
+    public static gameOver(message: string) {
+        SAGE.World.currentScene.screen.showGameOver(message);
+    }
+
+    public static gameWon(message: string) {
+        SAGE.World.currentScene.screen.showGameWon(message);
+    }
+
+    public static resize() {
         // current screen size
         const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -144,7 +150,7 @@ export class SAGE {
 
 
     // Call this function when you want to go to a new scene
-    public static changeScreen(newScene: IScreen): void {
+    public static changeScreen(newScene: IScreen) {
         // Remove and destroy old scene... if we had one..
         if (SAGE.currentScreen) {
             // remove all event subscriptions            
@@ -158,7 +164,7 @@ export class SAGE {
     }
 
     // This update will be called by a pixi ticker and tell the scene that a tick happened
-    private static update(framesPassed: number): void {
+    private static update(framesPassed: number) {
         // Let the current scene know that we updated it...
         // Just for funzies, sanity check that it exists first.
         if (SAGE.currentScreen) {

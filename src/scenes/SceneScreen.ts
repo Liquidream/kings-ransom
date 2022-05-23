@@ -10,7 +10,7 @@ import { InputEventEmitter } from "../sage/ui/InputEventEmitter";
 
 
 
-export class SceneScreen extends Container implements IScreen {
+export class SceneScreen extends Container implements IScreen {    
     private scene: Scene;
     private backdrop!: Sprite;
     private props: Array<Prop> = [];
@@ -57,14 +57,22 @@ export class SceneScreen extends Container implements IScreen {
         }
     }
 
+    showGameWon(message: string) {
+        this.showGameEndScreen(message, "Press to Play again", 0x00e436);
+    }
+
+    public showGameOver(message: string) {
+        this.showGameEndScreen(message, "Press to Restart", 0xbe1226);
+    }
+
     /**
      * Start the player death/game over sequence
      * @param message The message to display to player
      */
-    public showGameOver(message: string): void {
+    private showGameEndScreen(message: string, actionMessage: string, backgroundColour: number): void {
         // Red overlay
         const overlay = new Graphics();
-        overlay.beginFill(0xDE3249);
+        overlay.beginFill(backgroundColour);
         overlay.alpha = 0;
         overlay.drawRect(0, 0, SAGE.width, SAGE.height);
         overlay.endFill();
@@ -73,16 +81,17 @@ export class SceneScreen extends Container implements IScreen {
         this.addChild(overlay);
         new Tween(overlay).to({ alpha: 0.8 }, 1000).start()
             .onComplete( ()=> { 
-                // anything
-                // "Press to Restart"
+                // Now show action message
                 const style = new TextStyle({
                     fill: "white",
                     fontFamily: "Impact",
                     fontSize: 48,
+                    lineJoin: "round",
                     padding: 4,
+                    strokeThickness: 10,
                     trim: true
                 });
-                const text = new Text("Press to Restart", style);
+                const text = new Text(actionMessage, style);
                 text.anchor.set(0.5);
                 text.x = SAGE.width / 2;
                 text.y = SAGE.height / 1.5;
@@ -93,7 +102,9 @@ export class SceneScreen extends Container implements IScreen {
             fill: "white",
             fontFamily: "Impact",
             fontSize: 120,
+            lineJoin: "round",
             padding: 4,
+            strokeThickness: 10,
             trim: true
         });
         const text = new Text(message, style);

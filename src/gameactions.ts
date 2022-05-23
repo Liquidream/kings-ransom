@@ -19,7 +19,8 @@ export class Actions {
         */        
         SAGE.Dialog.showMessage('A hungry snake strikes and bites you');
         await SAGE.Script.wait(1);
-        SAGE.World.currentScene.screen.showGameOver("You Died!");
+        SAGE.gameOver("You Died!");
+        //SAGE.World.currentScene.screen.showGameOver("You Died!");
       }
     }
   }
@@ -35,6 +36,15 @@ export class Actions {
       SAGE.Dialog.showMessage('A Key fell out of the tree');
     }
   }
+
+  onBridgeEnter = async () => {
+    console.log("TODO: onBridgeEnter()");    
+      if (SAGE.World.player.inInventory("prp_gold")) {
+        console.log("Got gold out - game won!");
+        SAGE.gameWon("You paid the King's Ransom!");        
+      }
+  }
+
 }
 
 // sample delay code

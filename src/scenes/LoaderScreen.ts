@@ -1,6 +1,7 @@
-import { Container, Graphics, Loader, Text, TextStyle } from "pixi.js";
+import { Container, Graphics, Loader } from "pixi.js";
 import { assets } from "../assets";
 import { IScreen, SAGE } from "../Manager";
+import { Button } from "../sage/ui/Button";
 import { Fullscreen } from "../utils/Fullscreen";
 //import { BridgeScene } from "./BridgeScene";
 
@@ -59,52 +60,18 @@ export class LoaderScreen extends Container implements IScreen {
         const w = 550
         const h = 175
 
-        const button = Object.assign( new Container(), {
-            x: x,
-            y: y,
-            width: w,
-            height: h,
-        });
-        
-        // Show "Start Game" button
-        const btnbackground = new Graphics();
-        btnbackground.lineStyle(10, this.colSecond, 1);
-        btnbackground.beginFill(this.colPrime);
-        btnbackground.pivot.set(w/2, h/2);
-        // Draw a rectangle
-        btnbackground.drawRoundedRect(0, 0, w, h, 30);
-        btnbackground.endFill();
-        button.addChild(btnbackground);
-        
-        const style: TextStyle = new TextStyle({
-            fill: "white",
-            //fontFamily: "Impact",
-            fontSize: 90,
-            fontWeight: "bold",
-            padding: 4,
-            trim: true
-        });
-        const text = new Text("Start Game", style);
-        text.anchor.set(0.5);        
-        text.x = w/2
-        text.y = h/2
-        btnbackground.addChild(text);
-        
-        button.interactive = true;// Respond to interaction 
-        button.buttonMode = true;
+        const button = new Button("Start Game", x, y, w, h)
         this.addChild(button)
-        
         button.on("pointertap", () => { 
             // Launch fullscreen
             Fullscreen.openFullscreen();
             // Change scene to the game scene!
             SAGE.startGame();
         })
-
         
     }
 
-    public update(_framesPassed: number): void {
+    public update() { //_framesPassed: number): void {
         // To be a scene we must have the update method even if we don't use it.
     }
 

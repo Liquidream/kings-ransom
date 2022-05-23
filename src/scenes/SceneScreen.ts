@@ -6,7 +6,7 @@ import { Scene } from "../sage/Scene";
 import { Prop } from "../sage/Prop";
 import { Door } from "../sage/Door";
 import { PropData } from "../sage/PropData";
-import { InputEventEmitter } from "../sage/InputEventEmitter";
+import { InputEventEmitter } from "../sage/ui/InputEventEmitter";
 
 
 

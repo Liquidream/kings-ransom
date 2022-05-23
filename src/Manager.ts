@@ -1,7 +1,7 @@
 import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
 import { IWorldData, World } from "./sage/World";
-import { Dialog } from "./sage/Dialog";
+import { Dialog } from "./sage/ui/Dialog";
 import { Script } from "./sage/Script";
 import { Events } from "./sage/Events";
 import { Actions } from "./gameactions";

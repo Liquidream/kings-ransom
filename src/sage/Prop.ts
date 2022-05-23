@@ -1,8 +1,8 @@
 import { Sprite, Texture } from "pixi.js";
 import { Easing, Tween } from "tweedle.js";
 import { SAGE } from "../Manager";
-import { DialogType } from "./Dialog";
-import { InputEventEmitter } from "./InputEventEmitter";
+import { DialogType } from "./ui/Dialog";
+import { InputEventEmitter } from "./ui/InputEventEmitter";
 import { IPropData } from "./PropData";
 
 export class Prop {

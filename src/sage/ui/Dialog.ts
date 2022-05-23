@@ -1,5 +1,5 @@
 import { Text, TextStyle } from "pixi.js";
-import { SAGE } from "../Manager";
+import { SAGE } from "../../Manager";
 //import { Script } from "./Script";
 
 export class Dialog {

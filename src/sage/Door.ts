@@ -1,9 +1,9 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Easing, Tween } from "tweedle.js";
 import { SAGE } from "../Manager";
-import { DialogType } from "./Dialog";
+import { DialogType } from "./ui/Dialog";
 import { DoorState, IDoorData } from "./DoorData";
-import { InputEventEmitter } from "./InputEventEmitter";
+import { InputEventEmitter } from "./ui/InputEventEmitter";
 
 export class Door {
     // "constants" 

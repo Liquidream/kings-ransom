@@ -33,13 +33,20 @@ export class Scene implements ISceneData, Serialization<Scene> {
      * 
      * (also destroy/release previous screen objects)
      */
-    show() {
+    show(skipFade = false) {
         // Clean up current scene "screen"
-        SAGE.World.currentScene?.screen.tidyUp();        
+        SAGE.World.currentScene?.screen.tidyUp();
         // Create and switch to new "screen"
         this.screen = new SceneScreen(this)
-        SAGE.changeScreen(this.screen);
+        
+        if (!skipFade) {
+            SAGE.changeScreenFade(this.screen);
+        } else {
+            SAGE.changeScreen(this.screen);
+        }
+        
         // Remember the new scene
+        // (happens in above function)
         SAGE.World.currentScene = this;
         
         // DEBUG

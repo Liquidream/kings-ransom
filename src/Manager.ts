@@ -8,6 +8,8 @@ import { Actions } from "./gameactions";
 
 
 import gamedataJSON from './gamedata.json';
+import { Tween } from "tweedle.js";
+import { filters } from "pixi.js";
 const gamedata: IWorldData = <unknown>gamedataJSON as IWorldData;
 
 export class SAGE {
@@ -161,6 +163,40 @@ export class SAGE {
         // Add the new one
         SAGE.currentScreen = newScene;
         SAGE._app.stage.addChild(SAGE.currentScreen);
+    }
+
+    public static changeScreenFade(newScene: IScreen) {
+        const oldScreen = SAGE.currentScreen;
+        // Fade out
+        // https://github.com/pixijs/pixijs/issues/4334
+        const fadeOutAlphaMatrix= new filters.AlphaFilter();
+        fadeOutAlphaMatrix.alpha = 1;
+        oldScreen.filters = [fadeOutAlphaMatrix];
+
+        const fadeOutTween = new Tween(fadeOutAlphaMatrix)
+            .to({ alpha: 0 }, 500);
+
+        // Fade in
+        const fadeInAlphaMatrix= new filters.AlphaFilter();
+        fadeInAlphaMatrix.alpha = 0;
+        newScene.filters = [fadeInAlphaMatrix];        
+        const fadeInTween = new Tween(fadeInAlphaMatrix)
+            .to({ alpha: 1 }, 500)
+            .onComplete( ()=> {
+                // Add the new one
+                // Remove and destroy old scene... if we had one..
+                if (oldScreen) {
+                    // remove all event subscriptions            
+                    SAGE._app.stage.removeChild(oldScreen);            
+                    oldScreen.destroy();
+                }
+            });
+        
+        SAGE.currentScreen = newScene;
+        SAGE._app.stage.addChild(newScene);
+
+        // Start the fade out+in animation
+        fadeOutTween.chain(fadeInTween).start();
     }
 
     // This update will be called by a pixi ticker and tell the scene that a tick happened

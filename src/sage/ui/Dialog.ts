@@ -55,9 +55,13 @@ export class Dialog {
         }
         
         // Useful info:
-        // https://www.3playmedia.com/learn/popular-topics/closed-captioning/
-        // https://uxdesign.cc/a-guide-to-the-visual-language-of-closed-captions-and-subtitles-2fda5fa2a325
+        // https://80.lv/articles/10-golden-rules-on-subtitles-for-games/
+        // https://gameanalytics.com/blog/adding-subtitles-to-your-mobile-game-dos-and-donts/
+        // https://www.gamedeveloper.com/audio/subtitles-increasing-game-accessibility-comprehension
+        // ---
         // https://www.capitalcaptions.com/services/subtitle-services-2/capital-captions-standard-subtitling-guidelines/
+        // https://uxdesign.cc/a-guide-to-the-visual-language-of-closed-captions-and-subtitles-2fda5fa2a325
+        // https://www.3playmedia.com/learn/popular-topics/closed-captioning/
         // https://www.w3.org/WAI/media/av/captions/
 
         const styly: TextStyle = new TextStyle({
@@ -67,12 +71,12 @@ export class Dialog {
             strokeThickness: 6,
             lineJoin: "round",
             wordWrap: true,
-            wordWrapWidth: SAGE.width,
+            wordWrapWidth: SAGE.width / 2,
         });
         const newDialogText = new Text(message, styly); // Text supports unicode!
         newDialogText.anchor.set(0.5);
         newDialogText.x = SAGE.width / 2;
-        newDialogText.y = SAGE.height - 75;
+        newDialogText.y = SAGE.height - 88;
         //texty.text = "This is expensive to change, please do not abuse";
         
         SAGE.app.stage.addChild(newDialogText);

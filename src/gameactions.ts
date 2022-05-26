@@ -38,7 +38,7 @@ export class Actions {
   }
 
   onBridgeEnter = async () => {
-    console.log("TODO: onBridgeEnter()");    
+    //console.log("TODO: onBridgeEnter()");    
       if (SAGE.World.player.inInventory("prp_gold")) {
         console.log("Got gold out - game won!");
         SAGE.gameWon("You paid the King's Ransom!");        

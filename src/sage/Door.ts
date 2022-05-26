@@ -65,7 +65,7 @@ export class Door {
     }
 
     private onSceneHint() {
-        console.log(`TODO: attrack tween for ${this.data.name}`);
+        //console.log(`TODO: attrack tween for ${this.data.name}`);
         const attractShine: Sprite = Sprite.from("Shine");
         attractShine.anchor.set(0.5);
         attractShine.x = this.data.x

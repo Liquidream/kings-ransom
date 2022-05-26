@@ -1,8 +1,8 @@
 import { Container, Graphics, Loader } from "pixi.js";
 import { assets } from "../assets";
 import { IScreen, SAGE } from "../Manager";
-import { Button } from "../sage/ui/Button";
-import { Fullscreen } from "../utils/Fullscreen";
+// import { Button } from "../sage/ui/Button";
+// import { Fullscreen } from "../utils/Fullscreen";
 
 export class LoaderScreen extends Container implements IScreen {
     // Colour scheme
@@ -43,38 +43,43 @@ export class LoaderScreen extends Container implements IScreen {
 
         Loader.shared.load();
     }
+    
+    public update() { //_framesPassed: number) {
+        // To be a scene we must have the update method even if we don't use it.
+    }
 
-    private downloadProgress(loader: Loader): void {
+    // public resize(_screenWidth: number, _screenHeight: number) {
+
+    // }
+
+    private downloadProgress(loader: Loader){
         const progressRatio = loader.progress / 100;
         this.loaderBarFill.scale.x = progressRatio;
     }
 
-    private gameLoaded(): void {
+    private gameLoaded() {
         // Remove loading bar
         this.removeChild(this.loaderBar);
 
-        // Make a center point of origin (anchor)
-        const x = SAGE.width/2
-        const y = SAGE.height/2
-        const w = 550
-        const h = 175
-
-        const button = new Button("Start Game", x, y, w, h)
-        this.addChild(button)
-        button.on("pointertap", () => { 
-            // Launch fullscreen
-            Fullscreen.openFullscreen();
-            // Change scene to the game scene!
-            SAGE.startGame();
-        })
-        
+        //this.showStartButton();
+        SAGE.startGame();
     }
 
-    public update() { //_framesPassed: number): void {
-        // To be a scene we must have the update method even if we don't use it.
-    }
+    // private showStartButton() {
+    //     // Make a center point of origin (anchor)
+    //     const x = SAGE.width/2
+    //     const y = SAGE.height/2
+    //     const w = 550
+    //     const h = 175
 
-    // public resize(_screenWidth: number, _screenHeight: number): void {
-
+    //     const button = new Button("Start Game", x, y, w, h)
+    //     this.addChild(button)
+    //     button.on("pointertap", () => { 
+    //         // Launch fullscreen
+    //         Fullscreen.openFullscreen();
+    //         // Change scene to the game scene!
+    //         SAGE.startGame();
+    //     })
     // }
+
 }

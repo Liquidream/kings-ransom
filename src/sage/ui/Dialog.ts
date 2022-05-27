@@ -1,6 +1,5 @@
-import { Text, TextStyle } from "pixi.js";
+import { Graphics, Text, TextStyle } from "pixi.js";
 import { SAGE } from "../../Manager";
-//import { Script } from "./Script";
 
 export class Dialog {
     // "constants" 
@@ -8,11 +7,18 @@ export class Dialog {
     CHARS_PER_SEC = 15;
     MIN_DURATION_SEC = 1.5;
     MAX_DURATION_SEC = 7;
+    BACKGROUND_MARGIN = 20;
 
-    // public constructor() {
-    // }
+    private dialogContainer!: Graphics | null;
+
+    // poss options
+    // - https://github.com/fireveined/pixi-flex-layout
     
-    public currentDialogText!: Text | null;
+    public constructor() {
+        //
+    }
+    
+    //public currentDialogText!: Text | null;
     public currentDialogType!: DialogType | null;
     
     // public initialize(): void {
@@ -35,15 +41,15 @@ export class Dialog {
     }
 
     public clearMessage(): void {
-        if (this.currentDialogText) SAGE.app.stage.removeChild(this.currentDialogText);        
-        this.currentDialogText = null;
+        if (this.dialogContainer) SAGE.app.stage.removeChild(this.dialogContainer);        
+        this.dialogContainer = null;
         this.currentDialogType = null;
     }
 
     private async showMessageCore(message: string, col: string, type: DialogType = DialogType.Description, durationInSecs?: number): Promise<void> {
         let waitDuration = 0;
-        // Are we already showing a message? 
-        if (this.currentDialogText) {
+        // Are we already displaying something? 
+        if (this.dialogContainer) {
             // If so, is incoming message low priority? (e.g. hover)
             if (type === DialogType.NameOnHover) {
                 // Abort, leave current dialog up, as is higher priority
@@ -55,15 +61,20 @@ export class Dialog {
         }
         
         // Useful info:
+        // https://www.gamedeveloper.com/audio/how-to-do-subtitles-well-basics-and-good-practices
         // https://80.lv/articles/10-golden-rules-on-subtitles-for-games/
         // https://gameanalytics.com/blog/adding-subtitles-to-your-mobile-game-dos-and-donts/
         // https://www.gamedeveloper.com/audio/subtitles-increasing-game-accessibility-comprehension
+        // https://gritfish.net/assets/Documents/Best-practice-Game-Subtitles.pdf
         // ---
         // https://www.capitalcaptions.com/services/subtitle-services-2/capital-captions-standard-subtitling-guidelines/
         // https://uxdesign.cc/a-guide-to-the-visual-language-of-closed-captions-and-subtitles-2fda5fa2a325
         // https://www.3playmedia.com/learn/popular-topics/closed-captioning/
         // https://www.w3.org/WAI/media/av/captions/
+        // https://bbc.github.io/subtitle-guidelines/
 
+
+        // Subtitle/caption
         const styly: TextStyle = new TextStyle({
             align: "center",
             fill: col || "#fff",
@@ -74,15 +85,32 @@ export class Dialog {
             wordWrapWidth: SAGE.width / 2,
         });
         const newDialogText = new Text(message, styly); // Text supports unicode!
-        newDialogText.anchor.set(0.5);
         newDialogText.x = SAGE.width / 2;
-        newDialogText.y = SAGE.height - 88;
-        //texty.text = "This is expensive to change, please do not abuse";
+        newDialogText.y = SAGE.height - 88 - this.BACKGROUND_MARGIN;
+        // newDialogText.anchor.set(0.5);
+        // newDialogText.x = SAGE.width / 2;
+        // newDialogText.y = SAGE.height - 88 - this.BACKGROUND_MARGIN;
+        // .text = "This is expensive to change, please do not abuse";
         
-        SAGE.app.stage.addChild(newDialogText);
+        // Background for all dialog
+        this.dialogContainer = new Graphics();
+        this.dialogContainer.beginFill(0x0);
+        //this.dialogContainer.alpha = 0.5;
+        this.dialogContainer.drawRect(
+            newDialogText.x-this.BACKGROUND_MARGIN, 
+            newDialogText.y-this.BACKGROUND_MARGIN, 
+            newDialogText.width + (2*this.BACKGROUND_MARGIN),
+            newDialogText.height + (2*this.BACKGROUND_MARGIN));
+        this.dialogContainer.endFill();
+        // Make a center point of origin (anchor)
+        this.dialogContainer.pivot.set(this.dialogContainer.width/2, this.dialogContainer.height/2);
+
+        this.dialogContainer.addChild(newDialogText);
+        SAGE.app.stage.addChild(this.dialogContainer);
+        //SAGE.app.stage.addChild(newDialogText);
 
         // Set here, so if another dialog comes before this expires, it'll be removed
-        this.currentDialogText = newDialogText;
+        //this.currentDialogText = newDialogText;
         this.currentDialogType = type;
         
         // How long to display?
@@ -103,11 +131,11 @@ export class Dialog {
             await SAGE.Script.wait(waitDuration);
             // Remove message now duration over
             // TODO: Unlike counter method, this could create a bug where msg changed mid-show & thread clash?
-            SAGE.app.stage.removeChild(newDialogText);
+            SAGE.app.stage.removeChild(this.dialogContainer);
             
             // Only clear dialog if we're the last message 
             // (could have been an overlap)
-            if (newDialogText === this.currentDialogText) {
+            if (newDialogText === this.dialogContainer.children[0]) {
                 this.clearMessage();
             }
         }

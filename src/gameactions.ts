@@ -25,6 +25,13 @@ export class Actions {
     }
   }
 
+  onPitAction = async () => {
+    //console.log("TODO: onEnterCaveTunnel()");    
+    SAGE.Dialog.showMessage('You fall into the bottomless pit...');
+    await SAGE.Script.wait(1);
+    SAGE.gameOver("You Died!");
+  }
+
   onTreeAction = async () => {    
     const treeProp = SAGE.World.getPropById('prp_tree');
     // If not collected key already...

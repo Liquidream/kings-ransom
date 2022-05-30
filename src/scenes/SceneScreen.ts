@@ -1,5 +1,5 @@
 import { Group, Tween } from "tweedle.js"; //Easing
-import { Container, Sprite, Graphics, Text, TextStyle } from "pixi.js"; //filters
+import { Container, Sprite, Graphics, Text, TextStyle, Texture } from "pixi.js"; //filters
 
 import { IScreen, SAGE } from "../Manager";
 import { Scene } from "../sage/Scene";
@@ -124,13 +124,17 @@ export class SceneScreen extends Container implements IScreen {
 
     private buildBackdrop() {
         // Backdrop
-        this.backdrop = Sprite.from(this.scene.image);
-        this.backdrop.anchor.set(0.5);
-        this.backdrop.x = SAGE.width / 2;
-        this.backdrop.y = SAGE.height / 2;
-        //this.backdrop.on("pointertap", this.onClickBackdrop, this);
-        //this.backdrop.interactive = true;   // Super important or the object will never receive mouse events!
-        this.addChild(this.backdrop);
+        let sprite = undefined;
+        if (this.scene.image) {
+            sprite = Sprite.from(this.scene.image);
+        } else {
+            sprite = new Sprite(Texture.EMPTY);
+        }
+        sprite.anchor.set(0.5);
+        sprite.x = SAGE.width / 2;
+        sprite.y = SAGE.height / 2;
+        this.addChild(sprite);
+        this.backdrop = sprite
 
         
         // Events

@@ -11,7 +11,7 @@ export class Dialog {
 
     private dialogBackground!: Graphics | null;
     //private dialogContainer!: Container | null;
-    private dialogTextList: Array<Text> = [];
+    private dialogText!: Text | null;
 
     // poss options
     // - https://github.com/fireveined/pixi-flex-layout
@@ -44,23 +44,23 @@ export class Dialog {
     }
 
     public clearMessage(): void {
-        if (this.dialogBackground) {
+        if (this.dialogBackground && this.dialogText) {
             SAGE.app.stage.removeChild(this.dialogBackground);
-            SAGE.app.stage.removeChild(this.dialogTextList[0]);
-            this.dialogTextList.pop();
-            //SAGE.app.stage.removeChild(this.dialogContainer);
+            SAGE.app.stage.removeChild(this.dialogText);
+            //this.dialogTextList.pop();
+            //SAGE.app.stage.removeChild(this.dialogContainer); 
         }
         this.dialogBackground = null;
         //this.dialogContainer = null;
         this.currentDialogType = null;
     }
 
-    private async showMessageCore(message: string, col: string, type: DialogType = DialogType.Description, durationInSecs?: number): Promise<void> {
+    private async showMessageCore(message: string, col: string, type: DialogType = DialogType.DialogInt, durationInSecs?: number): Promise<void> {
         let waitDuration = 0;
         // Are we already displaying something? 
         if (this.dialogBackground) {
             // If so, is incoming message low priority? (e.g. hover)
-            if (type === DialogType.NameOnHover) {
+            if (type === DialogType.Caption) {
                 // Abort, leave current dialog up, as is higher priority
                 // (player can always hover again, else may lose important message)
                 return;
@@ -100,7 +100,8 @@ export class Dialog {
         // newDialogText.x = SAGE.width / 2;
         // newDialogText.y = SAGE.height - 88 - this.BACKGROUND_MARGIN;
         // .text = "This is expensive to change, please do not abuse";
-        this.dialogTextList.push(newDialogText);
+        //this.dialogTextList.push(newDialogText);
+        this.dialogText = newDialogText;
         
         // Background for all dialog
         this.dialogBackground = new Graphics();
@@ -119,7 +120,7 @@ export class Dialog {
         // SAGE.app.stage.addChild(this.dialogContainer);
 
         SAGE.app.stage.addChild(this.dialogBackground);
-        SAGE.app.stage.addChild(this.dialogTextList[0]);
+        SAGE.app.stage.addChild(this.dialogText);
 
         // Set here, so if another dialog comes before this expires, it'll be removed
         //this.currentDialogText = newDialogText;
@@ -143,12 +144,12 @@ export class Dialog {
             await SAGE.Script.wait(waitDuration);
             // Remove message now duration over
             // TODO: Unlike counter method, this could create a bug where msg changed mid-show & thread clash?
-            SAGE.app.stage.removeChild(this.dialogBackground);
-            SAGE.app.stage.removeChild(this.dialogTextList[0]);
+            // SAGE.app.stage.removeChild(this.dialogBackground);
+            // SAGE.app.stage.removeChild(this.dialogText);
             
             // Only clear dialog if we're the last message 
             // (could have been an overlap)
-            if (newDialogText === this.dialogTextList[0]) {
+            if (newDialogText === this.dialogText) {
                 this.clearMessage();
             }
         }
@@ -157,9 +158,10 @@ export class Dialog {
 }
 
 export enum DialogType {
-    Description,
-    NameOnHover,
-    Dialog,
+    //Description,
+    Caption,    // Tooltips, shown on hover (currently only for mouse input)
+    DialogInt,  // Descriptions, thoughts, reactions, etc.
+    DialogExt   // Talking & interacting with other characters (actors)
 }
 
 // Clamp number between two values with the following line:

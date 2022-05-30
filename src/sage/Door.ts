@@ -85,12 +85,12 @@ export class Door {
     }
     
     private onPointerOver() { //_e: InteractionEvent
-        SAGE.Dialog.showMessage(this.data.name, DialogType.NameOnHover, -1);
+        SAGE.Dialog.showMessage(this.data.name, DialogType.Caption, -1);
     }
 
     private onPointerOut() { //_e: InteractionEvent
         // If dialog being displayed is name "on hover"...
-        if (SAGE.Dialog.currentDialogType === DialogType.NameOnHover) {
+        if (SAGE.Dialog.currentDialogType === DialogType.Caption) {
             SAGE.Dialog.clearMessage();
         }
     }
@@ -124,7 +124,11 @@ export class Door {
         if (targetScene) {
             // Change scene to the game scene!
             targetScene.show();
-            //Manager.changeScreen(new SceneScreen(targetScene));
+        }
+        // Custom action?
+        else if (this.data.on_action) {
+            Function(this.data.on_action)();
+            return;
         }
         else
         {

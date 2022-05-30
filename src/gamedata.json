@@ -1,8 +1,9 @@
 {
-  "title": "King's Ransom 2",
+  "title": "King's Ransom",
   "player": {
     "name": "Lonely wonderer",
-    "inventory": []
+    "inventory": [
+    ]
   },
   "starting_scene_id": "scn_bridge",
   "scenes": [
@@ -31,7 +32,7 @@
           "id": "prp_lamp",
           "name": "Old Lamp",
           "image": "Lamp",
-          "desc": "An old Lamp",
+          "desc": "It's an old miner's lamp - rusty, but functional",
           "x": 1425,
           "y": 780,
           "pickupable": true
@@ -65,9 +66,9 @@
           "name": "Fortress",
           "desc": "Looks like I can see a Fortress",
           "x": 150,
-          "y": 540,
+          "y": 640,
           "width": 300,
-          "height": 1080,
+          "height": 880,
           "target_scene_id": "scn_fortress_ext",
           "state": "UNLOCKED"
         },
@@ -87,9 +88,9 @@
           "name": "Tunnel",
           "desc": "Along the cave tunnel",
           "x": 1770,
-          "y": 540,
+          "y": 640,
           "width": 300,
-          "height": 1080,
+          "height": 880,
           "target_scene_id": "scn_cave_tunnel",
           "state": "UNLOCKED"
         }
@@ -131,8 +132,8 @@
           "y": 1000,
           "width": 720,
           "height": 160,
-          "target_scene_id": "scn_cave_pit",
-          "state": "UNLOCKED"
+          "state": "UNLOCKED",
+          "on_action": "SAGE.Actions.onPitAction();"
         }
       ],
       "on_enter": "SAGE.Actions.onCaveTunnelEnter();"

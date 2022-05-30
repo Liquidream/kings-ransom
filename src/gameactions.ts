@@ -50,6 +50,9 @@ export class Actions {
         console.log("Got gold out - game won!");
         SAGE.gameWon("You paid the King's Ransom!");        
       }
+
+      await SAGE.Dialog.say("Narrator", "Welcome to this simple adventure", "#00ff00");
+      await SAGE.Dialog.say("Narrator", "Find gold to pay the King's Ransom", "#00ff00");
   }
 
 }

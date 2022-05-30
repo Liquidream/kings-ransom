@@ -1,4 +1,4 @@
-import { Graphics, Text, TextStyle } from "pixi.js";
+import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import { SAGE } from "../../Manager";
 
 export class Dialog {
@@ -9,8 +9,8 @@ export class Dialog {
     MAX_DURATION_SEC = 7;
     BACKGROUND_MARGIN = 20;
 
+    private dialogContainer!: Container | null;
     private dialogBackground!: Graphics | null;
-    //private dialogContainer!: Container | null;
     private dialogText!: Text | null;
 
     // poss options
@@ -32,35 +32,53 @@ export class Dialog {
         // Anything?
         // (was prev used when using display counter, rather than async/timer)
     }
+
+    public async say(speaker: string, message: string, speakerCol?: string, durationInSecs?: number): Promise<void> {
+        // Show a white message
+        return this.showMessageCore( { 
+            type: DialogType.DialogExt,
+            speaker: speaker, 
+            message: message,
+            col: speakerCol, 
+            durationInSecs: durationInSecs })
+    }
         
     public async showMessage(message: string, type?: DialogType, durationInSecs?: number): Promise<void> {
         // Show a white message
-        return this.showMessageCore(message, "#fff", type, durationInSecs)
+        return this.showMessageCore( { 
+            type: type,
+            message: message,
+            col: "#fff", 
+            durationInSecs: durationInSecs })
     }
 
     public async showErrorMessage(errorMessage: string): Promise<void> {
-        // Show a white message
-        return this.showMessageCore(errorMessage, "#ff0000")
+        // Show a red message
+        return this.showMessageCore( { 
+            message: errorMessage,
+            col: "#ff0000" })
     }
 
     public clearMessage(): void {
-        if (this.dialogBackground && this.dialogText) {
-            SAGE.app.stage.removeChild(this.dialogBackground);
-            SAGE.app.stage.removeChild(this.dialogText);
-            //this.dialogTextList.pop();
-            //SAGE.app.stage.removeChild(this.dialogContainer); 
+        if (this.dialogContainer) {            
+            // SAGE.app.stage.removeChild(this.dialogBackground);
+            // SAGE.app.stage.removeChild(this.dialogText);
+            SAGE.app.stage.removeChild(this.dialogContainer); 
         }
+        this.dialogText = null;
         this.dialogBackground = null;
-        //this.dialogContainer = null;
         this.currentDialogType = null;
+        this.dialogContainer = null;
     }
 
-    private async showMessageCore(message: string, col: string, type: DialogType = DialogType.DialogInt, durationInSecs?: number): Promise<void> {
+    private async showMessageCore(options: { 
+        type?: DialogType, message: string, speaker?: string, col?: string, durationInSecs?: number }): Promise<void> {
+    //private async showMessageCore(message: string, col: string, type: DialogType = DialogType.DialogInt, durationInSecs?: number): Promise<void> {
         let waitDuration = 0;
         // Are we already displaying something? 
         if (this.dialogBackground) {
             // If so, is incoming message low priority? (e.g. hover)
-            if (type === DialogType.Caption) {
+            if (options.type === DialogType.Caption) {
                 // Abort, leave current dialog up, as is higher priority
                 // (player can always hover again, else may lose important message)
                 return;
@@ -83,17 +101,21 @@ export class Dialog {
         // https://bbc.github.io/subtitle-guidelines/
 
 
-        // Subtitle/caption
+        // Subtitle/caption/speech
         const styly: TextStyle = new TextStyle({
             align: "center",
-            fill: col || "#fff",
+            fill: options.col || "#fff",
             fontSize: 47,
             strokeThickness: 6,
             lineJoin: "round",
             wordWrap: true,
             wordWrapWidth: SAGE.width / 2,
         });
-        const newDialogText = new Text(message, styly); // Text supports unicode!
+        // Spoken by..?
+        if (options.speaker) {
+            options.message = `[${options.speaker.toUpperCase()}]\n${options.message}`;
+        }
+        const newDialogText = new Text(options.message, styly); // Text supports unicode!
         newDialogText.x = SAGE.width / 2;
         newDialogText.y = SAGE.height - 88 - this.BACKGROUND_MARGIN;
         newDialogText.anchor.set(0.5);
@@ -116,24 +138,23 @@ export class Dialog {
         // Make a center point of origin (anchor)
         this.dialogBackground.pivot.set(this.dialogBackground.width/2, this.dialogBackground.height/2);
 
-        // this.dialogContainer.addChild(newDialogText);
-        // SAGE.app.stage.addChild(this.dialogContainer);
-
-        SAGE.app.stage.addChild(this.dialogBackground);
-        SAGE.app.stage.addChild(this.dialogText);
+        this.dialogContainer = new Container();
+        this.dialogContainer.addChild(this.dialogBackground);
+        this.dialogContainer.addChild(this.dialogText);
+        SAGE.app.stage.addChild(this.dialogContainer);
 
         // Set here, so if another dialog comes before this expires, it'll be removed
         //this.currentDialogText = newDialogText;
-        this.currentDialogType = type;
+        this.currentDialogType = options.type ?? DialogType.DialogInt;        
         
         // How long to display?
-        if (durationInSecs) {
+        if (options.durationInSecs) {
             // Duration specified, so use it
-            waitDuration = durationInSecs;
+            waitDuration = options.durationInSecs;
         }
         else {
             // calc display duration (1 sec for every 7 chars, approx.)        
-            waitDuration = clamp(message.length / this.CHARS_PER_SEC, this.MIN_DURATION_SEC, this.MAX_DURATION_SEC);
+            waitDuration = clamp(options.message.length / this.CHARS_PER_SEC, this.MIN_DURATION_SEC, this.MAX_DURATION_SEC);
         }        
         //console.log(`Duration = ${waitDuration}`)
         
@@ -143,10 +164,7 @@ export class Dialog {
             // wait for calc'd duration
             await SAGE.Script.wait(waitDuration);
             // Remove message now duration over
-            // TODO: Unlike counter method, this could create a bug where msg changed mid-show & thread clash?
-            // SAGE.app.stage.removeChild(this.dialogBackground);
-            // SAGE.app.stage.removeChild(this.dialogText);
-            
+            // - (Unlike counter method, this could create a bug where msg changed mid-show & thread clash?)            
             // Only clear dialog if we're the last message 
             // (could have been an overlap)
             if (newDialogText === this.dialogText) {
@@ -158,7 +176,7 @@ export class Dialog {
 }
 
 export enum DialogType {
-    //Description,
+    Unknown,
     Caption,    // Tooltips, shown on hover (currently only for mouse input)
     DialogInt,  // Descriptions, thoughts, reactions, etc.
     DialogExt   // Talking & interacting with other characters (actors)

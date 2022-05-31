@@ -30,6 +30,11 @@ export class SceneScreen extends Container implements IScreen {
         this.buildBackdrop();
         this.buildProps();
         this.buildDoorways();
+
+        // Fade in scene music
+        if (this.scene.sound) {
+            SAGE.Sound.playLoop(this.scene.sound, true);
+        }
     }
 
     public update() { 
@@ -49,11 +54,15 @@ export class SceneScreen extends Container implements IScreen {
 
     public tidyUp() {
         // Unsubscribe from events, etc.
-        for(const prop of this.props){
+        for(const prop of this.props) {
             prop.tidyUp();
         }
-        for(const door of this.doors){
+        for(const door of this.doors) {
             door.tidyUp();
+        }
+        // Fade out scene music
+        if (this.scene.sound) {
+            SAGE.Sound.stop(this.scene.sound, true);
         }
     }
 
@@ -168,9 +177,9 @@ export class SceneScreen extends Container implements IScreen {
         if (fadeIn) {
             prop.sprite.alpha = 0;
             new Tween(prop.sprite).to({ alpha: 1 }, 500).start()
-            .onComplete( ()=> { 
-                // ??
-            });
+                .onComplete( ()=> { 
+                    // ??
+                });
         }
 
         // DEBUG?

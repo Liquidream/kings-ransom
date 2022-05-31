@@ -12,6 +12,7 @@ export class Scene implements ISceneData, Serialization<Scene> {
     public id = "";
     public image = "";
     public name = "";
+    public sound = "";
     // Key-Value pair to allow properties to be set/read
     public property: { [key: string]: string | number | boolean } = {};
     
@@ -75,6 +76,7 @@ export class Scene implements ISceneData, Serialization<Scene> {
         this.id =  input.id;
         this.image =  input.image || "";
         this.name =  input.name;
+        this.sound =  input.sound;
         if (input.property) this.property = input.property;
         this.on_enter =  input.on_enter;
         for(const prop of input.props){
@@ -91,6 +93,7 @@ export class Scene implements ISceneData, Serialization<Scene> {
         return { 
             id: this.id, 
             image: this.image, 
+            sound: this.sound, 
             name: this.name, 
             property: this.property,
             on_enter: this.on_enter,
@@ -103,7 +106,8 @@ export class Scene implements ISceneData, Serialization<Scene> {
 export interface ISceneData {
     id: string;
     image: string;
-    name: string;    
+    name: string;
+    sound: string;
     // Key-Value pair to allow properties to be set/read
     property: { [key: string]: string | number | boolean };
     // Poss. event actions

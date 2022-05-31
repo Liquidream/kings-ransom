@@ -15,6 +15,11 @@ export const assets = [
     { name: "Gold-Bar", url: "./images/props/gold-bar.png" },
     // Sounds & Music -------------------------------------------------
     //{ name: "Test-Loop", url: "./sfx/test-loop.ogg" },
+    // Background
     { name: "Stream-Loop", url: "./sfx/stream-loop.ogg" },
+    { name: "Cave-Loop", url: "./sfx/cave-loop.ogg" },
+    { name: "Cave-Drip", url: "./sfx/cave-drip.ogg" },
     { name: "Lake-Loop", url: "./sfx/lake-loop-short.ogg" },
+    // SFX
+    { name: "Pick-Up", url: "./sfx/pick-up.ogg" },
 ]

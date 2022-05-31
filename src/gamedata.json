@@ -27,6 +27,7 @@
       "id": "scn_bridge",
       "name": "Stone Bridge",
       "image": "Bridge",
+      "sound": "Stream-Loop",
       "props": [
         {
           "id": "prp_lamp",
@@ -59,6 +60,7 @@
       "id": "scn_cave_ent",
       "name": "Cave Entrance",
       "image": "Cave-Entrance",
+      "sound": "Cave-Loop",
       "props": [],
       "doors": [
         {

@@ -1,6 +1,8 @@
 import { SAGE } from "./Manager";
 
 // "Stream, Water, C.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org
+// "Pick up Item 1.wav" by SilverIllusionist of Freesound.org
+// "Water drips in the cave HQ.wav" by tosha73
 export class Actions {
 
   onCaveTunnelEnter = async () => {
@@ -60,7 +62,7 @@ export class Actions {
 
       // Test play sound
       //SAGE.Sound.play("./sfx/test-loop.wav")
-      SAGE.Sound.playLoop("Stream-Loop")
+      //SAGE.Sound.playLoop("Stream-Loop")
       //SAGE.Sound.playLoop("Lake-Loop")
   }
 

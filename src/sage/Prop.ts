@@ -104,6 +104,9 @@ export class Prop {
 
             // Add to Player's inventory
             SAGE.World.player.inventory.push(this.data);
+
+            // Play sound
+            SAGE.Sound.play("Pick-Up")
         }
         // Run code snippet (stored in string)?
         //https://stackoverflow.com/questions/64426501/how-to-execute-strings-of-expression-in-an-array-with-ramda/64426855#64426855

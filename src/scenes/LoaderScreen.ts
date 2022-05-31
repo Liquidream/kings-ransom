@@ -1,8 +1,8 @@
 import { Container, Graphics, Loader } from "pixi.js";
 import { assets } from "../assets";
 import { IScreen, SAGE } from "../Manager";
-// import { Button } from "../sage/ui/Button";
-// import { Fullscreen } from "../utils/Fullscreen";
+import { Button } from "../sage/ui/Button";
+import { Fullscreen } from "../utils/Fullscreen";
 
 export class LoaderScreen extends Container implements IScreen {
     // Colour scheme
@@ -61,25 +61,25 @@ export class LoaderScreen extends Container implements IScreen {
         // Remove loading bar
         this.removeChild(this.loaderBar);
 
-        //this.showStartButton();
-        SAGE.startGame();
+        this.showStartButton();
+        //SAGE.startGame();
     }
 
-    // private showStartButton() {
-    //     // Make a center point of origin (anchor)
-    //     const x = SAGE.width/2
-    //     const y = SAGE.height/2
-    //     const w = 550
-    //     const h = 175
+    private showStartButton() {
+        // Make a center point of origin (anchor)
+        const x = SAGE.width/2
+        const y = SAGE.height/2
+        const w = 550
+        const h = 175
 
-    //     const button = new Button("Start Game", x, y, w, h)
-    //     this.addChild(button)
-    //     button.on("pointertap", () => { 
-    //         // Launch fullscreen
-    //         Fullscreen.openFullscreen();
-    //         // Change scene to the game scene!
-    //         SAGE.startGame();
-    //     })
-    // }
+        const button = new Button("Start Game", x, y, w, h)
+        this.addChild(button)
+        button.on("pointertap", () => { 
+            // Launch fullscreen
+            Fullscreen.openFullscreen();
+            // Change scene to the game scene!
+            SAGE.startGame();
+        })
+    }
 
 }

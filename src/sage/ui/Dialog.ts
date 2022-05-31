@@ -132,7 +132,7 @@ export class Dialog {
         this.dialogBackground.drawRect(
             newDialogText.x, 
             newDialogText.y, 
-            newDialogText.width + (2*this.BACKGROUND_MARGIN),
+            newDialogText.width + (4*this.BACKGROUND_MARGIN),
             newDialogText.height + (2*this.BACKGROUND_MARGIN));
         this.dialogBackground.endFill();
         // Make a center point of origin (anchor)

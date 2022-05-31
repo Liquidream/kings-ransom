@@ -1,4 +1,4 @@
-import { IMediaInstance, sound } from "@pixi/sound";
+import { sound, SoundLibrary } from "@pixi/sound";
 import { Tween } from "tweedle.js";
 
 export class Sound {
@@ -6,14 +6,21 @@ export class Sound {
     //   
   }
 
+  public get soundLibrary(): SoundLibrary {
+    return sound;
+  }
+
   public play(soundName: string) {
     this.playCore(soundName, false);
   }
 
   public playLoop(soundName: string, fadeIn: boolean) {
+    //fadeIn = false
     if (fadeIn) {
-      const sfx = sound.play(soundName, { loop: true, volume: 0 }) as IMediaInstance
-      new Tween(sfx).to({ volume: 1 }, 500).start()
+      const sfx = sound.find(soundName)
+      sfx.volume = 0              // Doing this in one hit doesn't work??? (stays 0 volume)
+      sfx.play({ loop: true })    // 
+      new Tween(sfx).to({ volume: 1 }, 1000).start()
     } 
     else {
       this.playCore(soundName, true);
@@ -21,9 +28,10 @@ export class Sound {
   }
 
   public stop(soundName: string, fadeOut: boolean) {
+    //fadeOut = false
     if (fadeOut) {
       const sfx = sound.find(soundName)
-      new Tween(sfx).to({ volume: 0 }, 500).start()
+      new Tween(sfx).to({ volume: 0 }, 1000).start()
         .onComplete( ()=> { 
           sound.stop(soundName);
         });

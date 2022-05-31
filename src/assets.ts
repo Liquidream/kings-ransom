@@ -13,4 +13,8 @@ export const assets = [
     { name: "Rat", url: "./images/props/rat.png" },
     { name: "Old-Key", url: "./images/props/old-key.png" },
     { name: "Gold-Bar", url: "./images/props/gold-bar.png" },
+    // Sounds & Music -------------------------------------------------
+    //{ name: "Test-Loop", url: "./sfx/test-loop.ogg" },
+    { name: "Stream-Loop", url: "./sfx/stream-loop.ogg" },
+    { name: "Lake-Loop", url: "./sfx/lake-loop-short.ogg" },
 ]

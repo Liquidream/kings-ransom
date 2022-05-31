@@ -61,8 +61,10 @@ export class LoaderScreen extends Container implements IScreen {
         // Remove loading bar
         this.removeChild(this.loaderBar);
 
-        this.showStartButton();
-        //SAGE.startGame();
+        if (SAGE.enableFullscreen)
+            this.showStartButton();
+        else
+            SAGE.startGame();
     }
 
     private showStartButton() {

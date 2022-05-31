@@ -1,15 +1,16 @@
 import { Application } from "@pixi/app";
 import { DisplayObject } from "@pixi/display";
+import { filters } from "pixi.js";
+import { Tween } from "tweedle.js";
 import { IWorldData, World } from "./sage/World";
 import { Dialog } from "./sage/ui/Dialog";
 import { Script } from "./sage/Script";
 import { Events } from "./sage/Events";
 import { Actions } from "./gameactions";
+import { Sound } from "./sage/ui/Sound";
 
 
 import gamedataJSON from './gamedata.json';
-import { Tween } from "tweedle.js";
-import { filters } from "pixi.js";
 const gamedata: IWorldData = <unknown>gamedataJSON as IWorldData;
 
 export class SAGE {
@@ -24,12 +25,14 @@ export class SAGE {
     private static currentScreen: IScreen;
     
     public static debugMode = false;
+    public static enableFullscreen = false;
     
     public static World: World;
     public static Dialog: Dialog;
     public static Actions: Actions;
     public static Script: Script;
     public static Events: Events;
+    public static Sound: Sound;
 
     public static get width(): number {
         return SAGE._width;
@@ -100,6 +103,9 @@ export class SAGE {
 
         // ...and events
         SAGE.Events = new Events();
+
+        // ...and sounds
+        SAGE.Sound = new Sound();
 
         // console.log(Manager.World.title);
         // console.log(Manager.World.scenes[0].image);

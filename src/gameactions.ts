@@ -1,5 +1,6 @@
 import { SAGE } from "./Manager";
 
+// "Stream, Water, C.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org
 export class Actions {
 
   onCaveTunnelEnter = async () => {
@@ -56,6 +57,11 @@ export class Actions {
         await SAGE.Dialog.say("Narrator", "Welcome to this simple adventure", "#00ff00");
         await SAGE.Dialog.say("Narrator", "Find gold to pay the King's Ransom", "#00ff00");       
       }
+
+      // Test play sound
+      //SAGE.Sound.play("./sfx/test-loop.wav")
+      SAGE.Sound.playLoop("Stream-Loop")
+      //SAGE.Sound.playLoop("Lake-Loop")
   }
 
 }

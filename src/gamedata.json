@@ -51,7 +51,8 @@
           "x": 340,
           "y": 100,
           "width": 680,
-          "height": 200
+          "height": 200,
+          "playSounds": false
         }
       ],
       "on_enter": "SAGE.Actions.onBridgeEnter();"
@@ -102,6 +103,7 @@
       "id": "scn_cave_tunnel",
       "name": "Cave Tunnel",
       "image": "Cave-Tunnel",
+      "sound": "Cave-Drip",
       "props": [],
       "doors": [
         {
@@ -144,6 +146,7 @@
       "id": "scn_promontory",
       "name": "Promontory",
       "image": "Promontory",
+      "sound": "Lake-Loop",
       "props": [
         {
           "id": "prp_tree",
@@ -174,6 +177,7 @@
       "id": "scn_fortress_ext",
       "name": "Fortress",
       "image": "Fortress-Exterior",
+      "sound": "Wind-Howl",
       "props": [
         {
           "id": "prp_rat",
@@ -216,6 +220,7 @@
       "id": "scn_fortress_int",
       "name": "Fortress Interior",
       "image": "Fortress-Interior",
+      "sound": "Dungeon",
       "props": [
         {
           "id": "prp_gold",

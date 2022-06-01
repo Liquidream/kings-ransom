@@ -3,15 +3,19 @@ import { SAGE } from "./Manager";
 // "Stream, Water, C.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org
 // "Pick up Item 1.wav" by SilverIllusionist of Freesound.org
 // "Water drips in the cave HQ.wav" by tosha73
+// "SnakeAttackVerbPuls.wav" by Jamius
+// "bush11.wav" by schademans
+// "Jingle_Win_00.wav" by LittleRobotSoundFactory
 export class Actions {
 
   onCaveTunnelEnter = async () => {
     //console.log("TODO: onEnterCaveTunnel()");
     if (!SAGE.World.currentScene.property["snake-done"]) {      
       SAGE.World.currentScene.property["snake-done"] = true;
+      SAGE.Sound.play("Snake-Attack");
       await SAGE.Script.wait(1);
       if (SAGE.World.player.inInventory("prp_rat")) {
-        console.log("Safe! Snake ate the rat...");
+        if (SAGE.debugMode) console.log("Safe! Snake ate the rat...");
         SAGE.Dialog.showMessage('A snake strikes and eats the rat & leaves');
       } else {
         if (SAGE.debugMode) console.debug("Player died...");
@@ -40,7 +44,9 @@ export class Actions {
     // If not collected key already...
     if (treeProp && !treeProp.property["key-dropped"]) {
       treeProp.property["key-dropped"] = true;
-      await SAGE.Dialog.showMessage('You give the tree a push...');
+      SAGE.Sound.play("Bush-Rustle");
+      await SAGE.Dialog.showMessage('You give the tree a shake...');
+      SAGE.Sound.play("Key-Clink");
       SAGE.World.revealPropAt('prp_key','scn_promontory');
       await SAGE.Script.wait(1);
       SAGE.Dialog.showMessage('A Key fell out of the tree');
@@ -50,7 +56,7 @@ export class Actions {
   onBridgeEnter = async () => {
     //console.log("TODO: onBridgeEnter()");    
       if (SAGE.World.player.inInventory("prp_gold")) {
-        console.log("Got gold out - game won!");
+        if (SAGE.debugMode) console.log("Got gold out - game won!");
         SAGE.gameWon("You paid the King's Ransom!");        
       }
       

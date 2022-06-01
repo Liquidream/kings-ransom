@@ -2,6 +2,7 @@ import { sound, SoundLibrary } from "@pixi/sound";
 import { Tween } from "tweedle.js";
 
 export class Sound {
+
   public constructor() {
     //   
   }
@@ -39,6 +40,10 @@ export class Sound {
     else {
       sound.stop(soundName);
     }    
+  }
+
+  public stopAll() {
+    sound.stopAll();
   }
   
   public toggleMute() {

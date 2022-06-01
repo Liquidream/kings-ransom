@@ -20,6 +20,15 @@ export const assets = [
     { name: "Cave-Loop", url: "./sfx/cave-loop.ogg" },
     { name: "Cave-Drip", url: "./sfx/cave-drip.ogg" },
     { name: "Lake-Loop", url: "./sfx/lake-loop-short.ogg" },
+    { name: "Wind-Howl", url: "./sfx/wind-howl.ogg" },
+    { name: "Dungeon", url: "./sfx/dungeon.ogg" },
     // SFX
     { name: "Pick-Up", url: "./sfx/pick-up.ogg" },
+    { name: "Unlock-Door", url: "./sfx/door-unlock.ogg" },
+    { name: "Locked-Door", url: "./sfx/door-locked.ogg" },
+    { name: "Game-Lost", url: "./sfx/game-lost.ogg" },
+    { name: "Game-Won", url: "./sfx/game-won.ogg" },
+    { name: "Snake-Attack", url: "./sfx/snake-attack.ogg" },
+    { name: "Bush-Rustle", url: "./sfx/bush-rustle.ogg" },
+    { name: "Key-Clink", url: "./sfx/key_clink.ogg" },
 ]

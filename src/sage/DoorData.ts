@@ -14,6 +14,7 @@ export class DoorData implements IDoorData, Serialization<DoorData> {
     y = 0;
     width = 0;
     height = 0;
+    playSounds = true;
     // Key-Value pair to allow properties to be set/read
     property: { [key: string]: string | number | boolean } = {};
     // Poss. event actions
@@ -56,6 +57,7 @@ export interface IDoorData {
     height: number;
     // Key-Value pair to allow properties to be set/read
     property: { [key: string]: string | number | boolean };
+    playSounds: boolean;
     // Poss. event actions
     on_action: string;
 }

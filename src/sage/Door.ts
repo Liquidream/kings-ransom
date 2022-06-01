@@ -107,10 +107,18 @@ export class Door {
             if (key) {
                 // Unlock the door
                 this.data.state = DoorState.Unlocked;
+                // Play sound
+                if (this.data.playSounds) {
+                    SAGE.Sound.play("Unlock-Door");
+                }
             }
             else
             {
                 SAGE.Dialog.showMessage(this.data.desc_locked || "It is locked");
+                // Play sound
+                if (this.data.playSounds) {
+                    SAGE.Sound.play("Locked-Door");
+                }
                 return;
             }
         }

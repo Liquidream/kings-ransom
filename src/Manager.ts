@@ -121,15 +121,18 @@ export class SAGE {
      * (+reset game data) */
     public static restartGame() {
         console.log("Restarting game...")
+        SAGE.Sound.stopAll()
         SAGE.loadWorld();
         SAGE.startGame();
     }
 
     public static gameOver(message: string) {
+        SAGE.Sound.play("Game-Lost");
         SAGE.World.currentScene.screen.showGameOver(message);
     }
 
     public static gameWon(message: string) {
+        SAGE.Sound.play("Game-Won");
         SAGE.World.currentScene.screen.showGameWon(message);
     }
 

@@ -150,7 +150,6 @@ export class SceneScreen extends Container implements IScreen {
         this.backdropInputEvents = new InputEventEmitter(this.backdrop);
         this.backdrop.on("primaryaction", this.onPrimaryAction, this);  
         this.backdrop.on("secondaryaction", this.onSecondaryAction, this); 
-        //SAGE.Events.on("scenehint", this.onTestEvent, this);
     }
 
     private buildProps() {
@@ -227,6 +226,7 @@ export class SceneScreen extends Container implements IScreen {
 
     private onPrimaryAction() { //_e: InteractionEvent
         console.log("Backdrop was clicked/tapped");
+        SAGE.Events.emit("sceneinteract");
     }
 
     private onSecondaryAction() { //_e: InteractionEvent

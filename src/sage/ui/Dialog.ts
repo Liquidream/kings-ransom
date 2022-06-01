@@ -1,3 +1,5 @@
+//import { Sound } from "@pixi/sound";
+//import { IMediaInstance } from "@pixi/sound";
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import { SAGE } from "../../Manager";
 
@@ -12,6 +14,10 @@ export class Dialog {
     private dialogContainer!: Container | null;
     private dialogBackground!: Graphics | null;
     private dialogText!: Text | null;
+    private speakerCols: { [id: string]: string; } = {};
+    private dialogSoundName!: string;
+
+
 
     // poss options
     // - https://github.com/fireveined/pixi-flex-layout
@@ -19,6 +25,7 @@ export class Dialog {
     public constructor() {
         //
         
+        SAGE.Events.on("sceneinteract", this.onSceneInteract, this);
     }
     
     //public currentDialogText!: Text | null;
@@ -33,13 +40,14 @@ export class Dialog {
         // (was prev used when using display counter, rather than async/timer)
     }
 
-    public async say(speaker: string, message: string, speakerCol?: string, durationInSecs?: number): Promise<void> {
-        // Show a white message
+    public async say(speaker: string, message: string, speakerCol?: string, soundName?: string, durationInSecs?: number): Promise<void> {
+        // Show dialog for speaker        
         return this.showMessageCore( { 
             type: DialogType.DialogExt,
             speaker: speaker, 
             message: message,
-            col: speakerCol, 
+            col: speakerCol,
+            soundName: soundName,
             durationInSecs: durationInSecs })
     }
         
@@ -72,7 +80,7 @@ export class Dialog {
     }
 
     private async showMessageCore(options: { 
-        type?: DialogType, message: string, speaker?: string, col?: string, durationInSecs?: number }): Promise<void> {
+        type?: DialogType, message: string, speaker?: string, col?: string, soundName?: string, durationInSecs?: number }): Promise<void> {
     //private async showMessageCore(message: string, col: string, type: DialogType = DialogType.DialogInt, durationInSecs?: number): Promise<void> {
         let waitDuration = 0;
         // Are we already displaying something? 
@@ -100,6 +108,19 @@ export class Dialog {
         // https://www.w3.org/WAI/media/av/captions/
         // https://bbc.github.io/subtitle-guidelines/
 
+        // if both speaker AND col passed...
+        if (options.col && options.speaker) {
+            // ...remember for future use!
+            this.speakerCols[options.speaker.toUpperCase()] = options.col;
+        }
+
+        // if speaker col wasn't passed...
+        // ...see whether it's been prev defined
+        if (options.col === undefined 
+                && options.speaker
+                && this.speakerCols[options.speaker.toUpperCase()]) {
+            options.col = this.speakerCols[options.speaker.toUpperCase()]
+        }
 
         // Subtitle/caption/speech
         const styly: TextStyle = new TextStyle({
@@ -147,15 +168,34 @@ export class Dialog {
         //this.currentDialogText = newDialogText;
         this.currentDialogType = options.type ?? DialogType.DialogInt;        
         
+        // Sound file?
+        //let instance: IMediaInstance
+        if (options.soundName) {
+            this.dialogSoundName = options.soundName;
+            SAGE.Sound.play(this.dialogSoundName)
+            //instance = SAGE.Sound.play(this.dialogSoundName) as IMediaInstance;
+        }
+
+        // ---------------------------------------
         // How long to display?
+        //
         if (options.durationInSecs) {
             // Duration specified, so use it
             waitDuration = options.durationInSecs;
         }
+        // else if (options.soundName) {
+        //     this.dialogSoundName = options.soundName;
+        //     const instance = SAGE.Sound.play(this.dialogSoundName) as IMediaInstance;
+        //     // display dialog until sound file finishes (or is stopped)
+        //     waitDuration = -1
+        //     instance.on("end", () => {
+        //         console.log(">> finished")
+        //     })
+        // }
         else {
             // calc display duration (1 sec for every 7 chars, approx.)        
             waitDuration = clamp(options.message.length / this.CHARS_PER_SEC, this.MIN_DURATION_SEC, this.MAX_DURATION_SEC);
-        }        
+        }
         //console.log(`Duration = ${waitDuration}`)
         
         // Wait for duration
@@ -170,6 +210,15 @@ export class Dialog {
             if (newDialogText === this.dialogText) {
                 this.clearMessage();
             }
+        }
+    }
+
+    private onSceneInteract() {
+        console.log(`TODO: skip dialog`);
+        this.clearMessage();
+        // Sound file?
+        if (this.dialogSoundName) {
+            SAGE.Sound.stop(this.dialogSoundName);
         }
     }
     

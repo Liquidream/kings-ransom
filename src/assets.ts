@@ -14,7 +14,7 @@ export const assets = [
     { name: "Old-Key", url: "./images/props/old-key.png" },
     { name: "Gold-Bar", url: "./images/props/gold-bar.png" },
     // Sounds & Music -------------------------------------------------
-    //{ name: "Test-Loop", url: "./sfx/test-loop.ogg" },
+    //{ name: "Test-Loop", url: "./sfx/test-loop.ogg" },    
     // Background
     { name: "Stream-Loop", url: "./sfx/stream-loop.ogg" },
     { name: "Cave-Loop", url: "./sfx/cave-loop.ogg" },
@@ -31,4 +31,8 @@ export const assets = [
     { name: "Snake-Attack", url: "./sfx/snake-attack.ogg" },
     { name: "Bush-Rustle", url: "./sfx/bush-rustle.ogg" },
     { name: "Key-Clink", url: "./sfx/key_clink.ogg" },
+    // Dialog
+    { name: "Intro-1", url: "./sfx/intro-1.ogg" },
+    { name: "Intro-2", url: "./sfx/intro-2.ogg" },
+    { name: "Intro-3", url: "./sfx/intro-3.ogg" },
 ]

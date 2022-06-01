@@ -1,4 +1,4 @@
-import { sound, SoundLibrary } from "@pixi/sound";
+import { IMediaInstance, sound, SoundLibrary } from "@pixi/sound";
 import { Tween } from "tweedle.js";
 
 export class Sound {
@@ -11,8 +11,8 @@ export class Sound {
     return sound;
   }
 
-  public play(soundName: string) {
-    this.playCore(soundName, false);
+  public play(soundName: string): IMediaInstance | Promise<IMediaInstance> {
+    return this.playCore(soundName, false);
   }
 
   public playLoop(soundName: string, fadeIn: boolean) {
@@ -28,7 +28,7 @@ export class Sound {
     }    
   }
 
-  public stop(soundName: string, fadeOut: boolean) {
+  public stop(soundName: string, fadeOut?: boolean) {
     //fadeOut = false
     if (fadeOut) {
       const sfx = sound.find(soundName)
@@ -52,7 +52,7 @@ export class Sound {
 
 
 
-  private playCore(soundName: string, loop: boolean) {
-    sound.play(soundName, { loop: loop });
+  private playCore(soundName: string, loop: boolean): IMediaInstance | Promise<IMediaInstance> {
+    return sound.play(soundName, { loop: loop });
   }
 }

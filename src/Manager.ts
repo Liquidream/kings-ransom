@@ -95,14 +95,14 @@ export class SAGE {
         // ...and game actions
         SAGE.Actions = new Actions();
 
+        // ...and events
+        SAGE.Events = new Events();
+
         // ...and dialog
         SAGE.Dialog = new Dialog();
 
         // ...and script
         SAGE.Script = new Script();
-
-        // ...and events
-        SAGE.Events = new Events();
 
         // ...and sounds
         SAGE.Sound = new Sound();

@@ -183,15 +183,15 @@ export class Dialog {
             // Duration specified, so use it
             waitDuration = options.durationInSecs;
         }
-        // else if (options.soundName) {
-        //     this.dialogSoundName = options.soundName;
-        //     const instance = SAGE.Sound.play(this.dialogSoundName) as IMediaInstance;
-        //     // display dialog until sound file finishes (or is stopped)
-        //     waitDuration = -1
-        //     instance.on("end", () => {
-        //         console.log(">> finished")
-        //     })
-        // }
+        else if (options.soundName) {
+            this.dialogSoundName = options.soundName;
+            const sound = SAGE.Sound.soundLibrary.find(this.dialogSoundName);
+            // display dialog until sound file finishes (or is stopped)
+            waitDuration = sound.duration;
+            // instance.on("end", () => {
+            //     console.log(">> finished")
+            // })
+        }
         else {
             // calc display duration (1 sec for every 7 chars, approx.)        
             waitDuration = clamp(options.message.length / this.CHARS_PER_SEC, this.MIN_DURATION_SEC, this.MAX_DURATION_SEC);
@@ -210,6 +210,9 @@ export class Dialog {
             if (newDialogText === this.dialogText) {
                 this.clearMessage();
             }
+
+            // Add a gap at end (so dialog not too close together)
+            await SAGE.Script.wait(0.5);
         }
     }
 

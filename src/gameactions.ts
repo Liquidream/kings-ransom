@@ -62,7 +62,7 @@ export class Actions {
       
       if (!SAGE.World.property["intro-done"]) {
         SAGE.World.property["intro-done"] = true;
-        await SAGE.Script.wait(1);
+        SAGE.Script.wait(3);
         await SAGE.Dialog.say("Narrator", "The King has been kidnapped by marauders, who are keeping him hostage", "#00ff00", "Intro-1");
         await SAGE.Dialog.say("Narrator", "Your task is a simple one...", undefined, "Intro-2")
         await SAGE.Dialog.say("Narrator", "Retrieve the gold\nthat will pay the King's Ransom!", undefined, "Intro-3")

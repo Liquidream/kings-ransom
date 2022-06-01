@@ -25,7 +25,7 @@ export class SAGE {
     private static currentScreen: IScreen;
     
     public static debugMode = false;
-    public static enableFullscreen = false;
+    public static enableFullscreen = true;
     
     public static World: World;
     public static Dialog: Dialog;
@@ -103,6 +103,7 @@ export class SAGE {
 
         // ...and script
         SAGE.Script = new Script();
+        SAGE.Script.initialize();
 
         // ...and sounds
         SAGE.Sound = new Sound();

@@ -25,7 +25,7 @@ export class Dialog {
     public constructor() {
         //
         
-        SAGE.Events.on("sceneinteract", this.onSceneInteract, this);
+        //SAGE.Events.on("sceneinteract", this.onSceneInteract, this);
     }
     
     //public currentDialogText!: Text | null;
@@ -202,13 +202,19 @@ export class Dialog {
         // ...or leave on display (e.g. if duration = -1)
         if (waitDuration > 0) {
             // wait for calc'd duration
-            await SAGE.Script.wait(waitDuration);
+            await SAGE.Script.waitSkippable(waitDuration);
+            //await SAGE.Script.wait(waitDuration);
+
             // Remove message now duration over
             // - (Unlike counter method, this could create a bug where msg changed mid-show & thread clash?)            
             // Only clear dialog if we're the last message 
             // (could have been an overlap)
             if (newDialogText === this.dialogText) {
                 this.clearMessage();
+
+                const sound = SAGE.Sound.soundLibrary.find(this.dialogSoundName);
+                if (sound.isPlaying) sound.stop();
+                //SAGE.Sound.stop(this.dialogSoundName);
             }
 
             // Add a gap at end (so dialog not too close together)
@@ -216,16 +222,11 @@ export class Dialog {
         }
     }
 
-    private onSceneInteract() {
-        console.log(`TODO: skip dialog`);
-        this.clearMessage();
-        // Sound file?
-        if (this.dialogSoundName) {
-            SAGE.Sound.stop(this.dialogSoundName);
-        }
-    }
+    //private onSceneInteract() {
+        // console.log(`TODO: skip dialog`);
+    //}
     
-}
+} 
 
 export enum DialogType {
     Unknown,

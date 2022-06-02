@@ -14,7 +14,7 @@ export class Script {
    
    public initialize(): void {
       // Anything?
-      SAGE.Events.on("sceneinteract", this.onSceneInteract, this);
+      //SAGE.Events.on("sceneinteract", this.onSceneInteract, this);
    }
 
    
@@ -28,20 +28,11 @@ export class Script {
 
    public waitSkippable(seconds: number): Promise<void> {
       const timedPromise = new Promise<void>(res => setTimeout(res, seconds * 1000))
-      //this.interactPromise = new Promise(res => this.onSceneInteract = res);
       return Promise.race([timedPromise, this.waitForSkip()])
    }
    
-   private onSceneInteract() {
-      console.log(`TODO: skip dialog >>>>>>>>`);
-      // this.clearMessage();
-      // // Sound file?
-      // if (this.dialogSoundName) {
-      //     SAGE.Sound.stop(this.dialogSoundName);
-      // }
-  }
 
-  private waitForSkip(): Promise<void> {    
+   private waitForSkip(): Promise<void> {    
       return new Promise<void>(res => {
          function onSkip() {
             res();

@@ -12,6 +12,7 @@ export class Actions {
     //console.log("TODO: onEnterCaveTunnel()");
     if (!SAGE.World.currentScene.property["snake-done"]) {      
       SAGE.World.currentScene.property["snake-done"] = true;
+      await SAGE.Script.wait(1);
       SAGE.Sound.play("Snake-Attack");
       await SAGE.Script.wait(1);
       if (SAGE.World.player.inInventory("prp_rat")) {

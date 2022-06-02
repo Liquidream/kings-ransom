@@ -32,7 +32,7 @@ export const assets = [
     { name: "Bush-Rustle", url: "./sfx/bush-rustle.ogg" },
     { name: "Key-Clink", url: "./sfx/key_clink.ogg" },
     // Dialog
-    { name: "Intro-1", url: "./sfx/intro-1.ogg" },
-    { name: "Intro-2", url: "./sfx/intro-2.ogg" },
-    { name: "Intro-3", url: "./sfx/intro-3.ogg" },
+    { name: "Intro-1", url: "./sfx/intro-1a.ogg" },
+    { name: "Intro-2", url: "./sfx/intro-2a.ogg" },
+    { name: "Intro-3", url: "./sfx/intro-3a.ogg" },
 ]

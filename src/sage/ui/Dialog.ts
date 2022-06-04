@@ -101,6 +101,7 @@ export class Dialog {
         // https://gameanalytics.com/blog/adding-subtitles-to-your-mobile-game-dos-and-donts/
         // https://www.gamedeveloper.com/audio/subtitles-increasing-game-accessibility-comprehension
         // https://gritfish.net/assets/Documents/Best-practice-Game-Subtitles.pdf
+        // https://www.gameuidatabase.com/index.php?&scrn=162&set=1&tag=67
         // ---
         // https://www.capitalcaptions.com/services/subtitle-services-2/capital-captions-standard-subtitling-guidelines/
         // https://uxdesign.cc/a-guide-to-the-visual-language-of-closed-captions-and-subtitles-2fda5fa2a325
@@ -187,10 +188,7 @@ export class Dialog {
             this.dialogSoundName = options.soundName;
             const sound = SAGE.Sound.soundLibrary.find(this.dialogSoundName);
             // display dialog until sound file finishes (or is stopped)
-            waitDuration = sound.duration;
-            // instance.on("end", () => {
-            //     console.log(">> finished")
-            // })
+            waitDuration = sound?.duration;
         }
         else {
             // calc display duration (1 sec for every 7 chars, approx.)        
@@ -213,7 +211,7 @@ export class Dialog {
                 this.clearMessage();
 
                 const sound = SAGE.Sound.soundLibrary.find(this.dialogSoundName);
-                if (sound.isPlaying) sound.stop();
+                if (sound && sound.isPlaying) sound.stop();
                 //SAGE.Sound.stop(this.dialogSoundName);
             }
 

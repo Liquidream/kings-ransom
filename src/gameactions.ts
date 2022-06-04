@@ -61,18 +61,15 @@ export class Actions {
         SAGE.gameWon("You paid the King's Ransom!");        
       }
       
-      if (!SAGE.World.property["intro-done"]) {
-        SAGE.World.property["intro-done"] = true;
-        await SAGE.Script.wait(3);
-        await SAGE.Dialog.say("Narrator", "The King has been kidnapped by marauders, who are keeping him hostage", "#00ff00", "Intro-1");
-        await SAGE.Dialog.say("Narrator", "Your task is a simple one...", undefined, "Intro-2")
-        await SAGE.Dialog.say("Narrator", "Retrieve the gold\nthat will pay the King's Ransom!", undefined, "Intro-3")
-      }
+      // if (!SAGE.World.property["intro-done"]) {
+      //   SAGE.World.property["intro-done"] = true;
+      //   await SAGE.Script.wait(3);
+      //   await SAGE.Dialog.say("Narrator", "The King has been kidnapped by marauders, who are keeping him hostage", "#00ff00", "Intro-1");
+      //   await SAGE.Dialog.say("Narrator", "Your task is a simple one...", undefined, "Intro-2")
+      //   await SAGE.Dialog.say("Narrator", "Retrieve the gold\nthat will pay the King's Ransom!", undefined, "Intro-3")
+      // }
 
-      // Test play sound
-      //SAGE.Sound.play("./sfx/test-loop.wav")
-      //SAGE.Sound.playLoop("Stream-Loop")
-      //SAGE.Sound.playLoop("Lake-Loop")
+      
   }
 
 }

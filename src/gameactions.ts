@@ -1,4 +1,5 @@
 import { SAGE } from "./Manager";
+import { DialogOption } from "./sage/ui/Dialog";
 
 // "Stream, Water, C.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org
 // "Pick up Item 1.wav" by SilverIllusionist of Freesound.org
@@ -61,6 +62,8 @@ export class Actions {
         SAGE.gameWon("You paid the King's Ransom!");        
       }
       
+      //SAGE.Sound.playLoop("Test-Loop", false);
+
       // if (!SAGE.World.property["intro-done"]) {
       //   SAGE.World.property["intro-done"] = true;
       //   await SAGE.Script.wait(3);
@@ -69,7 +72,20 @@ export class Actions {
       //   await SAGE.Dialog.say("Narrator", "Retrieve the gold\nthat will pay the King's Ransom!", undefined, "Intro-3")
       // }
 
-      
+      await SAGE.Dialog.showOptions([
+        new DialogOption("why did you stop me?", async () => {
+          await SAGE.Dialog.say("Tentacle", "I'm lonely...", undefined, "Intro-2");
+        }),
+        new DialogOption("where am i?", async () => {
+          //
+        }),
+        new DialogOption("who are you?", async () => {
+          //
+        }),
+        new DialogOption("nevermind", async () => {
+          //
+        })
+      ]);
   }
 
 }

@@ -1,7 +1,19 @@
-//import { Sound } from "@pixi/sound";
-//import { IMediaInstance } from "@pixi/sound";
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import { SAGE } from "../../Manager";
+
+
+
+export class DialogOption {
+
+    message: string;
+    func: () => void;
+
+    public constructor(message: string, func: () => void) {
+      this.message = message;
+      this.func = func;
+    }
+}  
+
 
 export class Dialog {
     // "constants" 
@@ -16,15 +28,14 @@ export class Dialog {
     private dialogText!: Text | null;
     private speakerCols: { [id: string]: string; } = {};
     private dialogSoundName!: string;
-
-
+    private dialogOptions!: Array<DialogOption>;
 
     // poss options
     // - https://github.com/fireveined/pixi-flex-layout
     
-    public constructor() {
-        //
-        
+    // -
+    
+    public constructor() {        
         //SAGE.Events.on("sceneinteract", this.onSceneInteract, this);
     }
     
@@ -38,6 +49,12 @@ export class Dialog {
     public update() {
         // Anything?
         // (was prev used when using display counter, rather than async/timer)
+    }
+
+    public async showOptions(options: Array<DialogOption>): Promise<void> {         
+         this.dialogOptions = options;
+         // TODO: Create interactive Pixi Text objects + handle events!
+         console.log(this.dialogOptions.length);
     }
 
     public async say(speaker: string, message: string, speakerCol?: string, soundName?: string, durationInSecs?: number): Promise<void> {
@@ -68,9 +85,7 @@ export class Dialog {
     }
 
     public clearMessage(): void {
-        if (this.dialogContainer) {            
-            // SAGE.app.stage.removeChild(this.dialogBackground);
-            // SAGE.app.stage.removeChild(this.dialogText);
+        if (this.dialogContainer) {
             SAGE.app.stage.removeChild(this.dialogContainer); 
         }
         this.dialogText = null;
@@ -81,7 +96,6 @@ export class Dialog {
 
     private async showMessageCore(options: { 
         type?: DialogType, message: string, speaker?: string, col?: string, soundName?: string, durationInSecs?: number }): Promise<void> {
-    //private async showMessageCore(message: string, col: string, type: DialogType = DialogType.DialogInt, durationInSecs?: number): Promise<void> {
         let waitDuration = 0;
         // Are we already displaying something? 
         if (this.dialogBackground) {
@@ -141,10 +155,7 @@ export class Dialog {
         newDialogText.x = SAGE.width / 2;
         newDialogText.y = SAGE.height - 88 - this.BACKGROUND_MARGIN;
         newDialogText.anchor.set(0.5);
-        // newDialogText.x = SAGE.width / 2;
-        // newDialogText.y = SAGE.height - 88 - this.BACKGROUND_MARGIN;
         // .text = "This is expensive to change, please do not abuse";
-        //this.dialogTextList.push(newDialogText);
         this.dialogText = newDialogText;
         
         // Background for all dialog
@@ -166,15 +177,12 @@ export class Dialog {
         SAGE.app.stage.addChild(this.dialogContainer);
 
         // Set here, so if another dialog comes before this expires, it'll be removed
-        //this.currentDialogText = newDialogText;
         this.currentDialogType = options.type ?? DialogType.DialogInt;        
         
         // Sound file?
-        //let instance: IMediaInstance
         if (options.soundName) {
             this.dialogSoundName = options.soundName;
             SAGE.Sound.play(this.dialogSoundName)
-            //instance = SAGE.Sound.play(this.dialogSoundName) as IMediaInstance;
         }
 
         // ---------------------------------------
@@ -194,14 +202,12 @@ export class Dialog {
             // calc display duration (1 sec for every 7 chars, approx.)        
             waitDuration = clamp(options.message.length / this.CHARS_PER_SEC, this.MIN_DURATION_SEC, this.MAX_DURATION_SEC);
         }
-        //console.log(`Duration = ${waitDuration}`)
         
         // Wait for duration
         // ...or leave on display (e.g. if duration = -1)
         if (waitDuration > 0) {
             // wait for calc'd duration
             await SAGE.Script.waitSkippable(waitDuration);
-            //await SAGE.Script.wait(waitDuration);
 
             // Remove message now duration over
             // - (Unlike counter method, this could create a bug where msg changed mid-show & thread clash?)            
@@ -211,8 +217,7 @@ export class Dialog {
                 this.clearMessage();
 
                 const sound = SAGE.Sound.soundLibrary.find(this.dialogSoundName);
-                if (sound && sound.isPlaying) sound.stop();
-                //SAGE.Sound.stop(this.dialogSoundName);
+                if (sound?.isPlaying) sound.stop();
             }
 
             // Add a gap at end (so dialog not too close together)

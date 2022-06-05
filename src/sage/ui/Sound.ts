@@ -5,7 +5,7 @@ import { SAGE } from "../../Manager";
 export class Sound {
 
   public constructor() {
-    //   
+    //
   }
 
   public get soundLibrary(): SoundLibrary {
@@ -71,6 +71,8 @@ export class Sound {
 
   private playCore(soundName: string, loop: boolean): IMediaInstance | Promise<IMediaInstance> | undefined {
     try {
+      // Poss workaround for current iOS issues
+    //sound.useLegacy = true;
       return sound.play(soundName, { loop: loop });
     }
     catch(e) {

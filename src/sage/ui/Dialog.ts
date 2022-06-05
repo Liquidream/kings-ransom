@@ -73,7 +73,7 @@ export class Dialog {
         let yOffset = 0;
         for(const choice of this.dialogChoices) {
             const style: TextStyle = new TextStyle({
-                align: "center",
+                align: "left",
                 fill: col,
                 fontSize: 47,
                 strokeThickness: 6,
@@ -81,27 +81,40 @@ export class Dialog {
                 wordWrap: true,
                 wordWrapWidth: SAGE.width / 2,
             });
-            choice.text = new Text("▸ " + choice.message, style); // Text supports unicode!
-            choice.text.x = 0;
+            // Bullet
+            const bullet = new Text("▸", style); // Text supports unicode!
+            bullet.x = 0;
+            bullet.y = yOffset;
+            this.dialogContainer.addChild(bullet);
+            // Choice
+            choice.text = new Text(choice.message, style); // Text supports unicode!
+            choice.text.x = 46;
             choice.text.y = yOffset;
             this.dialogContainer.addChild(choice.text);
             yOffset += choice.text.height + this.CHOICE_MARGIN;
             // Events
+            bullet.interactive = true;   // Super important or the object will never receive mouse events!
             choice.text.interactive = true;   // Super important or the object will never receive mouse events!
             // >> On Selected...
-            choice.text.on("pointertap", () => {
+            const funcSelect = () => {
                 console.log(choice.message);
                 // Run the choice's function
                 choice.func();
-            });
+            };
+            bullet.on("pointertap", funcSelect);
+            choice.text.on("pointertap", funcSelect);
             // >> On Mouse Over...
-            choice.text.on("mouseover", () => {
+            const funcOver = () => {
                 choice.text.style.fill = "yellow"
-            });
-            // >> On Mouse Over...
-            choice.text.on("mouseout", () => {
+            }
+            bullet.on("mouseover", funcOver);
+            choice.text.on("mouseover", funcOver);
+            // >> On Mouse Out...
+            const funcOut = () => {
                 choice.text.style.fill = col
-            });
+            }
+            bullet.on("mouseout", funcOut);
+            choice.text.on("mouseout", funcOut);
         }
 
         this.dialogContainer.pivot.set(this.dialogContainer.width/2, this.dialogContainer.height/2);        

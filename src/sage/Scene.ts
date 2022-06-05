@@ -79,10 +79,10 @@ export class Scene implements ISceneData, Serialization<Scene> {
         this.sound =  input.sound;
         if (input.property) this.property = input.property;
         this.on_enter =  input.on_enter;
-        for(const prop of input.props){
+        for(const prop of input.props) {
             this.props.push(new PropData().fromJSON(prop))
         }
-        for(const door of input.doors){
+        for(const door of input.doors) {
             this.doors.push(new DoorData().fromJSON(door))
         }
         return this;

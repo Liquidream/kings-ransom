@@ -2,11 +2,11 @@ import { Container, Graphics, Text, TextStyle } from "pixi.js";
 import { SAGE } from "../../Manager";
 
 
-
-export class DialogOption {
+export class DialogChoice {
 
     message: string;
     func: () => void;
+    text!: Text;
 
     public constructor(message: string, func: () => void) {
       this.message = message;
@@ -22,13 +22,14 @@ export class Dialog {
     MIN_DURATION_SEC = 1.5;
     MAX_DURATION_SEC = 7;
     BACKGROUND_MARGIN = 20;
+    CHOICE_MARGIN = 5;
 
     private dialogContainer!: Container | null;
     private dialogBackground!: Graphics | null;
     private dialogText!: Text | null;
     private speakerCols: { [id: string]: string; } = {};
     private dialogSoundName!: string;
-    private dialogOptions!: Array<DialogOption>;
+    private dialogChoices!: Array<DialogChoice>;
 
     // poss options
     // - https://github.com/fireveined/pixi-flex-layout
@@ -51,11 +52,75 @@ export class Dialog {
         // (was prev used when using display counter, rather than async/timer)
     }
 
-    public async showOptions(options: Array<DialogOption>): Promise<void> {         
-         this.dialogOptions = options;
-         // TODO: Create interactive Pixi Text objects + handle events!
-         console.log(this.dialogOptions.length);
+    public async showChoices(choiceList: Array<DialogChoice>,
+        options?: { col?: string }): Promise<void> {         
+         this.dialogChoices = choiceList;
+         console.log(this.dialogChoices.length);
+         
+         // Are we already displaying something? 
+         if (this.dialogBackground) {
+             // clear existing message
+             this.clearMessage()
+        }           
+            
+        // Create interactive Pixi Text objects + handle events!
+
+        // Text style
+        const col = options?.col || "#fff";        
+        this.dialogContainer = new Container();
+        SAGE.app.stage.addChild(this.dialogContainer);
+
+        let yOffset = 0;
+        for(const choice of this.dialogChoices) {
+            const style: TextStyle = new TextStyle({
+                align: "center",
+                fill: col,
+                fontSize: 47,
+                strokeThickness: 6,
+                lineJoin: "round",
+                wordWrap: true,
+                wordWrapWidth: SAGE.width / 2,
+            });
+            choice.text = new Text("▸ " + choice.message, style); // Text supports unicode!
+            choice.text.x = 0;
+            choice.text.y = yOffset;
+            this.dialogContainer.addChild(choice.text);
+            yOffset += choice.text.height + this.CHOICE_MARGIN;
+            // Events
+            choice.text.interactive = true;   // Super important or the object will never receive mouse events!
+            // >> On Selected...
+            choice.text.on("pointertap", () => {
+                console.log(choice.message);
+                // Run the choice's function
+                choice.func();
+            });
+            // >> On Mouse Over...
+            choice.text.on("mouseover", () => {
+                choice.text.style.fill = "yellow"
+            });
+            // >> On Mouse Over...
+            choice.text.on("mouseout", () => {
+                choice.text.style.fill = col
+            });
+        }
+
+        this.dialogContainer.pivot.set(this.dialogContainer.width/2, this.dialogContainer.height/2);        
+        this.dialogContainer.x = SAGE.width / 2;
+        this.dialogContainer.y = SAGE.height - (this.dialogContainer.height/2) - 80;
+
+        // Background for all dialog
+        this.dialogBackground = new Graphics();
+        this.dialogBackground.beginFill(0x0);
+        this.dialogBackground.alpha = 0.6;
+        this.dialogBackground.drawRect(
+            -this.BACKGROUND_MARGIN, 
+            -this.BACKGROUND_MARGIN, 
+            this.dialogContainer.width + (3 * this.BACKGROUND_MARGIN),
+            this.dialogContainer.height  + (2 * this.BACKGROUND_MARGIN));
+        this.dialogBackground.endFill();
+        this.dialogContainer.addChildAt(this.dialogBackground, 0);
     }
+
 
     public async say(speaker: string, message: string, speakerCol?: string, soundName?: string, durationInSecs?: number): Promise<void> {
         // Show dialog for speaker        
@@ -153,7 +218,7 @@ export class Dialog {
         }
         const newDialogText = new Text(options.message, styly); // Text supports unicode!
         newDialogText.x = SAGE.width / 2;
-        newDialogText.y = SAGE.height - 88 - this.BACKGROUND_MARGIN;
+        newDialogText.y = SAGE.height - (newDialogText.height/2) - 80;
         newDialogText.anchor.set(0.5);
         // .text = "This is expensive to change, please do not abuse";
         this.dialogText = newDialogText;

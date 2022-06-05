@@ -1,5 +1,5 @@
 import { SAGE } from "./Manager";
-import { DialogOption } from "./sage/ui/Dialog";
+import { DialogChoice } from "./sage/ui/Dialog";
 
 // "Stream, Water, C.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org
 // "Pick up Item 1.wav" by SilverIllusionist of Freesound.org
@@ -64,26 +64,26 @@ export class Actions {
       
       //SAGE.Sound.playLoop("Test-Loop", false);
 
-      if (!SAGE.World.property["intro-done"]) {
-        SAGE.World.property["intro-done"] = true;
-        await SAGE.Script.wait(3);
-        await SAGE.Dialog.say("Narrator", "The King has been kidnapped by marauders, who are keeping him hostage", "#00ff00", "Intro-1");
-        await SAGE.Dialog.say("Narrator", "Your task is a simple one...", undefined, "Intro-2")
-        await SAGE.Dialog.say("Narrator", "Retrieve the gold\nthat will pay the King's Ransom!", undefined, "Intro-3")
-      }
+      // if (!SAGE.World.property["intro-done"]) {
+      //   SAGE.World.property["intro-done"] = true;
+      //   await SAGE.Script.wait(3);
+      //   await SAGE.Dialog.say("Narrator", "The King has been kidnapped by marauders, who are keeping him hostage", "#00ff00", "Intro-1");
+      //   await SAGE.Dialog.say("Narrator", "Your task is a simple one...", undefined, "Intro-2")
+      //   await SAGE.Dialog.say("Narrator", "Retrieve the gold\nthat will pay the King's Ransom!", undefined, "Intro-3")
+      // }
 
-      await SAGE.Dialog.showOptions([
-        new DialogOption("why did you stop me?", async () => {
-          await SAGE.Dialog.say("Tentacle", "I'm lonely...", undefined, "Intro-2");
+      await SAGE.Dialog.showChoices([
+        new DialogChoice("Why did you stop me?", async () => {
+          await SAGE.Dialog.say("Tentacle", "I'm lonely...", "Lime");
         }),
-        new DialogOption("where am i?", async () => {
-          //
+        new DialogChoice("Where am i?", async () => {
+          await SAGE.Dialog.say("Tentacle", "You're in Paul's demo adventure", "Lime");
         }),
-        new DialogOption("who are you?", async () => {
-          //
+        new DialogChoice("Who are you?", async () => {
+          await SAGE.Dialog.say("Tentacle", "I'm Tentacle, of course!", "Lime");
         }),
-        new DialogOption("nevermind", async () => {
-          //
+        new DialogChoice("Nevermind", async () => {
+          await SAGE.Dialog.say("Tentacle", "Fine, be like that!", "Lime");
         })
       ]);
   }

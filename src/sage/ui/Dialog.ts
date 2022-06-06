@@ -6,11 +6,19 @@ export class DialogChoice {
 
   message: string;
   func: () => void;
+  conditionProperty!: string | undefined;
   text!: Text;
 
-  public constructor(message: string, func: () => void) {
+  /**
+   * 
+   * @param message Message to display
+   * @param func Function to run when choice selected
+   * @param conditionProperty Property name that must exist in order for choice to be displayed
+   */
+  public constructor(message: string, func: () => void, conditionProperty?: string) {
     this.message = message;
     this.func = func;
+    this.conditionProperty = conditionProperty;
   }
 }
 
@@ -30,6 +38,8 @@ export class Dialog {
   private speakerCols: { [id: string]: string; } = {};
   private dialogSoundName!: string;
   private _dialogChoices!: Array<DialogChoice> | null;
+  // Key-Value pair to allow properties to be set/read
+  public property: { [key: string]: string | number | boolean } = {};
 
   // poss options
   // - https://github.com/fireveined/pixi-flex-layout
@@ -81,6 +91,13 @@ export class Dialog {
 
     let yOffset = 0;
     for (const choice of this._dialogChoices) {
+      // Check for condition (e.g. should we show this choice yet?)
+      if (choice.conditionProperty
+        && !this.property[choice.conditionProperty]) {
+        // skip, as specified condition not yet met
+        continue;
+      }
+
       const style: TextStyle = new TextStyle({
         align: "left",
         fill: col,
@@ -91,7 +108,7 @@ export class Dialog {
         wordWrapWidth: SAGE.width / 2,
       });
       // Bullet
-      const bullet = new Text("▸", style); // Text supports unicode! //▸ (the unicode char breaks debugging!)
+      const bullet = new Text(">", style); // Text supports unicode! // (the unicode char breaks debugging!)
       bullet.x = 0;
       bullet.y = yOffset;
       this.dialogContainer.addChild(bullet);

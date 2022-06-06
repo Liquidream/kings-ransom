@@ -37,6 +37,7 @@ export class Dialog {
   private dialogText!: Text | null;
   private speakerCols: { [id: string]: string; } = {};
   private dialogSoundName!: string;
+  private blocker!: Graphics | null;
   private _dialogChoices!: Array<DialogChoice> | null;
   // Key-Value pair to allow properties to be set/read
   public property: { [key: string]: string | number | boolean } = {};
@@ -83,6 +84,16 @@ export class Dialog {
     this._dialogChoices = choiceList;
 
     // Create interactive Pixi Text objects + handle events!
+    
+    // Add "blocker" for all other input except dialog choices
+    this.blocker = new Graphics();
+    // blocker.width = SAGE.width;
+    // blocker.height = SAGE.height;
+    this.blocker.beginFill(0xccc, 0.00000000000001); // "Invisible"
+    //this.blocker.beginFill(0xe74c3c, 125);
+    this.blocker.drawRect(0, 0, SAGE.width, SAGE.height);
+    this.blocker.interactive = true;
+    SAGE.app.stage.addChild(this.blocker);
 
     // Text style
     const col = options?.col || "#fff";
@@ -108,7 +119,7 @@ export class Dialog {
         wordWrapWidth: SAGE.width / 2,
       });
       // Bullet
-      const bullet = new Text(">", style); // Text supports unicode! // (the unicode char breaks debugging!)
+      const bullet = new Text("▸", style); // Text supports unicode! // (the unicode char breaks debugging!)
       bullet.x = 0;
       bullet.y = yOffset;
       this.dialogContainer.addChild(bullet);
@@ -176,7 +187,12 @@ export class Dialog {
   public end() {
     // Tidy up any existing message on display
     this.clearMessage();
-    // Kill any remaining choices
+    // Tidy up any dialog choice related content
+    if (this.blocker) {
+      SAGE.app.stage.removeChild(this.blocker);
+      this.blocker.destroy();
+      this.blocker = null;
+    }
     this._dialogChoices = null;
   }
 

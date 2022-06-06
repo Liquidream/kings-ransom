@@ -66,7 +66,7 @@ export class Actions {
     // }
 
     await SAGE.Dialog.showChoices([
-      new DialogChoice("Why did you stop me something important here no doubt?", async () => {
+      new DialogChoice("Why did you stop me, something important here no doubt?", async () => {
         await SAGE.Dialog.say("Tentacle", "I'm lonely...", "Lime");
         SAGE.Dialog.property["asked_why"] = true;
       }),

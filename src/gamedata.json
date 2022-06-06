@@ -55,7 +55,8 @@
           "playSounds": false
         }
       ],
-      "on_enter": "SAGE.Actions.onBridgeEnter();"
+      "on_enter": "SAGE.Actions.onBridgeEnter();",
+      "on_exit": "console.log('onCaveTunnelExit...');"
     },
     {
       "id": "scn_cave_ent",

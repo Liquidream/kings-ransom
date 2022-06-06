@@ -55,8 +55,8 @@ export class Sound {
     }
     catch(e) {
       SAGE.Dialog.showErrorMessage(`Error: Sound with ID '${soundName}' is invalid`);
-      return;
     }   
+    return;
   }
 
   public stopAll() {
@@ -77,7 +77,7 @@ export class Sound {
     }
     catch(e) {
       SAGE.Dialog.showErrorMessage(`Error: Sound with ID '${soundName}' is invalid`);
-      return;
     }
+    return;
   }
 }

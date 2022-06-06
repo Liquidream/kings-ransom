@@ -9,10 +9,10 @@ export class DialogChoice {
     text!: Text;
 
     public constructor(message: string, func: () => void) {
-      this.message = message;
-      this.func = func;
+        this.message = message;
+        this.func = func;
     }
-}  
+}
 
 
 export class Dialog {
@@ -29,49 +29,54 @@ export class Dialog {
     private dialogText!: Text | null;
     private speakerCols: { [id: string]: string; } = {};
     private dialogSoundName!: string;
-    private dialogChoices!: Array<DialogChoice>;
+    private dialogChoices!: Array<DialogChoice> | null;
 
     // poss options
     // - https://github.com/fireveined/pixi-flex-layout
-    
+
     // -
-    
-    public constructor() {        
+
+    public constructor() {
         //SAGE.Events.on("sceneinteract", this.onSceneInteract, this);
     }
-    
+
     //public currentDialogText!: Text | null;
     public currentDialogType!: DialogType | null;
-    
+
     // public initialize(): void {
     //     // Anything?
     // }
-    
+
     public update() {
         // Anything?
         // (was prev used when using display counter, rather than async/timer)
     }
 
+    public async reshowChoices(): Promise<void> {
+        // Used for re-showing existing dialog choices
+        if (this.dialogChoices) return this.showChoices(this.dialogChoices);
+    }
+
     public async showChoices(choiceList: Array<DialogChoice>,
-        options?: { col?: string }): Promise<void> {         
-         this.dialogChoices = choiceList;
-         console.log(this.dialogChoices.length);
-         
-         // Are we already displaying something? 
-         if (this.dialogBackground) {
-             // clear existing message
-             this.clearMessage()
-        }           
-            
+        options?: { col?: string }): Promise<void> {
+
+        // Are we already displaying something? 
+        if (this.dialogBackground) {
+            // clear existing message
+            this.clearMessage()
+        }
+        this.dialogChoices = choiceList;
+        console.log(this.dialogChoices.length);
+
         // Create interactive Pixi Text objects + handle events!
 
         // Text style
-        const col = options?.col || "#fff";        
+        const col = options?.col || "#fff";
         this.dialogContainer = new Container();
         SAGE.app.stage.addChild(this.dialogContainer);
 
         let yOffset = 0;
-        for(const choice of this.dialogChoices) {
+        for (const choice of this.dialogChoices) {
             const style: TextStyle = new TextStyle({
                 align: "left",
                 fill: col,
@@ -82,7 +87,7 @@ export class Dialog {
                 wordWrapWidth: SAGE.width / 2,
             });
             // Bullet
-            const bullet = new Text("▸", style); // Text supports unicode!
+            const bullet = new Text("▸", style); // Text supports unicode! //▸ (the unicode char breaks debugging!)
             bullet.x = 0;
             bullet.y = yOffset;
             this.dialogContainer.addChild(bullet);
@@ -96,10 +101,15 @@ export class Dialog {
             bullet.interactive = true;   // Super important or the object will never receive mouse events!
             choice.text.interactive = true;   // Super important or the object will never receive mouse events!
             // >> On Selected...
-            const funcSelect = () => {
+            const funcSelect = async () => {
                 console.log(choice.message);
+                await SAGE.Dialog.showMessage(choice.message);
                 // Run the choice's function
-                choice.func();
+                await choice.func();
+                // Remove "used" choice
+                this.dialogChoices?.splice(this.dialogChoices.findIndex(dChoice => dChoice.message === choice.message), 1);
+                // Re-show choices
+                SAGE.Dialog.reshowChoices();
             };
             bullet.on("pointertap", funcSelect);
             choice.text.on("pointertap", funcSelect);
@@ -117,63 +127,73 @@ export class Dialog {
             choice.text.on("mouseout", funcOut);
         }
 
-        this.dialogContainer.pivot.set(this.dialogContainer.width/2, this.dialogContainer.height/2);        
+        this.dialogContainer.pivot.set(this.dialogContainer.width / 2, this.dialogContainer.height / 2);
         this.dialogContainer.x = SAGE.width / 2;
-        this.dialogContainer.y = SAGE.height - (this.dialogContainer.height/2) - 80;
+        this.dialogContainer.y = SAGE.height - (this.dialogContainer.height / 2) - 80;
 
         // Background for all dialog
         this.dialogBackground = new Graphics();
         this.dialogBackground.beginFill(0x0);
         this.dialogBackground.alpha = 0.6;
         this.dialogBackground.drawRect(
-            -this.BACKGROUND_MARGIN, 
-            -this.BACKGROUND_MARGIN, 
+            -this.BACKGROUND_MARGIN,
+            -this.BACKGROUND_MARGIN,
             this.dialogContainer.width + (3 * this.BACKGROUND_MARGIN),
-            this.dialogContainer.height  + (2 * this.BACKGROUND_MARGIN));
+            this.dialogContainer.height + (2 * this.BACKGROUND_MARGIN));
         this.dialogBackground.endFill();
         this.dialogContainer.addChildAt(this.dialogBackground, 0);
     }
 
+    public end() {
+        // Tidy up any existing message on display
+        this.clearMessage();
+        // Kill any remaining choices
+        this.dialogChoices = null;
+    }
 
     public async say(speaker: string, message: string, speakerCol?: string, soundName?: string, durationInSecs?: number): Promise<void> {
         // Show dialog for speaker        
-        return this.showMessageCore( { 
+        return this.showMessageCore({
             type: DialogType.DialogExt,
-            speaker: speaker, 
+            speaker: speaker,
             message: message,
             col: speakerCol,
             soundName: soundName,
-            durationInSecs: durationInSecs })
+            durationInSecs: durationInSecs
+        })
     }
-        
+
     public async showMessage(message: string, type?: DialogType, durationInSecs?: number): Promise<void> {
         // Show a white message
-        return this.showMessageCore( { 
+        return this.showMessageCore({
             type: type,
             message: message,
-            col: "#fff", 
-            durationInSecs: durationInSecs })
+            col: "#fff",
+            durationInSecs: durationInSecs
+        })
     }
 
     public async showErrorMessage(errorMessage: string): Promise<void> {
         // Show a red message
-        return this.showMessageCore( { 
+        return this.showMessageCore({
             message: errorMessage,
-            col: "#ff0000" })
+            col: "#ff0000"
+        })
     }
 
     public clearMessage(): void {
         if (this.dialogContainer) {
-            SAGE.app.stage.removeChild(this.dialogContainer); 
+            SAGE.app.stage.removeChild(this.dialogContainer);
         }
         this.dialogText = null;
         this.dialogBackground = null;
         this.currentDialogType = null;
-        this.dialogContainer = null;
+        this.dialogContainer = null;        
     }
 
-    private async showMessageCore(options: { 
-        type?: DialogType, message: string, speaker?: string, col?: string, soundName?: string, durationInSecs?: number }): Promise<void> {
+    private async showMessageCore(options: {
+        type?: DialogType, message: string, speaker?: string, col?: string, soundName?: string, durationInSecs?: number
+    }): Promise<void> {
         let waitDuration = 0;
         // Are we already displaying something? 
         if (this.dialogBackground) {
@@ -186,7 +206,7 @@ export class Dialog {
             // clear existing message
             this.clearMessage()
         }
-        
+
         // Useful info:
         // https://www.gamedeveloper.com/audio/how-to-do-subtitles-well-basics-and-good-practices
         // https://80.lv/articles/10-golden-rules-on-subtitles-for-games/
@@ -209,9 +229,9 @@ export class Dialog {
 
         // if speaker col wasn't passed...
         // ...see whether it's been prev defined
-        if (options.col === undefined 
-                && options.speaker
-                && this.speakerCols[options.speaker.toUpperCase()]) {
+        if (options.col === undefined
+            && options.speaker
+            && this.speakerCols[options.speaker.toUpperCase()]) {
             options.col = this.speakerCols[options.speaker.toUpperCase()]
         }
 
@@ -231,23 +251,23 @@ export class Dialog {
         }
         const newDialogText = new Text(options.message, styly); // Text supports unicode!
         newDialogText.x = SAGE.width / 2;
-        newDialogText.y = SAGE.height - (newDialogText.height/2) - 80;
+        newDialogText.y = SAGE.height - (newDialogText.height / 2) - 80;
         newDialogText.anchor.set(0.5);
         // .text = "This is expensive to change, please do not abuse";
         this.dialogText = newDialogText;
-        
+
         // Background for all dialog
         this.dialogBackground = new Graphics();
         this.dialogBackground.beginFill(0x0);
         this.dialogBackground.alpha = 0.6;
         this.dialogBackground.drawRect(
-            newDialogText.x, 
-            newDialogText.y, 
-            newDialogText.width + (4*this.BACKGROUND_MARGIN),
-            newDialogText.height + (2*this.BACKGROUND_MARGIN));
+            newDialogText.x,
+            newDialogText.y,
+            newDialogText.width + (4 * this.BACKGROUND_MARGIN),
+            newDialogText.height + (2 * this.BACKGROUND_MARGIN));
         this.dialogBackground.endFill();
         // Make a center point of origin (anchor)
-        this.dialogBackground.pivot.set(this.dialogBackground.width/2, this.dialogBackground.height/2);
+        this.dialogBackground.pivot.set(this.dialogBackground.width / 2, this.dialogBackground.height / 2);
 
         this.dialogContainer = new Container();
         this.dialogContainer.addChild(this.dialogBackground);
@@ -255,8 +275,8 @@ export class Dialog {
         SAGE.app.stage.addChild(this.dialogContainer);
 
         // Set here, so if another dialog comes before this expires, it'll be removed
-        this.currentDialogType = options.type ?? DialogType.DialogInt;        
-        
+        this.currentDialogType = options.type ?? DialogType.DialogInt;
+
         // Sound file?
         if (options.soundName) {
             this.dialogSoundName = options.soundName;
@@ -280,7 +300,7 @@ export class Dialog {
             // calc display duration (1 sec for every 7 chars, approx.)        
             waitDuration = clamp(options.message.length / this.CHARS_PER_SEC, this.MIN_DURATION_SEC, this.MAX_DURATION_SEC);
         }
-        
+
         // Wait for duration
         // ...or leave on display (e.g. if duration = -1)
         if (waitDuration > 0) {
@@ -304,10 +324,10 @@ export class Dialog {
     }
 
     //private onSceneInteract() {
-        // console.log(`TODO: skip dialog`);
+    // console.log(`TODO: skip dialog`);
     //}
-    
-} 
+
+}
 
 export enum DialogType {
     Unknown,

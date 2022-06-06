@@ -84,6 +84,7 @@ export class Actions {
         }),
         new DialogChoice("Nevermind", async () => {
           await SAGE.Dialog.say("Tentacle", "Fine, be like that!", "Lime");
+          SAGE.Dialog.end();
         })
       ]);
   }

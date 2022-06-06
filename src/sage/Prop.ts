@@ -102,9 +102,6 @@ export class Prop {
             // Remove prop from scene
             SAGE.World.currentScene.screen.removeProp(this);
 
-            // Add to Player's inventory
-            SAGE.World.player.inventory.push(this.data);
-
             // Play sound
             SAGE.Sound.play("Pick-Up")
         }

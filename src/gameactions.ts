@@ -1,5 +1,5 @@
 import { SAGE } from "./Manager";
-import { DialogChoice } from "./sage/ui/Dialog";
+//import { DialogChoice } from "./sage/ui/Dialog";
 
 // "Stream, Water, C.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org
 // "Pick up Item 1.wav" by SilverIllusionist of Freesound.org
@@ -65,22 +65,22 @@ export class Actions {
     //   await SAGE.Dialog.say("Narrator", "Retrieve the gold\nthat will pay the King's Ransom!", undefined, "Intro-3")
     // }
 
-    await SAGE.Dialog.showChoices([
-      new DialogChoice("Why did you stop me, something important here no doubt?", async () => {
-        await SAGE.Dialog.say("Tentacle", "I'm lonely...", "Lime");
-        SAGE.Dialog.property["asked_why"] = true;
-      }),
-      new DialogChoice("Where am i?", async () => {
-        await SAGE.Dialog.say("Tentacle", "You're in Paul's demo adventure", "Lime");
-      }),
-      new DialogChoice("Who are you?", async () => {
-        await SAGE.Dialog.say("Tentacle", "I'm Tentacle, of course!", "Lime");
-      }, "asked_why"),
-      new DialogChoice("Nevermind", async () => {
-        await SAGE.Dialog.say("Tentacle", "Fine, be like that!", "Lime");
-        SAGE.Dialog.end();
-      })
-    ]);
+    // await SAGE.Dialog.showChoices([
+    //   new DialogChoice("Why did you stop me, something important here no doubt?", async () => {
+    //     await SAGE.Dialog.say("Tentacle", "I'm lonely...", "Lime");
+    //     SAGE.Dialog.property["asked_why"] = true;
+    //   }),
+    //   new DialogChoice("Where am i?", async () => {
+    //     await SAGE.Dialog.say("Tentacle", "You're in Paul's demo adventure", "Lime");
+    //   }),
+    //   new DialogChoice("Who are you?", async () => {
+    //     await SAGE.Dialog.say("Tentacle", "I'm Tentacle, of course!", "Lime");
+    //   }, "asked_why"),
+    //   new DialogChoice("Nevermind", async () => {
+    //     await SAGE.Dialog.say("Tentacle", "Fine, be like that!", "Lime");
+    //     SAGE.Dialog.end();
+    //   })
+    // ]);
   }
 
 }

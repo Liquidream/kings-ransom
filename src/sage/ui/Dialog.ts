@@ -63,10 +63,10 @@ export class Dialog {
   //     // Anything?
   // }
 
-  public update() {
-    // Anything?
-    // (was prev used when using display counter, rather than async/timer)
-  }
+  // public update() {
+  //   // Anything?
+  //   // (was prev used when using display counter, rather than async/timer)
+  // }
 
   public async reshowChoices(): Promise<void> {
     // Used for re-showing existing dialog choices

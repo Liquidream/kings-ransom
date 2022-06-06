@@ -45,7 +45,7 @@ export class SceneScreen extends Container implements IScreen {
         //You need to update a group for the tweens to do something!
         Group.shared.update()
 
-        SAGE.Dialog.update();
+        //SAGE.Dialog.update();
     }
 
     // public resize(_screenWidth: number, _screenHeight: number): void {
@@ -203,10 +203,12 @@ export class SceneScreen extends Container implements IScreen {
                 this.removeChild(prop.sprite);
                 this.props.splice(this.props.findIndex(item => item.data.id === prop.data.id),1);  
                 prop.tidyUp();
+                
+                // Add to Player's inventory
+                SAGE.World.player.addToInventory(prop.data);
 
                 // remove from game data
-                this.scene.removePropDataById(prop.data.id)
-                //this.scene.props.splice(this.scene.props.findIndex(item => item.id === prop.data.id),1);
+                this.scene.removePropDataById(prop.data.id)                
             });
         new Tween(prop.sprite.scale).to({ x: 1.5, y: 1.5 }, 500).start()
     }

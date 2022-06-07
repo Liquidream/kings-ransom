@@ -13,7 +13,7 @@ export class PropData implements IPropData, Serialization<PropData> {
     y = 0;
     width = 0;
     height = 0;
-    pickupable = false;
+    pickupable = false;    
     visible = true;    
     // Key-Value pair to allow properties to be set/read
     property: { [key: string]: string | number | boolean } = {};

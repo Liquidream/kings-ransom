@@ -18,6 +18,7 @@ export class Actions {
       if (SAGE.World.player.inInventory("prp_rat")) {
         if (SAGE.debugMode) console.log("Safe! Snake ate the rat...");
         SAGE.Dialog.showMessage('A snake strikes and eats the rat & leaves');
+        SAGE.World.player.removeFromInventory("prp_rat")
       } else {
         if (SAGE.debugMode) console.debug("Player died...");
         SAGE.Dialog.showMessage('A hungry snake strikes and bites you');

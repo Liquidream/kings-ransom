@@ -1,5 +1,6 @@
 import { SAGE } from "../Manager";
 import { Serialization } from "../utils/Serialization";
+import { Prop } from "./Prop";
 import { IPropData, PropData } from "./PropData";
 
 
@@ -27,13 +28,14 @@ export class Player implements IPlayerData, Serialization<Player> {
   /** Remove (and return) the specified prop, if present */
   public addToInventory(propData: IPropData) {
     SAGE.World.player.inventory.push(propData);
-    SAGE.World.player.inventoryScreen.refresh();
+    SAGE.World.player.inventoryScreen.addProp(new Prop(propData))
   }
 
   /** Remove (and return) the specified prop, if present */
   public removeFromInventory(propId: string): IPropData | undefined {
-    const prop = this.inventory.find(prop => prop.id === propId)
-    return prop;
+    const propData = this.inventory.splice(this.inventory.findIndex(item => item.id === propId), 1);
+    SAGE.World.player.inventoryScreen.removeProp(propId)
+    return propData[0];
   }
 
   fromJSON(input: IPlayerData) {

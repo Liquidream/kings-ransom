@@ -18,7 +18,8 @@
           "desc": "An old key",
           "x": 1480,
           "y": 1000,
-          "pickupable": true
+          "pickupable": true,
+          "single_use": true
         }
       ],
       "doors": []
@@ -36,7 +37,8 @@
           "desc": "It's an old miner's lamp - rusty, but functional",
           "x": 1425,
           "y": 780,
-          "pickupable": true
+          "pickupable": true,
+          "single_use": false
         }
       ],
       "doors": [

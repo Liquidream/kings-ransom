@@ -99,6 +99,15 @@ export class SAGE {
     SAGE.topLayer = new Container();
     SAGE._app.stage.addChild(SAGE.topLayer);
   }
+
+  static emptyLayers() {
+    // Background layer
+    SAGE.backLayer.removeChildren();
+    // Mid-ground layer
+    SAGE.midLayer.removeChildren();
+    // Foreground/UI layer
+    SAGE.topLayer.removeChildren();
+  }
   
   public static loadWorld(): void {
 
@@ -148,6 +157,7 @@ export class SAGE {
   public static restartGame() {
     console.log("Restarting game...")
     SAGE.Sound.stopAll()
+    SAGE.emptyLayers();
     SAGE.loadWorld();
     SAGE.startGame();
   }

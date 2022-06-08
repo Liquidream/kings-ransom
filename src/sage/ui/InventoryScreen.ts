@@ -1,4 +1,5 @@
 import { Container, Graphics } from "pixi.js";
+import { Tween } from "tweedle.js";
 import { SAGE } from "../../Manager";
 import { Prop } from "../Prop";
 
@@ -8,6 +9,7 @@ export class InventoryScreen {
   HEIGHT = 150;
   SIDE_MARGIN = 150;
   SPACING = 20
+  ROUNDED_EDGE = 50
 
   // Fields
   private parentLayer: Container;
@@ -44,13 +46,28 @@ export class InventoryScreen {
     // Now add to list and update the display
     this.propsList.push(prop);
     this.update();
+    // Animate it
+    propSprite.alpha = 0
+    new Tween(propSprite).to({ alpha: 1 }, 500).start()
+        // .onComplete( ()=> {
+        //     // 
+        // });
   }
 
   public removeProp(propId: string): Prop | undefined {
-    const prop = this.propsList.splice(this.propsList.findIndex(item => item.data.id === propId), 1);
-    if (prop) this.inventoryContainer.removeChild(prop[0].sprite);
-    this.update();
-    return prop[0];
+    const prop = this.propsList.splice(this.propsList.findIndex(item => item.data.id === propId), 1)[0];
+    if (prop) {
+      const propSprite = prop.sprite;
+      // Animate it
+      propSprite.alpha = 1
+      new Tween(propSprite).to({ alpha: 0 }, 500).start()
+      .onComplete( ()=> {
+        this.inventoryContainer.removeChild(prop.sprite);
+        this.update(); 
+      });      
+      return prop;
+    }
+    return;
   }
 
   update() {
@@ -68,9 +85,11 @@ export class InventoryScreen {
     this.inventoryBackground = new Graphics();
     this.inventoryBackground.beginFill(0x0);
     this.inventoryBackground.alpha = 0.6;
-    this.inventoryBackground.drawRect(this.SIDE_MARGIN, 0, SAGE.width - (this.SIDE_MARGIN*2), this.HEIGHT);
+    this.inventoryBackground.drawRoundedRect(this.SIDE_MARGIN, -this.ROUNDED_EDGE, SAGE.width - (this.SIDE_MARGIN*2), this.HEIGHT+this.ROUNDED_EDGE, this.ROUNDED_EDGE);
     this.inventoryBackground.endFill();
     this.inventoryContainer.addChild(this.inventoryBackground);
+    // Make bg receive input, so that can't be clicked "through"
+    this.inventoryBackground.interactive = true;
   }
 
 }

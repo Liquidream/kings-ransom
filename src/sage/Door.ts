@@ -106,10 +106,14 @@ export class Door {
             });
             if (key) {
                 // Unlock the door
-                this.data.state = DoorState.Unlocked;
+                this.data.state = DoorState.Unlocked;                
                 // Play sound
                 if (this.data.playSounds) {
                     SAGE.Sound.play("Unlock-Door");
+                }
+                // Remove item from inventory (unless not single-use)
+                if (key.single_use) {
+                  SAGE.World.player.removeFromInventory(key.id)
                 }
             }
             else
@@ -124,7 +128,7 @@ export class Door {
         }
 
         // TODO: Find the target door/scene
-        // 👇️ const first: {id: number; language: string;} | undefined
+        // const first: {id: number; language: string;} | undefined
         const targetScene = SAGE.World.scenes.find((obj) => {
             return obj.id === this.data.target_scene_id;
         });

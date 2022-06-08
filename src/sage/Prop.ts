@@ -53,6 +53,11 @@ export class Prop {
         SAGE.Events.off("scenehint", this.onSceneHint, this);
     }
 
+    /** Returns whether or not the this prop is in player's inventory */
+    public get inInventory(): boolean {
+      return SAGE.World.player.inventory.some(prop => prop.id === this.data.id)
+    }
+
     private onSceneHint() {
         //console.log(`TODO: attrack tween for ${this.data.name}`);
         const attractShine: Sprite = Sprite.from("Shine");
@@ -95,16 +100,25 @@ export class Prop {
             return;
         }
 
-        // Can prop be picked up?
-        if (this.data.pickupable) {
+        // Can prop be picked up? 
+        // (...and not already in inventory)?
+        if (this.data.pickupable
+          && !this.inInventory) {
             SAGE.Dialog.showMessage(`You picked up the ${this.data.name}`);
-
             // Remove prop from scene
             SAGE.World.currentScene.screen.removeProp(this);
-
             // Play sound
             SAGE.Sound.play("Pick-Up")
+            return;
         }
+
+        // Interacted while in player inventory?
+        // ...if so, perform secondary action (describe)
+        if (this.inInventory) {
+          this.onSecondaryAction();
+          return;
+        }
+
         // Run code snippet (stored in string)?
         //https://stackoverflow.com/questions/64426501/how-to-execute-strings-of-expression-in-an-array-with-ramda/64426855#64426855
         // Function("console.log('hi there!!!!!!!!!!!');")();

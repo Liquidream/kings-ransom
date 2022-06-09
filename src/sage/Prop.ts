@@ -109,6 +109,8 @@ export class Prop {
             SAGE.World.currentScene.screen.removeProp(this);
             // Play sound
             SAGE.Sound.play("Pick-Up")
+            // Auto-open player inventory
+            SAGE.World.player.inventoryScreen.open()
             return;
         }
 

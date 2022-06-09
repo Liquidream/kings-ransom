@@ -1,12 +1,17 @@
 import { SAGE } from "./Manager";
 //import { DialogChoice } from "./sage/ui/Dialog";
 
+// --- Sounds ---
 // "Stream, Water, C.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org
 // "Pick up Item 1.wav" by SilverIllusionist of Freesound.org
 // "Water drips in the cave HQ.wav" by tosha73
 // "SnakeAttackVerbPuls.wav" by Jamius
 // "bush11.wav" by schademans
 // "Jingle_Win_00.wav" by LittleRobotSoundFactory
+// --- Icons ---
+// https://www.flaticon.com/free-icons/backpack - Backpack icons created by bqlqn
+// https://www.flaticon.com/free-icons/settings - Settings icons created by Pixel perfect
+
 export class Actions {
 
   onCaveTunnelEnter = async () => {

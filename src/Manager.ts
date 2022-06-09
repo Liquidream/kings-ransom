@@ -11,6 +11,7 @@ import { Sound } from "./sage/ui/Sound";
 import { InventoryScreen } from "./sage/ui/InventoryScreen";
 
 import gamedataJSON from './gamedata.json';
+import { SAGE_UI } from "./sage/ui/UI_Screen";
 const gamedata: IWorldData = <unknown>gamedataJSON as IWorldData;
 
 export class SAGE {
@@ -37,6 +38,7 @@ export class SAGE {
   public static Script: Script;
   public static Events: Events;
   public static Sound: Sound;
+  public static UI: SAGE_UI;
 
   public static get width(): number {
     return SAGE._width;
@@ -70,9 +72,10 @@ export class SAGE {
 
     SAGE._app.ticker.add(SAGE.update)
 
-    // Lock to 30fps (for cinematic effect)
-    SAGE._fps = 30;
-    SAGE._app.ticker.maxFPS = SAGE._fps;
+    // Lock to 30fps (for cinematic effect) 
+    // ## REMOVED as made inventory jerky (+no longer CAGE/Cinematic engine anyway)
+    // SAGE._fps = 30;
+    // SAGE._app.ticker.maxFPS = SAGE._fps;
 
     // listen for the browser telling us that the screen size changed
     window.addEventListener("resize", SAGE.resize);
@@ -82,10 +85,6 @@ export class SAGE {
 
     // initialise stage "layers"
     SAGE.createLayers();
-
-    // Load and start the game
-    SAGE.loadWorld();
-    //console.log(Manager.World.serialize());
   }
 
   static createLayers() {
@@ -114,6 +113,9 @@ export class SAGE {
     //const gamedata = require("./gamedata.json");
     //import * as gamedata from "./gamedata.json";
     //let gamedata = JSON.parse(fs.readFileSync("./gamedata.json", "utf-8"));
+
+    // Initialise UI
+    SAGE.UI = new SAGE_UI(SAGE.topLayer);
 
     // Create and initialise game world
     SAGE.World = new World();
@@ -164,11 +166,13 @@ export class SAGE {
 
   public static gameOver(message: string) {
     SAGE.Sound.play("Game-Lost");
+    SAGE.World.player.inventoryScreen.close();
     SAGE.World.currentScene.screen.showGameOver(message);
   }
 
   public static gameWon(message: string) {
     SAGE.Sound.play("Game-Won");
+    SAGE.World.player.inventoryScreen.close();
     SAGE.World.currentScene.screen.showGameWon(message);
   }
 

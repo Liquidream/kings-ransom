@@ -1,6 +1,9 @@
 export const assets = [
     { name: "DebugFill", url: "./images/debug.png" },
-    { name: "Shine", url: "./images/shine.png" },
+    // UI -------------------------------------------------------------
+    { name: "UI-Shine", url: "./images/ui/shine.png" },
+    { name: "UI-Settings", url: "./images/ui/settings.png" },
+    { name: "UI-Inventory", url: "./images/ui/inventory.png" },
     // Scenes ---------------------------------------------------------
     { name: "Bridge", url: "./images/scenes/bridge.jpg" },
     { name: "Cave-Entrance", url: "./images/scenes/cave-entrance.jpg" },

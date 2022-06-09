@@ -10,6 +10,7 @@
   "dependencies": {
     "@pixi/sound": "^4.2.0",
     "gh-pages": "^3.2.3",
+    "pixi-filters": "^4.1.6",
     "pixi.js": "^6.3.0",
     "tweedle.js": "^2.0.0"
   },

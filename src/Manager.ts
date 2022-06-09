@@ -123,7 +123,7 @@ export class SAGE {
     //Manager.World = new World().fromJSON(gamedata);
 
     // ...and inventory (UI)
-    SAGE.World.player.inventoryScreen = new InventoryScreen(SAGE.topLayer);
+    SAGE.World.player.invScreen = new InventoryScreen(SAGE.topLayer);
 
     // ...and game actions
     SAGE.Actions = new Actions();
@@ -166,13 +166,13 @@ export class SAGE {
 
   public static gameOver(message: string) {
     SAGE.Sound.play("Game-Lost");
-    SAGE.World.player.inventoryScreen.close();
+    SAGE.World.player.invScreen.close();
     SAGE.World.currentScene.screen.showGameOver(message);
   }
 
   public static gameWon(message: string) {
     SAGE.Sound.play("Game-Won");
-    SAGE.World.player.inventoryScreen.close();
+    SAGE.World.player.invScreen.close();
     SAGE.World.currentScene.screen.showGameWon(message);
   }
 

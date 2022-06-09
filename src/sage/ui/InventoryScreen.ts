@@ -14,6 +14,7 @@ export class InventoryScreen {
   ROUNDED_EDGE = 50
   CLOSED_YPOS = -(this.HEIGHT + this.ROUNDED_EDGE);
   OPEN_YPOS = -this.ROUNDED_EDGE;
+  AUTO_CLOSE_DURATION = 3; //seconds
   ICON_ALPHA_INACTIVE =  0.5;
   ICON_ALPHA_ACTIVE =  0.85;
   ICON_HINT_TEXT = "Open/Close Inventory";
@@ -25,6 +26,8 @@ export class InventoryScreen {
   private inventoryIcon!: Sprite;
   private propsList: Array<Prop>
   private isOpen = false;
+  
+  public autoClose = true;
 
   public constructor(parentLayer: Container) {
     // initialise the inventory
@@ -78,19 +81,22 @@ export class InventoryScreen {
         .onComplete(() => {
           this.inventoryContainer.removeChild(prop.sprite);
           this.update();
-        });
+        })
       return prop;
     }
     return;
   }
 
-  public open() {
+  public open(isAutoOpen: boolean) {
     new Tween(this.inventoryContainer).to({ y: 0 }, 500).start()
-      .onComplete(() => {
+      .onComplete(async () => {
         //
-      });
+        if (this.autoClose) await SAGE.Script.wait(this.AUTO_CLOSE_DURATION);
+        if (this.autoClose) this.close();        
+      });      
     this.inventoryIcon.alpha = this.ICON_ALPHA_ACTIVE;
     this.isOpen = true;
+    this.autoClose = isAutoOpen;
   }
 
   public close() {
@@ -131,7 +137,7 @@ export class InventoryScreen {
       SAGE.Dialog.showMessage(this.ICON_HINT_TEXT, DialogType.Caption, -1);
     });
     this.inventoryIcon.on("pointerout", () => {
-      this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
+      if (!this.isOpen) this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
       // If dialog being displayed is name "on hover"...
       if (SAGE.Dialog.currentDialogType === DialogType.Caption) {
         SAGE.Dialog.clearMessage();
@@ -144,7 +150,7 @@ export class InventoryScreen {
     if (this.isOpen)
       this.close();
     else
-      this.open();
+      this.open(false);
   }
 
   private createBackground() {
@@ -156,6 +162,12 @@ export class InventoryScreen {
     this.inventoryContainer.addChild(this.inventoryBackground);
     // Make bg receive input, so that can't be clicked "through"
     this.inventoryBackground.interactive = true;
+    this.inventoryBackground.on("pointertap", () => {
+      this.autoClose = false;
+    });
+    this.inventoryBackground.on("pointerover", () => {
+      this.autoClose = false;
+    });
   }
 
 }

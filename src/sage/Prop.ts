@@ -110,7 +110,7 @@ export class Prop {
             // Play sound
             SAGE.Sound.play("Pick-Up")
             // Auto-open player inventory
-            SAGE.World.player.inventoryScreen.open()
+            SAGE.World.player.invScreen.open(true);
             return;
         }
 
@@ -118,6 +118,8 @@ export class Prop {
         // ...if so, perform secondary action (describe)
         if (this.inInventory) {
           this.onSecondaryAction();
+          // Disable auto-close of inventory          
+          SAGE.World.player.invScreen.autoClose = false;
           return;
         }
 

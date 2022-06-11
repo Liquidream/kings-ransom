@@ -84,7 +84,7 @@ export class Dialog {
     this._dialogChoices = choiceList;
 
     // Create interactive Pixi Text objects + handle events!
-    
+
     // Add "blocker" for all other input except dialog choices
     this.blocker = new Graphics();
     // blocker.width = SAGE.width;
@@ -175,11 +175,12 @@ export class Dialog {
     this.dialogBackground = new Graphics();
     this.dialogBackground.beginFill(0x0);
     this.dialogBackground.alpha = 0.6;
-    this.dialogBackground.drawRect(
+    this.dialogBackground.drawRoundedRect(
       -this.BACKGROUND_MARGIN,
       -this.BACKGROUND_MARGIN,
       this.dialogContainer.width + (3 * this.BACKGROUND_MARGIN),
-      this.dialogContainer.height + (2 * this.BACKGROUND_MARGIN));
+      this.dialogContainer.height + (2 * this.BACKGROUND_MARGIN),
+      10);
     this.dialogBackground.endFill();
     this.dialogContainer.addChildAt(this.dialogBackground, 0);
   }
@@ -305,11 +306,12 @@ export class Dialog {
     this.dialogBackground = new Graphics();
     this.dialogBackground.beginFill(0x0);
     this.dialogBackground.alpha = 0.6;
-    this.dialogBackground.drawRect(
+    this.dialogBackground.drawRoundedRect(
       newDialogText.x,
       newDialogText.y,
       newDialogText.width + (4 * this.BACKGROUND_MARGIN),
-      newDialogText.height + (2 * this.BACKGROUND_MARGIN));
+      newDialogText.height + (2 * this.BACKGROUND_MARGIN),
+      10);
     this.dialogBackground.endFill();
     // Make a center point of origin (anchor)
     this.dialogBackground.pivot.set(this.dialogBackground.width / 2, this.dialogBackground.height / 2);

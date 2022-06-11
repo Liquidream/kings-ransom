@@ -10,6 +10,7 @@ export class DoorData implements IDoorData, Serialization<DoorData> {
     target_scene_id = "";
     state: DoorState = DoorState.Unknown;
     key_prop_id = "";
+    auto_unlock = false;
     x = 0;
     y = 0;
     width = 0;
@@ -51,6 +52,7 @@ export interface IDoorData {
     target_scene_id: string;
     state: DoorState;
     key_prop_id: string;
+    auto_unlock: boolean;
     x: number;
     y: number;
     width: number;

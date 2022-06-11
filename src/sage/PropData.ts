@@ -14,6 +14,7 @@ export class PropData implements IPropData, Serialization<PropData> {
     width = 0;
     height = 0;
     pickupable = false;    
+    draggable = false;    
     single_use = true;    
     visible = true;    
     // Key-Value pair to allow properties to be set/read
@@ -46,6 +47,7 @@ export interface IPropData {
     width: number;
     height: number;
     pickupable: boolean;
+    draggable: boolean;
     single_use: boolean;
     visible: boolean;    
     // Key-Value pair to allow properties to be set/read

@@ -34,6 +34,7 @@ export class SAGE_UI {
     dropShadow.alpha = 1;
     this.settingsIcon.filters = [ dropShadow ]
     this.settingsIcon.interactive = true;
+    this.settingsIcon.buttonMode = true;
     this.settingsIcon.on("pointertap", this.onSettingsTap, this);
     this.parentLayer.addChild(this.settingsIcon);   
   }

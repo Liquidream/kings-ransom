@@ -29,7 +29,7 @@ export class SAGE {
   private static currentScreen: IScreen;
   
 
-  public static debugMode = false;
+  public static debugMode = true;
   public static enableFullscreen = false;
 
   public static World: World;
@@ -250,6 +250,9 @@ export class SAGE {
 
     // Start the fade out+in animation
     fadeOutTween.chain(fadeInTween).start();
+
+    // If inventory open, auto-collapse it
+    if (SAGE.World.player.invScreen.isOpen) SAGE.World.player.invScreen.close();
   }
 
   // This update will be called by a pixi ticker and tell the scene that a tick happened

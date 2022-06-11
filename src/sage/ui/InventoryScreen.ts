@@ -24,9 +24,10 @@ export class InventoryScreen {
   private inventoryContainer: Container;
   private inventoryBackground!: Graphics;
   private inventoryIcon!: Sprite;
-  private propsList: Array<Prop>
-  private isOpen = false;
   
+  public propsList: Array<Prop>
+  
+  public isOpen = false;
   public autoClose = true;
 
   public constructor(parentLayer: Container) {
@@ -116,6 +117,9 @@ export class InventoryScreen {
       const propSprite = prop.sprite;
       propSprite.x = this.SIDE_MARGIN + xOff;
       propSprite.y = this.HEIGHT / 2;
+      // update "rest" pos (for drag+drop)
+      prop.restXPos = propSprite.x
+      prop.restYPos = propSprite.y
       xOff += this.HEIGHT;
     }
   }
@@ -131,6 +135,7 @@ export class InventoryScreen {
     dropShadow.alpha = 1;
     this.inventoryIcon.filters = [ dropShadow ]
     this.inventoryIcon.interactive = true;
+    this.inventoryIcon.buttonMode = true;
     this.inventoryIcon.on("pointertap", this.onPointerTap, this);
     this.inventoryIcon.on("pointerover", () => {
       this.inventoryIcon.alpha = this.ICON_ALPHA_ACTIVE;

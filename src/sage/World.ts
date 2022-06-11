@@ -14,6 +14,8 @@ export class World implements IWorldData, Serialization<World> {
     public player!: Player;
     public scenes: Array<Scene> = [];    
     public starting_scene_id: string | undefined;
+    // Events
+    public on_start = "";
     // Key-Value pair to allow properties to be set/read
     property: { [key: string]: string | number | boolean } = {};
 
@@ -35,6 +37,11 @@ export class World implements IWorldData, Serialization<World> {
 
     // Start the adventure!
     start() {
+        // Run any on_start action?
+        if (this.on_start) {
+          SAGE.Script.safeExecFunc(this.on_start);
+        }
+
         // Find the starting scene...
         const startingScene = this.scenes.find((obj) => {
             return obj.id === this.starting_scene_id;
@@ -123,6 +130,7 @@ export class World implements IWorldData, Serialization<World> {
         }
         this.player = new Player().fromJSON(input.player);
         this.starting_scene_id = input.starting_scene_id;
+        this.on_start = input.on_start;
         return this;
     }
 
@@ -132,6 +140,7 @@ export class World implements IWorldData, Serialization<World> {
             property: this.property,
             scenes: this.scenes, 
             starting_scene_id: this.starting_scene_id, 
+            on_start: this.on_start,
             player: this.player } 
     }
 
@@ -145,6 +154,7 @@ export interface IWorldData {
     player: IPlayerData;
     scenes: Array<ISceneData>;
     starting_scene_id: string | undefined;
+    on_start: string;
     // Key-Value pair to allow properties to be set/read
     property: { [key: string]: string | number | boolean };
     // Poss. event actions

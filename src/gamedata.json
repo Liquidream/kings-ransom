@@ -5,7 +5,8 @@
     "inventory": [
     ]
   },
-  "starting_scene_id": "scn_bridge",
+  "starting_scene_id": "scn_fortress_ext",
+  "on_start": "SAGE.Actions.onStart();",
   "scenes": [
     {
       "id": "scn_void",
@@ -189,7 +190,8 @@
           "desc": "It's a rat, looks like he's dying",
           "x": 265,
           "y": 545,
-          "pickupable": true
+          "pickupable": true,
+          "draggable": true
         }
       ],
       "doors": [
@@ -204,7 +206,8 @@
           "desc_locked": "The door is locked",
           "target_scene_id": "scn_fortress_int",
           "state": "LOCKED",
-          "key_prop_id": "prp_key"
+          "key_prop_id": "prp_key",
+          "auto_unlock": false
         },
         {
           "id": "dor_fortress_cave",

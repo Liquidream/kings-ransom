@@ -22,7 +22,7 @@ export class Player implements IPlayerData, Serialization<Player> {
   public property: { [key: string]: string | number | boolean } = {};
 
   /** Returns whether or not the specified prop id is in player's inventory */
-  public inInventory(propId: string): boolean {
+  public hasPropInInventory(propId: string): boolean {
     return this.inventory.some(prop => prop.id === propId)
   }
 

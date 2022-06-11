@@ -13,6 +13,10 @@ import { SAGE } from "./Manager";
 // https://www.flaticon.com/free-icons/settings - Settings icons created by Pixel perfect
 
 export class Actions {
+  onStart = async () => {
+    SAGE.World.revealPropAt("prp_key", "scn_fortress_ext")
+    
+  }
 
   onCaveTunnelEnter = async () => {
     //console.log("onEnterCaveTunnel()");
@@ -20,7 +24,7 @@ export class Actions {
       await SAGE.Script.wait(1);
       SAGE.Sound.play("Snake-Attack");
       await SAGE.Script.wait(1);
-      if (SAGE.World.player.inInventory("prp_rat")) {
+      if (SAGE.World.player.hasPropInInventory("prp_rat")) {
         if (SAGE.debugMode) console.log("Safe! Snake ate the rat...");
         SAGE.Dialog.showMessage('A snake strikes and eats the rat & leaves');
         SAGE.World.player.removeFromInventory("prp_rat")
@@ -56,7 +60,7 @@ export class Actions {
 
   onBridgeEnter = async () => {
     //console.log("TODO: onBridgeEnter()");    
-    if (SAGE.World.player.inInventory("prp_gold")) {
+    if (SAGE.World.player.hasPropInInventory("prp_gold")) {
       if (SAGE.debugMode) console.log("Got gold out - game won!");
       SAGE.gameWon("You paid the King's Ransom!");
     }

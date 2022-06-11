@@ -59,16 +59,14 @@ export class Scene implements ISceneData, Serialization<Scene> {
 
     // Run any OnEnter action?
     if (this.on_enter) {
-      Function(this.on_enter)();
-      //return;
+      SAGE.Script.safeExecFunc(this.on_enter);
     }
   }
 
   teardown() {
     // Run any OnEnter action?
     if (this.on_exit) {
-      Function(this.on_exit)();
-      //return;
+      SAGE.Script.safeExecFunc(this.on_exit);
     }
     if (this.firstVisit) this.firstVisit = false;
   }

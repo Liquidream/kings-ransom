@@ -5,7 +5,10 @@ export class Collision {
 
   /** Check collision between two objects (e.g. Prop>Prop, Prop>Door, etc.) */
   public static isColliding(objA: DisplayObject | undefined, objB: DisplayObject): boolean {
-    if (objA) {
+    // Check we have objects to test,
+    // Also check that they are not the same object
+    if (objA && objB
+      && objA !== objB) {
       const a = objA.getBounds();
       const b = objB.getBounds();
 
@@ -24,8 +27,7 @@ export class Collision {
     else return false;
   }
 
-  public static dist(x1: number, y1: number, x2: number, y2: number): number {
-    // d=√((x_2-x_1)²+(y_2-y_1)²
+  public static dist(x1: number, y1: number, x2: number, y2: number): number {    
     return Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
   }
 }

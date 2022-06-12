@@ -1,4 +1,6 @@
 import { SAGE } from "./Manager";
+import { Door } from "./sage/Door";
+import { Prop } from "./sage/Prop";
 //import { DialogChoice } from "./sage/ui/Dialog";
 
 // --- Sounds ---
@@ -16,6 +18,20 @@ export class Actions {
   onStart = async () => {
     SAGE.World.revealPropAt("prp_key", "scn_fortress_ext")
     
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onKeyUse = async (useProp: Prop, onObj: any) => {
+    // 
+    // eslint-disable-next-line no-debugger
+    console.log(`prop.name = ${useProp.data.name}`);
+    console.log(`prop.name = ${onObj.data.name}`);
+    
+    if (onObj.data.id === "dor_fortress_int") {
+      const door = onObj as Door;
+      door.unlockDoor();
+      SAGE.World.player.removeFromInventory(useProp.data.id)
+    }
   }
 
   onCaveTunnelEnter = async () => {

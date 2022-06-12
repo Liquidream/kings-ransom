@@ -21,6 +21,7 @@ export class PropData implements IPropData, Serialization<PropData> {
     property: { [key: string]: string | number | boolean } = {};
     // Poss. event actions
     on_action = "";
+    on_use = "";
     
     // public initialize(): void {
         //     // Anything?
@@ -54,4 +55,5 @@ export interface IPropData {
     property: { [key: string]: string | number | boolean };
     // Poss. event actions
     on_action: string;
+    on_use: string;
 }

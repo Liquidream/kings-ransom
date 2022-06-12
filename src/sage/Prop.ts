@@ -1,4 +1,4 @@
-import { InteractionEvent, Sprite, Texture } from "pixi.js";
+import { Sprite, Texture } from "pixi.js";
 import { Easing, Tween } from "tweedle.js";
 import { SAGE } from "../Manager";
 import { DialogType } from "./ui/Dialog";
@@ -47,8 +47,6 @@ export class Prop {
     this.sprite.on("pointerout", this.onPointerOut, this);
     // Drag+Drop
     this.sprite.on("pointerdown", this.onPointerDown, this);
-    this.sprite.on("pointermove", this.onPointerMove, this);
-    this.sprite.on("pointerup", this.onPointerUp, this);
 
     SAGE.Events.on("scenehint", this.onSceneHint, this);
 
@@ -60,6 +58,13 @@ export class Prop {
     // Unsubscribe from events, etc.
     this.sprite.removeAllListeners();
     SAGE.Events.off("scenehint", this.onSceneHint, this);
+  }
+
+  public use(object: any) {
+    // Run any OnEnter action?
+    if (this.data.on_use) {
+      SAGE.Script.safeExecFuncWithParams(this.data.on_use, this, object);
+    }
   }
 
   /** Returns whether or not the this prop is in player's inventory */
@@ -87,18 +92,6 @@ export class Prop {
       });
   }
 
-  // private checkPointerCollisions(xPos: number, yPos: number) {
-  //   // Check selected/dragged Prop with
-  //   //  > Other Props in inventory
-  //   //  > Other Props in current scene
-  //   //  > Doors in current scene
-
-  //   console.log(`pos=${xPos},${yPos}`);
-
-  //   // If collision, then highlight source AND target 
-  //   // (...and remember if "dropped" on it)
-  // }
-
   private onPointerDown() { //_e: InteractionEvent
     // On an inventory (or draggable) item?
     if (this.inInventory || this.data.draggable) {
@@ -108,39 +101,6 @@ export class Prop {
       this.sprite.alpha = this.DRAG_ALPHA;
       SAGE.Dialog.clearMessage();
     }
-  }
-
-  private onPointerMove(_e: InteractionEvent) {
-    //if (SAGE.debugMode) console.log(`${this.data.name}::onPointerMove()`);
-    // if (this.dragging) {
-    //   // Temp remove interaction to "dragged" Prop
-    //   this.sprite.interactive = false
-    //   // Update pos
-    //   this.sprite.x = _e.data.global.x;
-    //   this.sprite.y = _e.data.global.y;
-    //   // Check for valid "drop"
-    //   this.checkPointerCollisions(
-    //     _e.data.global.x,
-    //     _e.data.global.y
-    //   );
-    // }
-  }
-
-  private onPointerUp() { //_e: InteractionEvent
-    if (SAGE.debugMode) console.log(`${this.data.name}::onPointerUp()`);
-    // if (this.dragging) {
-    //   console.log(`>>>> ${this.data.name}`)
-    //   this.dragging = false;
-    //   SAGE.World.currentScene.screen.draggedProp = undefined;
-    //   // Restore interaction to "dragged" Prop
-    //   this.sprite.interactive = true
-    //   // Dropped prop...
-    //   this.sprite.alpha = 1;
-    //   // Was it dropped on a valid target (Prop/Door)?
-
-    //   // Otherwise, put it back to inventory
-    //   SAGE.World.player.invScreen.update();
-    //}
   }
 
   private onPointerOver() { //_e: InteractionEvent

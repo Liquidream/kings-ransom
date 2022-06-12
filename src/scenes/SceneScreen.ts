@@ -18,6 +18,8 @@ export class SceneScreen extends Container implements IScreen {
   private doors: Array<Door> = [];
 
   public draggedProp!: Prop | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public dragTarget!: any; // Could be Prop or Door
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
@@ -90,47 +92,72 @@ export class SceneScreen extends Container implements IScreen {
       this.draggedProp.sprite.x = _e.data.global.x;
       this.draggedProp.sprite.y = _e.data.global.y;
       // Check for valid "drop"
-      // this.checkPointerCollisions(
-      //   _e.data.global.x,
-      //   _e.data.global.y
-      // );
+      this.checkPointerCollisions();
     }
   }
 
   private onPointerUp(_e: InteractionEvent) {
     if (SAGE.debugMode) console.log(`${this.name}::onPointerUp()`);
     if (this.draggedProp) {
-      // Check for valid "drop"
-      this.checkPointerCollisions(
-        _e.data.global.x,
-        _e.data.global.y
-      );
-      // Restore interaction to "dragged" Prop
+      // We were dragging something - did we drop it on something?
+      if (this.dragTarget) {
+        // Was it a valid object?
+        this.draggedProp.use(this.dragTarget);
+      }
+      else {
+        // Didn't drop on object, so put it back
+
+      }
+      // End Drag+Drop mode
       this.draggedProp.dragging = false
-      this.draggedProp.sprite.interactive = true
-      // TODO: Cancel drag+drop due to  invalid target (or wouldn't have fired this?) 
+      // Restore interaction to "dragged" Prop
+      this.draggedProp.sprite.interactive = true      
       this.draggedProp = undefined;
-      // Otherwise, put it back to inventory
+      // Update inventory (in case it was an inventory prop)
       SAGE.World.player.invScreen.update();
     }
   }
 
-  private checkPointerCollisions(xPos: number, yPos: number) {
+  private checkPointerCollisions() {
     // Check selected/dragged Prop with
+    let currTarget = undefined;
     //  > Other Props in inventory
     for (const prop of SAGE.World.player.invScreen.propsList) {
       if (Collision.isColliding(this.draggedProp?.sprite, prop.sprite)) {
-        console.log(`>> collided with ${prop.data.name}`)
+      //  console.log(`>> collided with ${prop.data.name}`)
+        currTarget = prop;
       }
-
     }
     //  > Other Props in current scene
+    for (const prop of this.props) {
+      if (Collision.isColliding(this.draggedProp?.sprite, prop.sprite)) {
+      //  console.log(`>> collided with ${prop.data.name}`)
+        currTarget = prop;
+      }
+    }
     //  > Doors in current scene
+    for (const door of this.doors) {
+      if (Collision.isColliding(this.draggedProp?.sprite, door.graphics)) {
+       // console.log(`>> collided with ${door.data.name}`)
+        currTarget = door;
+      }
+    }
 
-    console.log(`pos=${xPos},${yPos}`);
+    //console.log(`pos=${xPos},${yPos}`);
 
     // If collision, then highlight source AND target 
     // (...and remember if "dropped" on it)
+    if (currTarget !== this.dragTarget) {
+      if (currTarget) {
+        // Different target...
+        console.log(`>> new target = ${currTarget.data.name}`)
+      }
+      else {
+        // Lost target
+        console.log(`>> NO target`)
+      }
+      this.dragTarget = currTarget;
+    }
   }
 
   /**

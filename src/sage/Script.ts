@@ -41,6 +41,44 @@ export class Script {
       }
     }
   }
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public safeExecFuncWithParams(strFunc: string, param1?: any, param2?: any) {
+    try {
+      (<any>SAGE.Actions)[strFunc](param1, param2);
+    }
+    catch (e: unknown) {
+      if (e instanceof Error) {
+        SAGE.Dialog.showErrorMessage(`Error running script function: ${e.message}`);
+      }
+    }
+  }
+
+
+  // public safeExecFunc(strFunc: string, ...params: any[]) {
+  //   try {
+  //     (<any>SAGE.Actions)[strFunc](params);
+  //   }
+  //   catch (e: unknown) {
+  //     if (e instanceof Error) {
+  //       SAGE.Dialog.showErrorMessage(`Error running script function: ${e.message}`);
+  //     }
+  //   }
+  // }
+
+  //function to execute some other function by it's string name 
+  // public executeFunctionByName(functionName: string, arguments: any ) {
+  //   const args = Array.prototype.slice.call(arguments, 2);
+  //   const namespaces = functionName.split(".");
+  //   const func = namespaces.pop();
+  //   let context;
+  //   for(let i = 0; i < namespaces.length; i++) {
+  //     context = window[namespaces[i]];
+  //   }
+  //   if (func)
+  //     // eslint-disable-next-line prefer-spread
+  //     return context[func].apply(context, args);
+  // }
 
   private waitForSkip(): Promise<void> {
     return new Promise<void>(res => {

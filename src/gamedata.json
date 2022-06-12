@@ -20,7 +20,8 @@
           "x": 1480,
           "y": 1000,
           "pickupable": true,
-          "single_use": true
+          "single_use": true,
+          "on_use": "onKeyUse"
         }
       ],
       "doors": []
@@ -55,7 +56,8 @@
           "y": 100,
           "width": 680,
           "height": 200,
-          "playSounds": false
+          "playSounds": false,
+          "auto_unlock": true
         }
       ],
       "on_enter": "SAGE.Actions.onBridgeEnter();",

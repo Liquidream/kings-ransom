@@ -111,7 +111,7 @@ export class SceneScreen extends Container implements IScreen {
       // End Drag+Drop mode
       this.draggedProp.dragging = false
       // Restore interaction to "dragged" Prop
-      this.draggedProp.sprite.interactive = true      
+      this.draggedProp.sprite.interactive = true
       this.draggedProp = undefined;
       // Update inventory (in case it was an inventory prop)
       SAGE.World.player.invScreen.update();
@@ -124,21 +124,21 @@ export class SceneScreen extends Container implements IScreen {
     //  > Other Props in inventory
     for (const prop of SAGE.World.player.invScreen.propsList) {
       if (Collision.isColliding(this.draggedProp?.sprite, prop.sprite)) {
-      //  console.log(`>> collided with ${prop.data.name}`)
+        //  console.log(`>> collided with ${prop.data.name}`)
         currTarget = prop;
       }
     }
     //  > Other Props in current scene
     for (const prop of this.props) {
       if (Collision.isColliding(this.draggedProp?.sprite, prop.sprite)) {
-      //  console.log(`>> collided with ${prop.data.name}`)
+        //  console.log(`>> collided with ${prop.data.name}`)
         currTarget = prop;
       }
     }
     //  > Doors in current scene
     for (const door of this.doors) {
       if (Collision.isColliding(this.draggedProp?.sprite, door.graphics)) {
-       // console.log(`>> collided with ${door.data.name}`)
+        // console.log(`>> collided with ${door.data.name}`)
         currTarget = door;
       }
     }
@@ -273,9 +273,16 @@ export class SceneScreen extends Container implements IScreen {
       graphics.beginFill(0xe74c3c, 125); // Red
       graphics.lineStyle(10, 0xFF0000);
       graphics.pivot.set(prop.sprite.width / 2, prop.sprite.height / 2);
-      graphics.drawRoundedRect(0, 0, prop.sprite.width, prop.sprite.height, 30);
+      // Need to handle diff for "non-image" sprites
+      // (as Graphics scaling goes screwy if image dimensions are not really there)
+      if (prop.data.image) {
+        graphics.drawRoundedRect(0, 0, prop.sprite.width, prop.sprite.height, 30);
+        prop.sprite.addChild(graphics);        
+      } else {
+        graphics.drawRoundedRect(prop.sprite.x, prop.sprite.y, prop.sprite.width, prop.sprite.height, 30);
+        this.addChild(graphics);
+      }
       graphics.endFill();
-      prop.sprite.addChild(graphics);
     }
   }
 

@@ -41,11 +41,11 @@ export class Script {
       }
     }
   }
-  
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public safeExecFuncWithParams(strFunc: string, param1?: any, param2?: any) {
+  public safeExecFuncWithParams(strFunc: string, param1?: any, param2?: any): any {
     try {
-      (<any>SAGE.Actions)[strFunc](param1, param2);
+      return (<any>SAGE.Actions)[strFunc](param1, param2);
     }
     catch (e: unknown) {
       if (e instanceof Error) {

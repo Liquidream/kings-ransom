@@ -21,17 +21,21 @@ export class Actions {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onKeyUse = async (useProp: Prop, onObj: any) => {
+  onKeyUse = async (keyProp: Prop, onObj: any): Promise<boolean> => {
     // 
     // eslint-disable-next-line no-debugger
-    console.log(`prop.name = ${useProp.data.name}`);
+    console.log(`prop.name = ${keyProp.data.name}`);
     console.log(`prop.name = ${onObj.data.name}`);
     
     if (onObj.data.id === "dor_fortress_int") {
       const door = onObj as Door;
       door.unlockDoor();
-      SAGE.World.player.removeFromInventory(useProp.data.id)
+      keyProp.destroy();
+      //SAGE.World.player.removeFromInventory(keyProp.data.id)
+      return true;
     }
+
+    return false;
   }
 
   onCaveTunnelEnter = async () => {

@@ -105,13 +105,15 @@ export class SceneScreen extends Container implements IScreen {
         this.draggedProp.use(this.dragTarget);
       }
       else {
-        // Didn't drop on object, so put it back
-
+        // Didn't drop on object, so... do nothing? (+put back to orig pos)
+        this.draggedProp.sprite.x = this.draggedProp.data.x;
+        this.draggedProp.sprite.y = this.draggedProp.data.y;
       }
       // End Drag+Drop mode
       this.draggedProp.dragging = false
       // Restore interaction to "dragged" Prop
       this.draggedProp.sprite.interactive = true
+      this.draggedProp.sprite.alpha = 1;
       this.draggedProp = undefined;
       // Update inventory (in case it was an inventory prop)
       SAGE.World.player.invScreen.update();

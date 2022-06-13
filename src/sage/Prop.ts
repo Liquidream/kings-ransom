@@ -18,8 +18,6 @@ export class Prop {
   // @ts-ignore (ignore the "declared but never used" for now)
   private propInputEvents!: InputEventEmitter;
   public dragging = false;
-  public restXPos!: number;
-  public restYPos!: number;
 
   public constructor(propData: IPropData) {
     // Initialise from data object
@@ -61,9 +59,27 @@ export class Prop {
   }
 
   public use(object: any) {
-    // Run any OnEnter action?
+    let validUse = false;
+    // Run any OnEnter action?    
     if (this.data.on_use) {
-      SAGE.Script.safeExecFuncWithParams(this.data.on_use, this, object);
+      validUse = SAGE.Script.safeExecFuncWithParams(this.data.on_use, this, object);
+      console.log(validUse);
+    }
+    if (validUse) {
+      // Valid use-case
+    } else {
+      // Invalid, so restore position
+      this.sprite.x = this.data.x
+      this.sprite.y = this.data.y
+    }
+  }
+
+  public destroy() {
+    if (this.inInventory) {
+      SAGE.World.player.removeFromInventory(this.data.id)
+    } 
+    else {
+      SAGE.World.currentScene.screen.removeProp(this)
     }
   }
 
@@ -74,7 +90,10 @@ export class Prop {
 
   private onSceneHint() {
     //console.log(`TODO: attrack tween for ${this.data.name}`);
-    const attractShine: Sprite = Sprite.from("Shine");
+    // Abort if in player inventory
+    if (this.inInventory)
+      return;
+    const attractShine: Sprite = Sprite.from("UI-Shine");
     attractShine.anchor.set(0.5);
     attractShine.x = this.data.x
     attractShine.y = this.data.y
@@ -100,14 +119,13 @@ export class Prop {
       SAGE.World.currentScene.screen.draggedProp = this;
       this.sprite.alpha = this.DRAG_ALPHA;
       SAGE.Dialog.clearMessage();
+      // Disable auto-close of inventory          
+      SAGE.World.player.invScreen.autoClose = false;
     }
   }
 
   private onPointerOver() { //_e: InteractionEvent
-    // If not dragging this Prop
-    //if (!this.dragging) {
     SAGE.Dialog.showMessage(this.data.name, DialogType.Caption, -1);
-    //}
   }
 
   private onPointerOut() { //_e: InteractionEvent

@@ -21,7 +21,8 @@
           "y": 1000,
           "pickupable": true,
           "single_use": true,
-          "on_use": "onKeyUse"
+          "on_use": "onKeyUse",
+          "draggable": true
         }
       ],
       "doors": []

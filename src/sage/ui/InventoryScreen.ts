@@ -8,8 +8,8 @@ import { DialogType } from "./Dialog";
 export class InventoryScreen {
   // "constants" 
   // (perhaps overridable in config?)
-  HEIGHT = SAGE.width / 13; //150;
-  SIDE_MARGIN = this.HEIGHT; //150;
+  HEIGHT = SAGE.width / 13;
+  SIDE_MARGIN = this.HEIGHT;
   SPACING = 20
   ROUNDED_EDGE = 50
   CLOSED_YPOS = -(this.HEIGHT + this.ROUNDED_EDGE);
@@ -117,9 +117,6 @@ export class InventoryScreen {
       const propSprite = prop.sprite;
       propSprite.x = this.SIDE_MARGIN + xOff;
       propSprite.y = this.HEIGHT / 2;
-      // update "rest" pos (for drag+drop)
-      prop.restXPos = propSprite.x
-      prop.restYPos = propSprite.y
       xOff += this.HEIGHT;
     }
   }

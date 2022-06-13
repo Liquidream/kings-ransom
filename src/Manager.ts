@@ -29,7 +29,7 @@ export class SAGE {
   private static currentScreen: IScreen;
   
 
-  public static debugMode = true;
+  public static debugMode = false;
   public static enableFullscreen = false;
 
   public static World: World;

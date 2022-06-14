@@ -2,10 +2,9 @@
   "title": "King's Ransom",
   "player": {
     "name": "Lonely wonderer",
-    "inventory": [
-    ]
+    "inventory": []
   },
-  "starting_scene_id": "scn_fortress_ext",
+  "starting_scene_id": "scn_bridge",
   "on_start": "SAGE.Actions.onStart();",
   "scenes": [
     {
@@ -21,13 +20,12 @@
           "y": 1000,
           "pickupable": true,
           "single_use": true,
-          "on_use": "onKeyUse",
-          "draggable": true
+          "on_use": "onKeyUse"
         }
       ],
       "doors": []
     },
-    {      
+    {
       "id": "scn_bridge",
       "name": "Stone Bridge",
       "image": "Bridge",
@@ -193,8 +191,7 @@
           "desc": "It's a rat, looks like he's dying",
           "x": 265,
           "y": 545,
-          "pickupable": true,
-          "draggable": true
+          "pickupable": true
         }
       ],
       "doors": [

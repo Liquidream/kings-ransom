@@ -1,7 +1,7 @@
 import { SAGE } from "./Manager";
 import { Door } from "./sage/Door";
 import { Prop } from "./sage/Prop";
-//import { DialogChoice } from "./sage/ui/Dialog";
+import { DialogChoice } from "./sage/ui/Dialog";
 
 // --- Sounds ---
 // "Stream, Water, C.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org
@@ -16,17 +16,12 @@ import { Prop } from "./sage/Prop";
 
 export class Actions {
   onStart = async () => {
-    SAGE.World.revealPropAt("prp_key", "scn_fortress_ext")
-    
+    //SAGE.World.revealPropAt("prp_key", "scn_fortress_ext")    
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onKeyUse = async (keyProp: Prop, onObj: any): Promise<boolean> => {
-    // 
-    // eslint-disable-next-line no-debugger
-    console.log(`prop.name = ${keyProp.data.name}`);
-    console.log(`prop.name = ${onObj.data.name}`);
-    
+    // Confirm key prop used on correct target    
     if (onObj.data.id === "dor_fortress_int") {
       const door = onObj as Door;
       door.unlockDoor();
@@ -34,22 +29,20 @@ export class Actions {
       //SAGE.World.player.removeFromInventory(keyProp.data.id)
       return true;
     }
-
     return false;
   }
 
   onCaveTunnelEnter = async () => {
-    //console.log("onEnterCaveTunnel()");
     if (SAGE.World.currentScene.firstVisit) {
       await SAGE.Script.wait(1);
       SAGE.Sound.play("Snake-Attack");
       await SAGE.Script.wait(1);
       if (SAGE.World.player.hasPropInInventory("prp_rat")) {
-        if (SAGE.debugMode) console.log("Safe! Snake ate the rat...");
+        SAGE.debugLog("Safe! Snake ate the rat...");
         SAGE.Dialog.showMessage('A snake strikes and eats the rat & leaves');
         SAGE.World.player.removeFromInventory("prp_rat")
       } else {
-        if (SAGE.debugMode) console.debug("Player died...");
+        SAGE.debugLog("Player died...");
         SAGE.Dialog.showMessage('A hungry snake strikes and bites you');
         await SAGE.Script.wait(1);
         SAGE.gameOver("You Died!");
@@ -58,7 +51,6 @@ export class Actions {
   }
 
   onPitAction = async () => {
-    //console.log("onPitAction()");    
     SAGE.Dialog.showMessage('You fall into the bottomless pit...');
     await SAGE.Script.wait(1);
     SAGE.gameOver("You Died!");
@@ -79,9 +71,8 @@ export class Actions {
   }
 
   onBridgeEnter = async () => {
-    //console.log("TODO: onBridgeEnter()");    
     if (SAGE.World.player.hasPropInInventory("prp_gold")) {
-      if (SAGE.debugMode) console.log("Got gold out - game won!");
+      SAGE.debugLog("Got gold out - game won!");
       SAGE.gameWon("You paid the King's Ransom!");
     }
 
@@ -95,26 +86,27 @@ export class Actions {
     //   await SAGE.Dialog.say("Narrator", "Retrieve the gold\nthat will pay the King's Ransom!", undefined, "Intro-3")
     // }
 
-    // await SAGE.Dialog.showChoices([
-    //   new DialogChoice("Why did you stop me, something important here no doubt?", async () => {
-    //     await SAGE.Dialog.say("Tentacle", "I'm lonely...", "Lime");
-    //     SAGE.Dialog.property["asked_why"] = true;
-    //   }),
-    //   new DialogChoice("Where am i?", async () => {
-    //     await SAGE.Dialog.say("Tentacle", "You're in Paul's demo adventure", "Lime");
-    //   }),
-    //   new DialogChoice("Who are you?", async () => {
-    //     await SAGE.Dialog.say("Tentacle", "I'm Tentacle, of course!", "Lime");
-    //   }, "asked_why"),
-    //   new DialogChoice("Nevermind", async () => {
-    //     await SAGE.Dialog.say("Tentacle", "Fine, be like that!", "Lime");
-    //     SAGE.Dialog.end();
-    //   })
-    // ]);
+    // await SAGE.Script.wait(3);
+    // await this.testDialogOptions();
   }
 
+  async testDialogOptions() {
+    await SAGE.Dialog.showChoices([
+      new DialogChoice("Why did you stop me, something important here no doubt?", async () => {
+        await SAGE.Dialog.say("Tentacle", "I'm lonely...", "Lime");
+        SAGE.Dialog.property["asked_why"] = true;
+      }),
+      new DialogChoice("Where am i?", async () => {
+        await SAGE.Dialog.say("Tentacle", "You're in Paul's demo adventure", "Lime");
+      }),
+      new DialogChoice("Who are you?", async () => {
+        await SAGE.Dialog.say("Tentacle", "I'm Tentacle, of course!", "Lime");
+      }, "asked_why"),
+      new DialogChoice("Nevermind", async () => {
+        await SAGE.Dialog.say("Tentacle", "Fine, be like that!", "Lime");
+        SAGE.Dialog.end();
+      })]
+      //, { col: "red", suppressChoiceSelectRepeat: true }
+    );
+  }
 }
-
-// sample delay code
-//const wait = (n: number) => new Promise<void>(res => setTimeout(res, n))
-

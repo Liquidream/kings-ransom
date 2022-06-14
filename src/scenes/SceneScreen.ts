@@ -84,7 +84,7 @@ export class SceneScreen extends Container implements IScreen {
   }
 
   private onPointerMove(_e: InteractionEvent) {
-    //if (SAGE.debugMode) console.log(`${this.name}::onPointerMove()`);
+    //SAGE.debugLog(`${this.name}::onPointerMove()`);
     if (this.draggedProp) {
       // Temp remove interaction to "dragged" Prop
       this.draggedProp.sprite.interactive = false
@@ -97,7 +97,7 @@ export class SceneScreen extends Container implements IScreen {
   }
 
   private onPointerUp(_e: InteractionEvent) {
-    if (SAGE.debugMode) console.log(`${this.name}::onPointerUp()`);
+    SAGE.debugLog(`${this.name}::onPointerUp()`);
     if (this.draggedProp) {
       // We were dragging something - did we drop it on something?
       if (this.dragTarget) {
@@ -126,37 +126,35 @@ export class SceneScreen extends Container implements IScreen {
     //  > Other Props in inventory
     for (const prop of SAGE.World.player.invScreen.propsList) {
       if (Collision.isColliding(this.draggedProp?.sprite, prop.sprite)) {
-        //  console.log(`>> collided with ${prop.data.name}`)
+        SAGE.debugLog(`>> collided with ${prop.data.name}`)
         currTarget = prop;
       }
     }
     //  > Other Props in current scene
     for (const prop of this.props) {
       if (Collision.isColliding(this.draggedProp?.sprite, prop.sprite)) {
-        //  console.log(`>> collided with ${prop.data.name}`)
+        SAGE.debugLog(`>> collided with ${prop.data.name}`)
         currTarget = prop;
       }
     }
     //  > Doors in current scene
     for (const door of this.doors) {
       if (Collision.isColliding(this.draggedProp?.sprite, door.graphics)) {
-        // console.log(`>> collided with ${door.data.name}`)
+        SAGE.debugLog(`>> collided with ${door.data.name}`)
         currTarget = door;
       }
     }
-
-    //console.log(`pos=${xPos},${yPos}`);
 
     // If collision, then highlight source AND target 
     // (...and remember if "dropped" on it)
     if (currTarget !== this.dragTarget) {
       if (currTarget) {
         // Different target...
-        console.log(`>> new target = ${currTarget.data.name}`)
+        SAGE.debugLog(`>> new target = ${currTarget.data.name}`)
       }
       else {
         // Lost target
-        console.log(`>> NO target`)
+        SAGE.debugLog(`>> NO target`)
       }
       this.dragTarget = currTarget;
     }
@@ -209,12 +207,9 @@ export class SceneScreen extends Container implements IScreen {
     text.x = SAGE.width / 2;
     text.y = SAGE.height / 2;
     overlay.addChild(text);
-
-    console.log(message);
   }
 
   private onClickGameOver() { //_e: InteractionEvent
-    //console.log("You interacted with game over ...overlay!")
     // Restart game
     SAGE.restartGame();
   }
@@ -264,9 +259,9 @@ export class SceneScreen extends Container implements IScreen {
     if (fadeIn) {
       prop.sprite.alpha = 0;
       new Tween(prop.sprite).to({ alpha: 1 }, 500).start()
-        .onComplete(() => {
-          // ??
-        });
+        // .onComplete(() => {
+        //   // ??
+        // });
     }
 
     // DEBUG?
@@ -279,7 +274,7 @@ export class SceneScreen extends Container implements IScreen {
       // (as Graphics scaling goes screwy if image dimensions are not really there)
       if (prop.data.image) {
         graphics.drawRoundedRect(0, 0, prop.sprite.width, prop.sprite.height, 30);
-        prop.sprite.addChild(graphics);        
+        prop.sprite.addChild(graphics);
       } else {
         graphics.drawRoundedRect(prop.sprite.x, prop.sprite.y, prop.sprite.width, prop.sprite.height, 30);
         this.addChild(graphics);
@@ -291,25 +286,24 @@ export class SceneScreen extends Container implements IScreen {
   /**
    * Removes a Prop from a scene (default = fade out).     
    */
-  removeProp(prop: Prop) {
-    new Tween(prop.sprite).to({ alpha: 0 }, 500).start()
-      .onComplete(() => { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any                
-        // remove when tween completes
-        this.removeChild(prop.sprite);
-        this.props.splice(this.props.findIndex(item => item.data.id === prop.data.id), 1);
-        prop.tidyUp();
-
-        // Add to Player's inventory
-        SAGE.World.player.addToInventory(prop.data);
-
-        // remove from game data
-        this.scene.removePropDataById(prop.data.id)
-      });
-    new Tween(prop.sprite.scale).to({ x: 1.5, y: 1.5 }, 500).start()
+  removeProp(prop: Prop, fadeOut = true, scaleAnim?: boolean) {
+    if (fadeOut) {
+      new Tween(prop.sprite).to({ alpha: 0 }, 500).start()
+        .onComplete(() => { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any                
+          // remove when tween completes
+          this.removeChild(prop.sprite);
+          this.props.splice(this.props.findIndex(item => item.data.id === prop.data.id), 1);
+          prop.tidyUp();
+          // remove from game data
+          this.scene.removePropDataById(prop.data.id)
+        });
+    }
+    if (scaleAnim) {
+      new Tween(prop.sprite.scale).to({ x: 1.5, y: 1.5 }, 500).start()
+    }
   }
 
   private buildDoorways() {
-    //console.log(this.scene.doors);
     if (this.scene.doors.length > 0) {
       for (const doorData of this.scene.doors) {
         // Create new component obj (contains data + view)
@@ -322,7 +316,7 @@ export class SceneScreen extends Container implements IScreen {
   }
 
   private onPrimaryAction() { //_e: InteractionEvent
-    console.log("Backdrop was clicked/tapped");
+    SAGE.debugLog("Backdrop was clicked/tapped");
     SAGE.Events.emit("sceneinteract");
   }
 

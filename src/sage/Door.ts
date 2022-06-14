@@ -77,7 +77,7 @@ export class Door {
   }
 
   private onSceneHint() {
-    //console.log(`TODO: attrack tween for ${this.data.name}`);
+    // Show attract tween for this
     const attractShine: Sprite = Sprite.from("UI-Shine");
     attractShine.anchor.set(0.5);
     attractShine.x = this.data.x
@@ -155,7 +155,7 @@ export class Door {
   }
 
   private onSecondaryAction() {
-    console.log("onSecondaryAction...");
+    if (SAGE.debugMode) console.log(`onSecondaryAction for :${this.data.id}`);
     SAGE.Dialog.showMessage(this.data.desc);
   }
 

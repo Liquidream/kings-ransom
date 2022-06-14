@@ -27,7 +27,6 @@ export class DoorData implements IDoorData, Serialization<DoorData> {
 
     fromJSON(input: IDoorData) {
         Object.assign(this, input); 
-        //console.log(typeof(this.x));
         return this;
     }
 

@@ -83,7 +83,6 @@ export class Scene implements ISceneData, Serialization<Scene> {
   }
 
   fromJSON(input: ISceneData) {
-    //console.log(input)
     this.id = input.id;
     this.image = input.image || "";
     this.name = input.name;

@@ -58,19 +58,22 @@ export class Prop {
     SAGE.Events.off("scenehint", this.onSceneHint, this);
   }
 
-  public use(object: any) {
+  public async use(object: any) {
     let validUse = false;
     // Run any OnEnter action?    
     if (this.data.on_use) {
-      validUse = SAGE.Script.safeExecFuncWithParams(this.data.on_use, this, object);
-      console.log(validUse);
+      validUse = await SAGE.Script.safeExecFuncWithParams(this.data.on_use, this, object);
     }
+    SAGE.debugLog(`Use case valid? ${validUse}`);
     if (validUse) {
       // Valid use-case
     } else {
       // Invalid, so restore position
-      this.sprite.x = this.data.x
-      this.sprite.y = this.data.y
+      // (if not already in inventory)
+      if (!this.inInventory) {
+        this.sprite.x = this.data.x
+        this.sprite.y = this.data.y
+      }
     }
   }
 
@@ -79,7 +82,7 @@ export class Prop {
       SAGE.World.player.removeFromInventory(this.data.id)
     } 
     else {
-      SAGE.World.currentScene.screen.removeProp(this)
+      SAGE.World.currentScene.screen.removeProp(this, true)
     }
   }
 
@@ -89,8 +92,8 @@ export class Prop {
   }
 
   private onSceneHint() {
-    //console.log(`TODO: attrack tween for ${this.data.name}`);
-    // Abort if in player inventory
+    // Show attract tween for this
+    // (...but abort if in player inventory!)
     if (this.inInventory)
       return;
     const attractShine: Sprite = Sprite.from("UI-Shine");
@@ -138,8 +141,7 @@ export class Prop {
   }
 
   private onPrimaryAction() {
-    if (SAGE.debugMode) console.log(`You interacted with a prop! (${this.data.name})`);
-    //console.log(_e.currentTarget)
+    SAGE.debugLog(`You interacted with a prop! (${this.data.name})`);
 
     // Custom action?
     if (this.data.on_action) {
@@ -153,7 +155,9 @@ export class Prop {
       && !this.inInventory) {
       SAGE.Dialog.showMessage(`You picked up the ${this.data.name}`);
       // Remove prop from scene
-      SAGE.World.currentScene.screen.removeProp(this);
+      SAGE.World.currentScene.screen.removeProp(this, true, true);
+      // Add to Player's inventory
+      SAGE.World.player.addToInventory(this.data);
       // Play sound
       SAGE.Sound.play("Pick-Up")
       // Auto-open player inventory
@@ -169,17 +173,10 @@ export class Prop {
       SAGE.World.player.invScreen.autoClose = false;
       return;
     }
-
-    // Run code snippet (stored in string)?
-    //https://stackoverflow.com/questions/64426501/how-to-execute-strings-of-expression-in-an-array-with-ramda/64426855#64426855
-    // Function("console.log('hi there!!!!!!!!!!!');")();
-
-    // DEBUG
-    //console.log(Manager.World.serialize());
   }
 
   private onSecondaryAction() {
-    console.log("onSecondaryAction...");
+    SAGE.debugLog(`onSecondaryAction for :${this.data.id}`);
     SAGE.Dialog.showMessage(this.data.desc);
   }
 

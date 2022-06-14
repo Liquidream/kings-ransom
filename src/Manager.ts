@@ -15,9 +15,13 @@ import { SAGE_UI } from "./sage/ui/UI_Screen";
 const gamedata: IWorldData = <unknown>gamedataJSON as IWorldData;
 
 export class SAGE {
+  
   private constructor() {
     /*this class is purely static. No constructor to see here*/
   }
+
+  public static debugMode = false;
+  public static enableFullscreen = false;
 
   private static _app: Application;
   private static _width: number;
@@ -27,10 +31,6 @@ export class SAGE {
   private static midLayer: Container;
   private static topLayer: Container;
   private static currentScreen: IScreen;
-  
-
-  public static debugMode = false;
-  public static enableFullscreen = false;
 
   public static World: World;
   public static Dialog: Dialog;
@@ -140,10 +140,6 @@ export class SAGE {
 
     // ...and sounds
     SAGE.Sound = new Sound();
-
-    // console.log(Manager.World.title);
-    // console.log(Manager.World.scenes[0].image);
-    // console.log("------------------");
   }
 
   public static startGame() {
@@ -253,6 +249,11 @@ export class SAGE {
 
     // If inventory open, auto-collapse it
     if (SAGE.World.player.invScreen.isOpen) SAGE.World.player.invScreen.close();
+  }
+
+  // Conditional console.log (if debugMode is true)
+  public static debugLog(message: any) {
+    if (SAGE.debugMode) console.debug(message);
   }
 
   // This update will be called by a pixi ticker and tell the scene that a tick happened

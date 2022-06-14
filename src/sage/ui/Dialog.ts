@@ -32,13 +32,16 @@ export class Dialog {
   BACKGROUND_MARGIN = 20;
   CHOICE_MARGIN = 5;
 
+  private speakerCols: { [id: string]: string; } = {};
   private dialogContainer!: Container | null;
   private dialogBackground!: Graphics | null;
   private dialogText!: Text | null;
-  private speakerCols: { [id: string]: string; } = {};
   private dialogSoundName!: string;
+  private dialogCol!: string;
   private blocker!: Graphics | null;
   private _dialogChoices!: Array<DialogChoice> | null;
+  private suppressChoiceSelectRepeat!: boolean;
+
   // Key-Value pair to allow properties to be set/read
   public property: { [key: string]: string | number | boolean } = {};
 
@@ -74,29 +77,42 @@ export class Dialog {
   }
 
   public async showChoices(choiceList: Array<DialogChoice>,
-    options?: { col?: string }): Promise<void> {
+    options?: { col?: string, suppressChoiceSelectRepeat?: boolean }): Promise<void> {
 
     // Are we already displaying something? 
     if (this.dialogBackground) {
       // clear existing message
       this.clearMessage()
     }
-    this._dialogChoices = choiceList;
+
+    // Is this a re-show?
+    if (this._dialogChoices) {
+      // Do anything diff for reshow here...
+    }
+    else {
+      // New dialog list...
+      this._dialogChoices = choiceList;
+      // Default to always display/play selected choice dialog
+      this.suppressChoiceSelectRepeat = false
+      if (options?.suppressChoiceSelectRepeat) this.suppressChoiceSelectRepeat = options.suppressChoiceSelectRepeat;
+
+      // Add "blocker" for all other input except dialog choices
+      // (only do this once, per dialog choice menu init)
+      this.blocker = new Graphics();
+      this.blocker.beginFill(0xccc, 0.00000000000001); // "Invisible"
+      this.blocker.drawRect(0, 0, SAGE.width, SAGE.height);
+      this.blocker.interactive = true;
+      this.blocker.on("pointertap", () => {
+        SAGE.debugLog("Blocker was clicked/tapped");
+        SAGE.Events.emit("sceneinteract");
+      })
+      SAGE.app.stage.addChild(this.blocker);
+    }
 
     // Create interactive Pixi Text objects + handle events!
 
-    // Add "blocker" for all other input except dialog choices
-    this.blocker = new Graphics();
-    // blocker.width = SAGE.width;
-    // blocker.height = SAGE.height;
-    this.blocker.beginFill(0xccc, 0.00000000000001); // "Invisible"
-    //this.blocker.beginFill(0xe74c3c, 125);
-    this.blocker.drawRect(0, 0, SAGE.width, SAGE.height);
-    this.blocker.interactive = true;
-    SAGE.app.stage.addChild(this.blocker);
-
     // Text style
-    const col = options?.col || "#fff";
+    this.dialogCol = options?.col || this.dialogCol || "#fff";
     this.dialogContainer = new Container();
     SAGE.app.stage.addChild(this.dialogContainer);
 
@@ -111,7 +127,7 @@ export class Dialog {
 
       const style: TextStyle = new TextStyle({
         align: "left",
-        fill: col,
+        fill: this.dialogCol,
         fontSize: 47,
         strokeThickness: 6,
         lineJoin: "round",
@@ -134,8 +150,7 @@ export class Dialog {
       choice.text.interactive = true;   // Super important or the object will never receive mouse events!
       // >> On Selected...
       const funcSelect = async () => {
-        //console.log(choice.message);
-        await SAGE.Dialog.showMessage(choice.message);
+        if (!this.suppressChoiceSelectRepeat) await SAGE.Dialog.showMessage(choice.message);
         // Run the choice's function
         try {
           await choice.func();
@@ -161,7 +176,7 @@ export class Dialog {
       choice.text.on("mouseover", funcOver);
       // >> On Mouse Out...
       const funcOut = () => {
-        choice.text.style.fill = col
+        choice.text.style.fill = this.dialogCol
       }
       bullet.on("mouseout", funcOut);
       choice.text.on("mouseout", funcOut);
@@ -190,6 +205,7 @@ export class Dialog {
     this.clearMessage();
     // Tidy up any dialog choice related content
     if (this.blocker) {
+      this.blocker.interactive = false;
       SAGE.app.stage.removeChild(this.blocker);
       this.blocker.destroy();
       this.blocker = null;
@@ -369,11 +385,6 @@ export class Dialog {
       await SAGE.Script.wait(0.5);
     }
   }
-
-  //private onSceneInteract() {
-  // console.log(`TODO: skip dialog`);
-  //}
-
 }
 
 export enum DialogType {

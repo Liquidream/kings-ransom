@@ -38,7 +38,7 @@ export class InputEventEmitter { //extends EventEmitter {
   private longPressFired = false;
 
   private onTouchStart() { //_e: InteractionEvent
-    //console.log("onTouchStart...")
+    SAGE.debugLog("onTouchStart...")
     this.touchTimer = setTimeout(() => {
       if (!SAGE.World.currentScene.screen.draggedProp) {
         this.onSecondaryAction();
@@ -51,7 +51,7 @@ export class InputEventEmitter { //extends EventEmitter {
 
   // https://stackoverflow.com/questions/6139225/how-to-detect-a-long-touch-pressure-with-javascript-for-android-and-iphone
   private onTouchEnd() { //_e: InteractionEvent
-    //console.log("onTouchEnd...")
+    SAGE.debugLog("onTouchEnd...")
     if (!this.longPressFired) this.onPrimaryAction()
     //stops short touches from firing the event
     if (this.touchTimer)

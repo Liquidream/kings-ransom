@@ -50,9 +50,9 @@ export class Door {
 
     graphics.on("pointerover", this.onPointerOver, this);
     graphics.on("pointerout", this.onPointerOut, this);
-    graphics.on("pointerup", () => {
-      if (SAGE.debugMode) console.log(`${this.data.name}::onPointerUp()`);
-    });
+    // graphics.on("pointerup", () => {
+    //   if (SAGE.debugMode) console.log(`${this.data.name}::onPointerUp()`);
+    // });
 
     SAGE.Events.on("scenehint", this.onSceneHint, this);
 

@@ -16,7 +16,7 @@ import { DialogChoice } from "./sage/ui/Dialog";
 
 export class Actions {
   onStart = async () => {
-    //SAGE.World.revealPropAt("prp_key", "scn_fortress_ext")    
+    SAGE.World.revealPropAt("prp_key", "scn_fortress_ext")    
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -26,7 +26,6 @@ export class Actions {
       const door = onObj as Door;
       door.unlockDoor();
       keyProp.destroy();
-      //SAGE.World.player.removeFromInventory(keyProp.data.id)
       return true;
     }
     return false;

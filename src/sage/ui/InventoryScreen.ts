@@ -25,7 +25,7 @@ export class InventoryScreen {
   private inventoryBackground!: Graphics;
   private inventoryIcon!: Sprite;
   
-  public propsList: Array<Prop>
+public propsList: Array<Prop>
   
   public isOpen = false;
   public autoClose = true;
@@ -73,14 +73,17 @@ export class InventoryScreen {
   }
 
   public removeProp(propId: string): Prop | undefined {
-    const prop = this.propsList.splice(this.propsList.findIndex(item => item.data.id === propId), 1)[0];
+    const index = this.propsList.findIndex(item => item.data.id === propId)
+    let prop: Prop | undefined;
+    if (index !== -1) prop = this.propsList.splice(index,1)[0];
+    //const prop = this.propsList.splice(this.propsList.findIndex(item => item.data.id === propId), 1)[0];
     if (prop) {
       const propSprite = prop.sprite;
       // Animate it
       propSprite.alpha = 1
       new Tween(propSprite).to({ alpha: 0 }, 500).start()
         .onComplete(() => {
-          this.inventoryContainer.removeChild(prop.sprite);
+          if (prop) this.inventoryContainer.removeChild(prop.sprite);
           this.update();
         })
       return prop;

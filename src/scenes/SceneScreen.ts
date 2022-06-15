@@ -356,7 +356,9 @@ export class SceneScreen extends Container implements IScreen {
         .onComplete(() => { // https://bobbyhadz.com/blog/typescript-this-implicitly-has-type-any                
           // remove when tween completes
           this.removeChild(prop.sprite);
-          this.props.splice(this.props.findIndex(item => item.data.id === prop.data.id), 1);
+          const index = this.props.findIndex(item => item.data.id === prop.data.id)
+          if (index !== -1) this.props.splice(index,1);
+          //this.props.splice(this.props.findIndex(item => item.data.id === prop.data.id), 1);
           prop.tidyUp();
           // remove from game data
           this.scene.removePropDataById(prop.data.id)

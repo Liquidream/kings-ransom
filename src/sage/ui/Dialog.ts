@@ -161,7 +161,9 @@ export class Dialog {
           }
         }
         // Remove "used" choice
-        this.dialogChoices?.splice(this.dialogChoices.findIndex(dChoice => dChoice.message === choice.message), 1);
+        const index = this.dialogChoices?.findIndex(dChoice => dChoice.message === choice.message)
+        if (index && index !== -1) this.dialogChoices?.splice(index, 1);
+        //this.dialogChoices?.splice(this.dialogChoices.findIndex(dChoice => dChoice.message === choice.message), 1);
         // Re-show choices
         SAGE.Dialog.reshowChoices();
       };

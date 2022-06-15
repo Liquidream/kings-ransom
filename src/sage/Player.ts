@@ -34,10 +34,14 @@ export class Player implements IPlayerData, Serialization<Player> {
 
   /** Remove (and return) the specified prop, if present */
   public removeFromInventory(propId: string): IPropData | undefined {
-    const propData = this.inventory.splice(this.inventory.findIndex(item => item.id === propId), 1);
+    const index = this.inventory.findIndex(item => item.id === propId)
+    let propData;
+    if (index !== -1) propData = this.inventory.splice(index,1);
+    //const propData = this.inventory.splice(this.inventory.findIndex(item => item.id === propId), 1);
     const prop = SAGE.World.player.invScreen.removeProp(propId)
     prop?.destroy();
-    return propData[0];
+    if (propData) return propData[0];
+    return;
   }
 
   fromJSON(input: IPlayerData) {

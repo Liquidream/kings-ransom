@@ -78,8 +78,10 @@ export class Scene implements ISceneData, Serialization<Scene> {
 
   removePropDataById(propId: string) {
     // Remove data from prop list (no DisplayObject changes)
-    this.props.splice(this.props.findIndex(item => item.id === propId), 1);
-    // https://stackoverflow.com/a/67953394/574415
+    const index = this.props.findIndex(item => item.id === propId)
+    if (index !== -1) this.props.splice(index,1);
+    //this.props.splice(this.props.findIndex(item => item.id === propId), 1);
+    
   }
 
   fromJSON(input: ISceneData) {

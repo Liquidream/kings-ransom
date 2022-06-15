@@ -4,7 +4,7 @@
     "name": "Lonely wonderer",
     "inventory": []
   },
-  "starting_scene_id": "scn_bridge",
+  "starting_scene_id": "scn_cave_ent",
   "on_start": "SAGE.Actions.onStart();",
   "scenes": [
     {

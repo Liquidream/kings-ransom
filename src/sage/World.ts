@@ -79,6 +79,15 @@ export class World implements IWorldData, Serialization<World> {
         return propData;
     }
 
+    // ### REMOVED for now - as perhaps should move to Void instead? (once gone, can't come back)
+    // destroyProp(propId: string) {
+    //   const prop = this.getPropById(propId);
+    //   // Check for prop in inventory
+    //   if (SAGE.World.player.hasPropInInventory(propId)) {
+    //     SAGE.World.player.removeFromInventory(propId)
+    //   }
+    // }
+
     /** Move prop to specfied scene id (at optional x,y position)  */
     revealPropAt(propId: string, targetSceneId: string) {
         this.putPropAt(propId,targetSceneId, undefined, undefined, true);

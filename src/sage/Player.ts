@@ -35,7 +35,8 @@ export class Player implements IPlayerData, Serialization<Player> {
   /** Remove (and return) the specified prop, if present */
   public removeFromInventory(propId: string): IPropData | undefined {
     const propData = this.inventory.splice(this.inventory.findIndex(item => item.id === propId), 1);
-    SAGE.World.player.invScreen.removeProp(propId)
+    const prop = SAGE.World.player.invScreen.removeProp(propId)
+    prop?.destroy();
     return propData[0];
   }
 

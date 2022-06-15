@@ -6,10 +6,8 @@ import { Scene } from "../sage/Scene";
 import { Prop } from "../sage/Prop";
 import { Door } from "../sage/Door";
 import { PropData } from "../sage/PropData";
-//import { InputEventEmitter } from "../sage/ui/InputEventEmitter";
+import { InputEventEmitter } from "../sage/ui/InputEventEmitter";
 import { Collision } from "../utils/Collision";
-//import { DialogType } from "../sage/ui/Dialog";
-
 
 
 export class SceneScreen extends Container implements IScreen {
@@ -26,7 +24,7 @@ export class SceneScreen extends Container implements IScreen {
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
-  //private backdropInputEvents!: InputEventEmitter;
+  private backdropInputEvents!: InputEventEmitter;
 
   constructor(scene: Scene) {
     super();
@@ -74,6 +72,10 @@ export class SceneScreen extends Container implements IScreen {
     for (const door of this.doors) {
       door.tidyUp();
     }
+    SAGE.app.stage.off("pointermove", this.onPointerMove, this);
+    SAGE.app.stage.off("pointerup", this.onPointerUp, this);
+    SAGE.app.stage.off("touchmove", this.onTouchMove, this);
+
     // Fade out scene music
     if (this.scene.sound) {
       SAGE.Sound.stop(this.scene.sound, true);
@@ -99,15 +101,6 @@ export class SceneScreen extends Container implements IScreen {
       // Check for valid "drop"
       this.checkDragCollisions();
     }
-    // else {
-    //   const touchPoint: Point = new Point();
-    //   _e.data.getLocalPosition(this, touchPoint, _e.data.global)
-    //   //SAGE.Dialog.showMessage(`pos = ${touchPoint.x},${touchPoint.y}`, DialogType.Caption);
-    //   const result = this.checkTouchCollisions(touchPoint);
-    //   if (result) {
-    //     this.touchTarget.onPointerOver();
-    //   }
-    // }
   }
 
   private onPointerUp(_e: InteractionEvent) {
@@ -300,12 +293,10 @@ export class SceneScreen extends Container implements IScreen {
     this.addChild(sprite);
     this.backdrop = sprite
 
-
-    console.log(this.backdrop);
     // Events
-    // this.backdropInputEvents = new InputEventEmitter(this.backdrop);
-    // this.backdrop.on("primaryaction", this.onPrimaryAction, this);
-    // this.backdrop.on("secondaryaction", this.onSecondaryAction, this);
+    this.backdropInputEvents = new InputEventEmitter(this.backdrop);
+    this.backdrop.on("primaryaction", this.onPrimaryAction, this);
+    this.backdrop.on("secondaryaction", this.onSecondaryAction, this);
   }
 
   private buildProps() {
@@ -388,14 +379,14 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.Dialog.clearMessage();
   }
 
-  // private onPrimaryAction() { //_e: InteractionEvent
-  //   SAGE.debugLog("Backdrop was clicked/tapped");
-  //   SAGE.Events.emit("sceneinteract");
-  // }
+  private onPrimaryAction() { //_e: InteractionEvent
+    SAGE.debugLog("Backdrop was clicked/tapped");
+    SAGE.Events.emit("sceneinteract");
+  }
 
-  // private onSecondaryAction() { //_e: InteractionEvent
-  //   // Make all interactive objects flash (by raising 'global' event)");
-  //   SAGE.Events.emit("scenehint");
-  // }
+  private onSecondaryAction() { //_e: InteractionEvent
+    // Make all interactive objects flash (by raising 'global' event)");
+    SAGE.Events.emit("scenehint");
+  }
 
 }

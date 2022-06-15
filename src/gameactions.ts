@@ -16,7 +16,8 @@ import { DialogChoice } from "./sage/ui/Dialog";
 
 export class Actions {
   onStart = async () => {
-    SAGE.World.revealPropAt("prp_key", "scn_fortress_ext")    
+    // Debug testing
+    //SAGE.World.revealPropAt("prp_key", "scn_fortress_ext")
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

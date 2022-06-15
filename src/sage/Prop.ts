@@ -40,7 +40,7 @@ export class Prop {
     this.propInputEvents = new InputEventEmitter(this.sprite);
     this.sprite.on("primaryaction", this.onPrimaryAction, this);
     this.sprite.on("secondaryaction", this.onSecondaryAction, this);
-
+    // Hover (info)
     this.sprite.on("pointerover", this.onPointerOver, this);
     this.sprite.on("pointerout", this.onPointerOut, this);
     // Drag+Drop

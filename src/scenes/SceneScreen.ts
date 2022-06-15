@@ -1,13 +1,14 @@
 import { Group, Tween } from "tweedle.js"; //Easing
-import { Container, Sprite, Graphics, Text, TextStyle, Texture, InteractionEvent } from "pixi.js"; //filters
+import { Container, Sprite, Graphics, Text, TextStyle, Texture, InteractionEvent, Point } from "pixi.js"; //filters
 
 import { IScreen, SAGE } from "../Manager";
 import { Scene } from "../sage/Scene";
 import { Prop } from "../sage/Prop";
 import { Door } from "../sage/Door";
 import { PropData } from "../sage/PropData";
-import { InputEventEmitter } from "../sage/ui/InputEventEmitter";
+//import { InputEventEmitter } from "../sage/ui/InputEventEmitter";
 import { Collision } from "../utils/Collision";
+//import { DialogType } from "../sage/ui/Dialog";
 
 
 
@@ -20,10 +21,12 @@ export class SceneScreen extends Container implements IScreen {
   public draggedProp!: Prop | undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public dragTarget!: any; // Could be Prop or Door
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public touchTarget!: any; // Could be Prop or Door
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (ignore the "declared but never used" for now)
-  private backdropInputEvents!: InputEventEmitter;
+  //private backdropInputEvents!: InputEventEmitter;
 
   constructor(scene: Scene) {
     super();
@@ -41,9 +44,11 @@ export class SceneScreen extends Container implements IScreen {
       SAGE.Sound.playLoop(this.scene.sound, true);
     }
 
+    // Drag+Drop support
     SAGE.app.stage.interactive = true;
     SAGE.app.stage.on("pointermove", this.onPointerMove, this);
     SAGE.app.stage.on("pointerup", this.onPointerUp, this);
+    SAGE.app.stage.on("touchmove", this.onTouchMove, this);
   }
 
   public update() {
@@ -84,7 +89,7 @@ export class SceneScreen extends Container implements IScreen {
   }
 
   private onPointerMove(_e: InteractionEvent) {
-    //SAGE.debugLog(`${this.name}::onPointerMove()`);
+    SAGE.debugLog(`${this.name}::onPointerMove()`);
     if (this.draggedProp) {
       // Temp remove interaction to "dragged" Prop
       this.draggedProp.sprite.interactive = false
@@ -92,8 +97,17 @@ export class SceneScreen extends Container implements IScreen {
       this.draggedProp.sprite.x = _e.data.global.x;
       this.draggedProp.sprite.y = _e.data.global.y;
       // Check for valid "drop"
-      this.checkPointerCollisions();
+      this.checkDragCollisions();
     }
+    // else {
+    //   const touchPoint: Point = new Point();
+    //   _e.data.getLocalPosition(this, touchPoint, _e.data.global)
+    //   //SAGE.Dialog.showMessage(`pos = ${touchPoint.x},${touchPoint.y}`, DialogType.Caption);
+    //   const result = this.checkTouchCollisions(touchPoint);
+    //   if (result) {
+    //     this.touchTarget.onPointerOver();
+    //   }
+    // }
   }
 
   private onPointerUp(_e: InteractionEvent) {
@@ -120,26 +134,42 @@ export class SceneScreen extends Container implements IScreen {
     }
   }
 
-  private checkPointerCollisions() {
+  private onTouchMove(_e: InteractionEvent) {
+    SAGE.debugLog(`${this.name}::onTouchMove()`);
+    const touchPoint: Point = new Point();
+    _e.data.getLocalPosition(this, touchPoint, _e.data.global)
+
+    //SAGE.Dialog.showMessage(`pos = ${touchPoint.x},${touchPoint.y}`, DialogType.Caption);
+
+    const result = this.checkTouchCollisions(touchPoint);
+    if (result) {
+      if (this.touchTarget)
+        this.touchTarget.onPointerOver();
+      else
+      SAGE.Dialog.clearMessage();
+    }
+  }
+
+  private checkDragCollisions() {
     // Check selected/dragged Prop with
     let currTarget = undefined;
     //  > Other Props in inventory
     for (const prop of SAGE.World.player.invScreen.propsList) {
-      if (Collision.isColliding(this.draggedProp?.sprite, prop.sprite)) {
+      if (Collision.isCollidingObjToObj(this.draggedProp?.sprite, prop.sprite)) {
         SAGE.debugLog(`>> collided with ${prop.data.name}`)
         currTarget = prop;
       }
     }
     //  > Other Props in current scene
     for (const prop of this.props) {
-      if (Collision.isColliding(this.draggedProp?.sprite, prop.sprite)) {
+      if (Collision.isCollidingObjToObj(this.draggedProp?.sprite, prop.sprite)) {
         SAGE.debugLog(`>> collided with ${prop.data.name}`)
         currTarget = prop;
       }
     }
     //  > Doors in current scene
     for (const door of this.doors) {
-      if (Collision.isColliding(this.draggedProp?.sprite, door.graphics)) {
+      if (Collision.isCollidingObjToObj(this.draggedProp?.sprite, door.graphics)) {
         SAGE.debugLog(`>> collided with ${door.data.name}`)
         currTarget = door;
       }
@@ -158,6 +188,48 @@ export class SceneScreen extends Container implements IScreen {
       }
       this.dragTarget = currTarget;
     }
+  }
+
+  private checkTouchCollisions(touchPoint: Point): boolean {
+    // Check selected/dragged Prop with
+    let currTarget = undefined;
+    //  > Other Props in inventory
+    for (const prop of SAGE.World.player.invScreen.propsList) {
+      if (Collision.isCollidingPointToObj(touchPoint, prop.sprite)) {
+        SAGE.debugLog(`>> collided with ${prop.data.name}`)
+        currTarget = prop;
+      }
+    }
+    //  > Other Props in current scene
+    for (const prop of this.props) {
+      if (Collision.isCollidingPointToObj(touchPoint, prop.sprite)) {
+        SAGE.debugLog(`>> collided with ${prop.data.name}`)
+        currTarget = prop;
+      }
+    }
+    //  > Doors in current scene
+    for (const door of this.doors) {
+      if (Collision.isCollidingPointToObj(touchPoint, door.graphics)) {
+        SAGE.debugLog(`>> collided with ${door.data.name}`)
+        currTarget = door;
+      }
+    }
+
+    // If collision, then highlight source AND target 
+    // (...and remember if "dropped" on it)
+    if (currTarget !== this.touchTarget) {
+      if (currTarget) {
+        // Different target...
+        SAGE.debugLog(`>> new target = ${currTarget.data.name}`)
+      }
+      else {
+        // Lost target
+        SAGE.debugLog(`>> NO target`)
+      }
+      this.touchTarget = currTarget;
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -229,10 +301,11 @@ export class SceneScreen extends Container implements IScreen {
     this.backdrop = sprite
 
 
+    console.log(this.backdrop);
     // Events
-    this.backdropInputEvents = new InputEventEmitter(this.backdrop);
-    this.backdrop.on("primaryaction", this.onPrimaryAction, this);
-    this.backdrop.on("secondaryaction", this.onSecondaryAction, this);
+    // this.backdropInputEvents = new InputEventEmitter(this.backdrop);
+    // this.backdrop.on("primaryaction", this.onPrimaryAction, this);
+    // this.backdrop.on("secondaryaction", this.onSecondaryAction, this);
   }
 
   private buildProps() {
@@ -259,9 +332,9 @@ export class SceneScreen extends Container implements IScreen {
     if (fadeIn) {
       prop.sprite.alpha = 0;
       new Tween(prop.sprite).to({ alpha: 1 }, 500).start()
-        // .onComplete(() => {
-        //   // ??
-        // });
+      // .onComplete(() => {
+      //   // ??
+      // });
     }
 
     // DEBUG?
@@ -315,14 +388,14 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.Dialog.clearMessage();
   }
 
-  private onPrimaryAction() { //_e: InteractionEvent
-    SAGE.debugLog("Backdrop was clicked/tapped");
-    SAGE.Events.emit("sceneinteract");
-  }
+  // private onPrimaryAction() { //_e: InteractionEvent
+  //   SAGE.debugLog("Backdrop was clicked/tapped");
+  //   SAGE.Events.emit("sceneinteract");
+  // }
 
-  private onSecondaryAction() { //_e: InteractionEvent
-    // Make all interactive objects flash (by raising 'global' event)");
-    SAGE.Events.emit("scenehint");
-  }
+  // private onSecondaryAction() { //_e: InteractionEvent
+  //   // Make all interactive objects flash (by raising 'global' event)");
+  //   SAGE.Events.emit("scenehint");
+  // }
 
 }

@@ -2,7 +2,7 @@ import { SAGE } from "../Manager";
 import { Serialization } from "../utils/Serialization";
 import { Prop } from "./Prop";
 import { IPropData, PropData } from "./PropData";
-import { InventoryScreen } from "./ui/InventoryScreen";
+import { InventoryScreen } from "./ui/InventoryPanel";
 
 
 

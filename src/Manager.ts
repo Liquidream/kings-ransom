@@ -3,15 +3,15 @@ import { Container, DisplayObject } from "@pixi/display";
 import { filters } from "pixi.js";
 import { Tween } from "tweedle.js";
 import { IWorldData, World } from "./sage/World";
-import { Dialog } from "./sage/ui/Dialog";
+import { Dialog } from "./sage/Dialog";
 import { Script } from "./sage/Script";
 import { Events } from "./sage/Events";
 import { Actions } from "./gameactions";
-import { Sound } from "./sage/ui/Sound";
-import { InventoryScreen } from "./sage/ui/InventoryScreen";
+import { Sound } from "./sage/Sound";
+import { InventoryScreen } from "./sage/ui/InventoryPanel";
 
 import gamedataJSON from './gamedata.json';
-import { SAGE_UI } from "./sage/ui/UI_Screen";
+import { UI_Overlay } from "./sage/ui/UI_Overlay";
 const gamedata: IWorldData = <unknown>gamedataJSON as IWorldData;
 
 export class SAGE {
@@ -38,7 +38,7 @@ export class SAGE {
   public static Script: Script;
   public static Events: Events;
   public static Sound: Sound;
-  public static UI: SAGE_UI;
+  public static UI_Overlay: UI_Overlay;
 
   public static get width(): number {
     return SAGE._width;
@@ -115,7 +115,7 @@ export class SAGE {
     //let gamedata = JSON.parse(fs.readFileSync("./gamedata.json", "utf-8"));
 
     // Initialise UI
-    SAGE.UI = new SAGE_UI(SAGE.topLayer);
+    SAGE.UI_Overlay = new UI_Overlay(SAGE.topLayer);
 
     // Create and initialise game world
     SAGE.World = new World();

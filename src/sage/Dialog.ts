@@ -1,5 +1,5 @@
 import { Container, Graphics, Text, TextStyle } from "pixi.js";
-import { SAGE } from "../../Manager";
+import { SAGE } from "../Manager";
 
 
 export class DialogChoice {
@@ -45,13 +45,9 @@ export class Dialog {
   // Key-Value pair to allow properties to be set/read
   public property: { [key: string]: string | number | boolean } = {};
 
-  // poss options
-  // - https://github.com/fireveined/pixi-flex-layout
-
-  // -
 
   public constructor() {
-    //SAGE.Events.on("sceneinteract", this.onSceneInteract, this);
+    //
   }
 
   // Allow others to access (to insert/inspect/remove options?)
@@ -68,7 +64,6 @@ export class Dialog {
 
   // public update() {
   //   // Anything?
-  //   // (was prev used when using display counter, rather than async/timer)
   // }
 
   public async reshowChoices(): Promise<void> {
@@ -135,7 +130,10 @@ export class Dialog {
         wordWrapWidth: SAGE.width / 2,
       });
       // Bullet
-      const bullet = new Text("▸", style); // Text supports unicode! // (the unicode char breaks debugging!)
+      // ================================================================================
+      // NOTE: the unicode char breaks debugging, use ">" instead while debugging!
+      // ================================================================================
+      const bullet = new Text("▸", style); 
       bullet.x = 0;
       bullet.y = yOffset;
       this.dialogContainer.addChild(bullet);
@@ -163,7 +161,6 @@ export class Dialog {
         // Remove "used" choice
         const index = this.dialogChoices?.findIndex(dChoice => dChoice.message === choice.message)
         if (index && index !== -1) this.dialogChoices?.splice(index, 1);
-        //this.dialogChoices?.splice(this.dialogChoices.findIndex(dChoice => dChoice.message === choice.message), 1);
         // Re-show choices
         SAGE.Dialog.reshowChoices();
       };

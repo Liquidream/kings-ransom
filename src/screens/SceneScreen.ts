@@ -49,15 +49,11 @@ export class SceneScreen extends Container implements IScreen {
     SAGE.app.stage.on("touchmove", this.onTouchMove, this);
   }
 
-  public update() {
-    //{(_framesPassed: number): void {
-
+  public update() {  //{(_framesPassed: number): void {
     // Do any movement here...
 
     //You need to update a group for the tweens to do something!
-    Group.shared.update()
-
-    //SAGE.Dialog.update();
+    Group.shared.update();
   }
 
   // public resize(_screenWidth: number, _screenHeight: number): void {
@@ -129,11 +125,10 @@ export class SceneScreen extends Container implements IScreen {
 
   private onTouchMove(_e: InteractionEvent) {
     SAGE.debugLog(`${this.name}::onTouchMove()`);
+    // Get touch position
     const touchPoint: Point = new Point();
     _e.data.getLocalPosition(this, touchPoint, _e.data.global)
-
-    //SAGE.Dialog.showMessage(`pos = ${touchPoint.x},${touchPoint.y}`, DialogType.Caption);
-
+    // Check for any collisions...
     const result = this.checkTouchCollisions(touchPoint);
     if (result) {
       if (this.touchTarget)
@@ -239,6 +234,7 @@ export class SceneScreen extends Container implements IScreen {
     overlay.interactive = true;   // Super important or the object will never receive mouse events!
     overlay.on("pointertap", this.onClickGameOver, this);
     this.addChild(overlay);
+    // Animate it...
     new Tween(overlay).to({ alpha: 0.8 }, 1000).start()
       .onComplete(() => {
         // Now show action message
@@ -322,10 +318,7 @@ export class SceneScreen extends Container implements IScreen {
     // Fade in?
     if (fadeIn) {
       prop.sprite.alpha = 0;
-      new Tween(prop.sprite).to({ alpha: 1 }, 500).start()
-      // .onComplete(() => {
-      //   // ??
-      // });
+      new Tween(prop.sprite).to({ alpha: 1 }, 500).start();
     }
 
     // DEBUG?
@@ -358,7 +351,6 @@ export class SceneScreen extends Container implements IScreen {
           this.removeChild(prop.sprite);
           const index = this.props.findIndex(item => item.data.id === prop.data.id)
           if (index !== -1) this.props.splice(index,1);
-          //this.props.splice(this.props.findIndex(item => item.data.id === prop.data.id), 1);
           prop.tidyUp();
           // remove from game data
           this.scene.removePropDataById(prop.data.id)

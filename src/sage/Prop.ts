@@ -1,7 +1,7 @@
 import { Sprite, Texture } from "pixi.js";
 import { Easing, Tween } from "tweedle.js";
 import { SAGE } from "../Manager";
-import { DialogType } from "./ui/Dialog";
+import { DialogType } from "./Dialog";
 import { InputEventEmitter } from "./ui/InputEventEmitter";
 import { IPropData } from "./PropData";
 
@@ -45,7 +45,7 @@ export class Prop {
     this.sprite.on("pointerout", this.onPointerOut, this);
     // Drag+Drop
     this.sprite.on("pointerdown", this.onPointerDown, this);
-
+    //
     SAGE.Events.on("scenehint", this.onSceneHint, this);
 
     // visible state
@@ -142,13 +142,11 @@ export class Prop {
 
   private onPrimaryAction() {
     SAGE.debugLog(`You interacted with a prop! (${this.data.name})`);
-
     // Custom action?
     if (this.data.on_action) {
       Function(this.data.on_action)();
       return;
     }
-
     // Can prop be picked up? 
     // (...and not already in inventory)?
     if (this.data.pickupable
@@ -164,7 +162,6 @@ export class Prop {
       SAGE.World.player.invScreen.open(true);
       return;
     }
-
     // Interacted while in player inventory?
     // ...if so, perform secondary action (describe)
     if (this.inInventory) {

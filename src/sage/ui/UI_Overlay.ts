@@ -4,7 +4,7 @@ import { SAGE } from "../../Manager";
 import { Fullscreen } from "../../utils/Fullscreen";
 
 
-export class SAGE_UI {
+export class UI_Overlay {
   // "constants" 
   // (perhaps overridable in config?)
   ICON_ALPHA_INACTIVE =  0.5;
@@ -22,8 +22,10 @@ export class SAGE_UI {
     this.initialise();
   }
 
-  private initialise() {
+  private initialise() {    
+    // ---------------------------
     // Settings icon
+    // ---------------------------
     this.settingsIcon = Sprite.from("UI-Settings");
     this.settingsIcon.anchor.set(0.5);
     this.settingsIcon.x = this.iconYPos;
@@ -35,14 +37,14 @@ export class SAGE_UI {
     this.settingsIcon.filters = [ dropShadow ]
     this.settingsIcon.interactive = true;
     this.settingsIcon.buttonMode = true;
-    this.settingsIcon.on("pointertap", this.onSettingsTap, this);
+    // Events
+    this.settingsIcon.on("pointertap", () => {
+      // Toggle fullscreen (for now)
+      Fullscreen.toggleFullScreen();
+    });
     this.parentLayer.addChild(this.settingsIcon);   
   }
 
-  onSettingsTap() {
-    // Toggle fullscreen (for now)
-    Fullscreen.toggleFullScreen();
-  }
 
   public showSettings() {
     throw new Error("Method not implemented.");

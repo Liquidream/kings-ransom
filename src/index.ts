@@ -1,6 +1,6 @@
 //import { Application } from "pixi.js";
 import { SAGE } from './Manager';
-import { LoaderScreen } from "./scenes/LoaderScreen";
+import { LoaderScreen } from "./screens/LoaderScreen";
 
 // current screen size
 const gameWidth = 1920;

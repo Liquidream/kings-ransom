@@ -1,7 +1,7 @@
 import { SAGE } from "./Manager";
 import { Door } from "./sage/Door";
 import { Prop } from "./sage/Prop";
-import { DialogChoice } from "./sage/ui/Dialog";
+import { DialogChoice } from "./sage/Dialog";
 
 // --- Sounds ---
 // "Stream, Water, C.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org

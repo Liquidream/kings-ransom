@@ -15,8 +15,10 @@ export class InputEventEmitter { //extends EventEmitter {
     this.dispObj = dispObj;
 
     // Subscribe to mouse/touch events so we can normalise them later
+    // mouse
     this.dispObj.on("click", this.onClick, this);
     this.dispObj.on("rightclick", this.onRightClick, this);
+    // mobile/touch
     this.dispObj.on("touchstart", this.onTouchStart, this);
     this.dispObj.on("touchend", this.onTouchEnd, this);    // Both touch "tap" & "long-press"
 
@@ -55,16 +57,18 @@ export class InputEventEmitter { //extends EventEmitter {
   // https://stackoverflow.com/questions/6139225/how-to-detect-a-long-touch-pressure-with-javascript-for-android-and-iphone
   private onTouchEnd() { //_e: InteractionEvent
     SAGE.debugLog("onTouchEnd...")
-    const touchEndTime = new Date();
-    const timeDiffSecs = ( touchEndTime.getTime() - this.touchStartTime.getTime() ) / 1000;
+    if (this.touchStartTime) {
+      const touchEndTime = new Date();
+      const timeDiffSecs = (touchEndTime.getTime() - this.touchStartTime.getTime()) / 1000;
 
-    if (!this.longPressFired 
+      if (!this.longPressFired
         && !SAGE.World.currentScene.screen.draggedProp
-        && timeDiffSecs < 1) 
-      this.onPrimaryAction()
-    //stops short touches from firing the event
-    if (this.touchTimer)
-      clearTimeout(this.touchTimer); // clearTimeout, not cleartimeout..
+        && timeDiffSecs < 1)
+        this.onPrimaryAction()
+      //stops short touches from firing the event
+      if (this.touchTimer)
+        clearTimeout(this.touchTimer); // clearTimeout, not cleartimeout..
+    }
   }
 
 

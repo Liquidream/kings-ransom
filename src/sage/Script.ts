@@ -1,23 +1,15 @@
 
-// 
-// https://stackoverflow.com/questions/14226803/wait-5-seconds-before-executing-next-line/47480429#47480429
-
-//import { ListenerFn } from "eventemitter3";
 import { SAGE } from "../Manager";
 
 export class Script {
+  
   // public constructor() {
   // }
 
-  //private interactResolve!: ListenerFn;
-  //private interactPromise!: Promise<void>;
 
   public initialize(): void {
-    // Anything?
-    //SAGE.Events.on("sceneinteract", this.onSceneInteract, this);
+    // Anything?    
   }
-
-
 
   public wait(seconds: number): Promise<void> {
     return new Promise<void>(res => setTimeout(res, seconds * 1000))
@@ -53,32 +45,6 @@ export class Script {
       }
     }
   }
-
-
-  // public safeExecFunc(strFunc: string, ...params: any[]) {
-  //   try {
-  //     (<any>SAGE.Actions)[strFunc](params);
-  //   }
-  //   catch (e: unknown) {
-  //     if (e instanceof Error) {
-  //       SAGE.Dialog.showErrorMessage(`Error running script function: ${e.message}`);
-  //     }
-  //   }
-  // }
-
-  //function to execute some other function by it's string name 
-  // public executeFunctionByName(functionName: string, arguments: any ) {
-  //   const args = Array.prototype.slice.call(arguments, 2);
-  //   const namespaces = functionName.split(".");
-  //   const func = namespaces.pop();
-  //   let context;
-  //   for(let i = 0; i < namespaces.length; i++) {
-  //     context = window[namespaces[i]];
-  //   }
-  //   if (func)
-  //     // eslint-disable-next-line prefer-spread
-  //     return context[func].apply(context, args);
-  // }
 
   private waitForSkip(): Promise<void> {
     return new Promise<void>(res => {

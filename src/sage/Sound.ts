@@ -1,6 +1,6 @@
 import { IMediaInstance, sound, SoundLibrary } from "@pixi/sound";
 import { Tween } from "tweedle.js";
-import { SAGE } from "../../Manager";
+import { SAGE } from "../Manager";
 
 export class Sound {
 

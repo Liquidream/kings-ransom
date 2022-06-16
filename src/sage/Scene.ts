@@ -1,5 +1,5 @@
 import { SAGE } from "../Manager";
-import { SceneScreen } from "../scenes/SceneScreen";
+import { SceneScreen } from "../screens/SceneScreen";
 import { Serialization } from "../utils/Serialization";
 import { IPropData, PropData } from "./PropData";
 import { DoorData, IDoorData } from "./DoorData";
@@ -80,7 +80,6 @@ export class Scene implements ISceneData, Serialization<Scene> {
     // Remove data from prop list (no DisplayObject changes)
     const index = this.props.findIndex(item => item.id === propId)
     if (index !== -1) this.props.splice(index,1);
-    //this.props.splice(this.props.findIndex(item => item.id === propId), 1);
     
   }
 

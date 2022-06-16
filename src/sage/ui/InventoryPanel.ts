@@ -3,7 +3,7 @@ import { DropShadowFilter } from "pixi-filters";
 import { Tween } from "tweedle.js";
 import { SAGE } from "../../Manager";
 import { Prop } from "../Prop";
-import { DialogType } from "./Dialog";
+import { DialogType } from "../Dialog";
 
 export class InventoryScreen {
   // "constants" 
@@ -15,8 +15,8 @@ export class InventoryScreen {
   CLOSED_YPOS = -(this.HEIGHT + this.ROUNDED_EDGE);
   OPEN_YPOS = -this.ROUNDED_EDGE;
   AUTO_CLOSE_DURATION = 3; //seconds
-  ICON_ALPHA_INACTIVE =  0.5;
-  ICON_ALPHA_ACTIVE =  0.85;
+  ICON_ALPHA_INACTIVE = 0.5;
+  ICON_ALPHA_ACTIVE = 0.85;
   ICON_HINT_TEXT = "Open/Close Inventory";
 
   // Fields
@@ -24,11 +24,12 @@ export class InventoryScreen {
   private inventoryContainer: Container;
   private inventoryBackground!: Graphics;
   private inventoryIcon!: Sprite;
-  
-public propsList: Array<Prop>
-  
+
+  public propsList: Array<Prop>
+
   public isOpen = false;
   public autoClose = true;
+  
 
   public constructor(parentLayer: Container) {
     // initialise the inventory
@@ -67,16 +68,12 @@ public propsList: Array<Prop>
     // Animate it
     propSprite.alpha = 0
     new Tween(propSprite).to({ alpha: 1 }, 500).start()
-    // .onComplete( ()=> {
-    //     // 
-    // });
   }
 
   public removeProp(propId: string): Prop | undefined {
     const index = this.propsList.findIndex(item => item.data.id === propId)
     let prop: Prop | undefined;
-    if (index !== -1) prop = this.propsList.splice(index,1)[0];
-    //const prop = this.propsList.splice(this.propsList.findIndex(item => item.data.id === propId), 1)[0];
+    if (index !== -1) prop = this.propsList.splice(index, 1)[0];
     if (prop) {
       const propSprite = prop.sprite;
       // Animate it
@@ -94,10 +91,9 @@ public propsList: Array<Prop>
   public open(isAutoOpen: boolean) {
     new Tween(this.inventoryContainer).to({ y: 0 }, 500).start()
       .onComplete(async () => {
-        //
         if (this.autoClose) await SAGE.Script.wait(this.AUTO_CLOSE_DURATION);
-        if (this.autoClose) this.close();        
-      });      
+        if (this.autoClose) this.close();
+      });
     this.inventoryIcon.alpha = this.ICON_ALPHA_ACTIVE;
     this.isOpen = true;
     this.autoClose = isAutoOpen;
@@ -105,9 +101,9 @@ public propsList: Array<Prop>
 
   public close() {
     new Tween(this.inventoryContainer).to({ y: this.CLOSED_YPOS }, 500).start()
-      .onComplete(() => {
-        //
-      });
+      // .onComplete(() => {
+      //   //
+      // });
     this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
     this.isOpen = false;
   }
@@ -133,9 +129,10 @@ public propsList: Array<Prop>
     this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
     const dropShadow = new DropShadowFilter();
     dropShadow.alpha = 1;
-    this.inventoryIcon.filters = [ dropShadow ]
+    this.inventoryIcon.filters = [dropShadow]
     this.inventoryIcon.interactive = true;
     this.inventoryIcon.buttonMode = true;
+    // Events
     this.inventoryIcon.on("pointertap", this.onPointerTap, this);
     this.inventoryIcon.on("pointerover", () => {
       this.inventoryIcon.alpha = this.ICON_ALPHA_ACTIVE;
@@ -146,9 +143,10 @@ public propsList: Array<Prop>
       // If dialog being displayed is name "on hover"...
       if (SAGE.Dialog.currentDialogType === DialogType.Caption) {
         SAGE.Dialog.clearMessage();
-    }
+      }
     });
-    this.parentLayer.addChild(this.inventoryIcon);    
+    //
+    this.parentLayer.addChild(this.inventoryIcon);
   }
 
   private onPointerTap() {
@@ -165,7 +163,8 @@ public propsList: Array<Prop>
     this.inventoryBackground.drawRoundedRect(this.SIDE_MARGIN, this.OPEN_YPOS, SAGE.width - (this.SIDE_MARGIN * 2), this.HEIGHT + this.ROUNDED_EDGE, this.ROUNDED_EDGE);
     this.inventoryBackground.endFill();
     this.inventoryContainer.addChild(this.inventoryBackground);
-    // Make bg receive input, so that can't be clicked "through"
+    // Events
+    // (Make bg receive input, so that can't be clicked "through" + cancel auto-close)
     this.inventoryBackground.interactive = true;
     this.inventoryBackground.on("pointertap", () => {
       this.autoClose = false;

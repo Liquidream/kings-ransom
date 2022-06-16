@@ -1,7 +1,7 @@
 import { Graphics, Sprite } from "pixi.js";
 import { Easing, Tween } from "tweedle.js";
 import { SAGE } from "../Manager";
-import { DialogType } from "./ui/Dialog";
+import { DialogType } from "./Dialog";
 import { DoorState, IDoorData } from "./DoorData";
 import { InputEventEmitter } from "./ui/InputEventEmitter";
 
@@ -38,8 +38,6 @@ export class Door {
     graphics.pivot.set(this.data.width / 2, this.data.height / 2);
     // Draw a rectangle
     graphics.drawRoundedRect(this.data.x, this.data.y, this.data.width, this.data.height, 30);
-    // Draw a circle
-    //graphics.drawCircle(this.data.x, this.data.y, this.data.width/2);
     // Applies fill to lines and shapes since the last call to beginFill.
     graphics.endFill();
 
@@ -47,16 +45,11 @@ export class Door {
     this.doorInputEvents = new InputEventEmitter(graphics);
     graphics.on("primaryaction", this.onPrimaryAction, this);
     graphics.on("secondaryaction", this.onSecondaryAction, this);
-
+    // Hover (info)
     graphics.on("pointerover", this.onPointerOver, this);
     graphics.on("pointerout", this.onPointerOut, this);
-    // graphics.on("pointerup", () => {
-    //   if (SAGE.debugMode) console.log(`${this.data.name}::onPointerUp()`);
-    // });
-
+    //
     SAGE.Events.on("scenehint", this.onSceneHint, this);
-
-    // https://pixijs.io/examples/#/interaction/custom-hitarea.js
 
     this.graphics = graphics;
   }

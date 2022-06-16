@@ -1,9 +1,7 @@
-import { Container, Graphics, Sprite } from "pixi.js";
-import { DropShadowFilter } from "pixi-filters";
+import { Container, Graphics } from "pixi.js";
 import { Tween } from "tweedle.js";
 import { SAGE } from "../../Manager";
 import { Prop } from "../Prop";
-import { DialogType } from "../Dialog";
 
 export class InventoryScreen {
   // "constants" 
@@ -23,13 +21,13 @@ export class InventoryScreen {
   private parentLayer: Container;
   private inventoryContainer: Container;
   private inventoryBackground!: Graphics;
-  private inventoryIcon!: Sprite;
+
 
   public propsList: Array<Prop>
 
   public isOpen = false;
   public autoClose = true;
-  
+
 
   public constructor(parentLayer: Container) {
     // initialise the inventory
@@ -37,8 +35,6 @@ export class InventoryScreen {
     this.inventoryContainer = new Container();
     this.parentLayer.addChild(this.inventoryContainer);
     this.propsList = new Array<Prop>();
-    // Icon
-    this.createIcon();
     // Background
     this.createBackground();
     // Build initial inventory 
@@ -94,17 +90,14 @@ export class InventoryScreen {
         if (this.autoClose) await SAGE.Script.wait(this.AUTO_CLOSE_DURATION);
         if (this.autoClose) this.close();
       });
-    this.inventoryIcon.alpha = this.ICON_ALPHA_ACTIVE;
+    SAGE.UI_Overlay.inventoryIcon.alpha = this.ICON_ALPHA_ACTIVE;
     this.isOpen = true;
     this.autoClose = isAutoOpen;
   }
 
   public close() {
     new Tween(this.inventoryContainer).to({ y: this.CLOSED_YPOS }, 500).start()
-      // .onComplete(() => {
-      //   //
-      // });
-    this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
+    SAGE.UI_Overlay.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
     this.isOpen = false;
   }
 
@@ -118,42 +111,6 @@ export class InventoryScreen {
       propSprite.y = this.HEIGHT / 2;
       xOff += this.HEIGHT;
     }
-  }
-
-  private createIcon() {
-    this.inventoryIcon = Sprite.from("UI-Inventory");
-    this.inventoryIcon.anchor.set(0.5);
-    this.inventoryIcon.x = SAGE.width - (this.HEIGHT / 2);
-    this.inventoryIcon.y = this.HEIGHT / 2;
-    this.inventoryIcon.anchor.set(0.5);
-    this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
-    const dropShadow = new DropShadowFilter();
-    dropShadow.alpha = 1;
-    this.inventoryIcon.filters = [dropShadow]
-    this.inventoryIcon.interactive = true;
-    this.inventoryIcon.buttonMode = true;
-    // Events
-    this.inventoryIcon.on("pointertap", this.onPointerTap, this);
-    this.inventoryIcon.on("pointerover", () => {
-      this.inventoryIcon.alpha = this.ICON_ALPHA_ACTIVE;
-      SAGE.Dialog.showMessage(this.ICON_HINT_TEXT, DialogType.Caption, -1);
-    });
-    this.inventoryIcon.on("pointerout", () => {
-      if (!this.isOpen) this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
-      // If dialog being displayed is name "on hover"...
-      if (SAGE.Dialog.currentDialogType === DialogType.Caption) {
-        SAGE.Dialog.clearMessage();
-      }
-    });
-    //
-    this.parentLayer.addChild(this.inventoryIcon);
-  }
-
-  private onPointerTap() {
-    if (this.isOpen)
-      this.close();
-    else
-      this.open(false);
   }
 
   private createBackground() {

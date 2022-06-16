@@ -103,7 +103,7 @@ export class SceneScreen extends Container implements IScreen {
     }
   }
 
-  private onPointerUp(_e: InteractionEvent) {
+  private onPointerUp() { //_e: InteractionEvent) {
     SAGE.debugLog(`${this.name}::onPointerUp()`);
     if (this.draggedProp) {
       // We were dragging something - did we drop it on something?

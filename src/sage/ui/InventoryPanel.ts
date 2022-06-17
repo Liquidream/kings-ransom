@@ -39,10 +39,17 @@ export class InventoryScreen {
     this.createBackground();
     // Build initial inventory 
     // (will be empty, unless starting with items - e.g. by loading game)
-    this.update();
+    this.initialise();
 
     // Start inventory in "closed" state
     this.inventoryContainer.y = this.CLOSED_YPOS;
+  }
+
+  private initialise() {
+    // Create and add objects for initial inventory
+    for (const propData of SAGE.World.player.inventory) {
+      this.addProp(new Prop(propData));
+    }
   }
 
   public addProp(prop: Prop) {

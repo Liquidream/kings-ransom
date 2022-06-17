@@ -127,14 +127,15 @@ export class SAGE {
     SAGE.World.initialize(gamedata);
     //Manager.World = new World().fromJSON(gamedata);
 
+    // ...and events
+    SAGE.Events = new Events();
+
     // ...and inventory (UI)
     SAGE.invScreen = new InventoryScreen(SAGE.topLayer);
 
     // ...and game actions
     SAGE.Actions = new Actions();
 
-    // ...and events
-    SAGE.Events = new Events();
 
     // ...and dialog
     SAGE.Dialog = new Dialog();

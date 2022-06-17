@@ -59,6 +59,11 @@ export class World implements IWorldData, Serialization<World> {
     }
 
     
+    stop() {
+      if (this.currentScene) {
+        this.currentScene.screen.tidyUp();
+      }
+    }
 
     
     /** Find and return scene with specific id */

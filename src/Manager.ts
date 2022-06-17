@@ -161,6 +161,7 @@ export class SAGE {
   public static restartGame() {
     console.log("Restarting game...")
     SAGE.Sound.stopAll()
+    SAGE.World.stop();
     SAGE.emptyLayers();
     SAGE.loadWorld();
     SAGE.startGame();

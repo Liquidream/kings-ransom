@@ -119,7 +119,7 @@ export class SceneScreen extends Container implements IScreen {
       this.draggedProp.sprite.alpha = 1;
       this.draggedProp = undefined;
       // Update inventory (in case it was an inventory prop)
-      SAGE.World.player.invScreen.update();
+      SAGE.invScreen.update();
     }
   }
 
@@ -142,7 +142,7 @@ export class SceneScreen extends Container implements IScreen {
     // Check selected/dragged Prop with
     let currTarget = undefined;
     //  > Other Props in inventory
-    for (const prop of SAGE.World.player.invScreen.propsList) {
+    for (const prop of SAGE.invScreen.propsList) {
       if (Collision.isCollidingObjToObj(this.draggedProp?.sprite, prop.sprite)) {
         SAGE.debugLog(`>> collided with ${prop.data.name}`)
         currTarget = prop;
@@ -182,7 +182,7 @@ export class SceneScreen extends Container implements IScreen {
     // Check selected/dragged Prop with
     let currTarget = undefined;
     //  > Other Props in inventory
-    for (const prop of SAGE.World.player.invScreen.propsList) {
+    for (const prop of SAGE.invScreen.propsList) {
       if (Collision.isCollidingPointToObj(touchPoint, prop.sprite)) {
         SAGE.debugLog(`>> collided with ${prop.data.name}`)
         currTarget = prop;

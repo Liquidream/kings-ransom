@@ -23,6 +23,8 @@ export class SAGE {
   public static debugMode = false;
   public static enableFullscreen = false;
 
+  
+  
   private static _app: Application;
   private static _width: number;
   private static _height: number;
@@ -39,6 +41,9 @@ export class SAGE {
   public static Events: Events;
   public static Sound: Sound;
   public static UI_Overlay: UI_Overlay;
+  
+  public static invScreen: InventoryScreen;
+
 
   public static get width(): number {
     return SAGE._width;
@@ -123,7 +128,7 @@ export class SAGE {
     //Manager.World = new World().fromJSON(gamedata);
 
     // ...and inventory (UI)
-    SAGE.World.player.invScreen = new InventoryScreen(SAGE.topLayer);
+    SAGE.invScreen = new InventoryScreen(SAGE.topLayer);
 
     // ...and game actions
     SAGE.Actions = new Actions();
@@ -162,13 +167,13 @@ export class SAGE {
 
   public static gameOver(message: string) {
     SAGE.Sound.play("Game-Lost");
-    SAGE.World.player.invScreen.close();
+    SAGE.invScreen.close();
     SAGE.World.currentScene.screen.showGameOver(message);
   }
 
   public static gameWon(message: string) {
     SAGE.Sound.play("Game-Won");
-    SAGE.World.player.invScreen.close();
+    SAGE.invScreen.close();
     SAGE.World.currentScene.screen.showGameWon(message);
   }
 
@@ -248,7 +253,7 @@ export class SAGE {
     fadeOutTween.chain(fadeInTween).start();
 
     // If inventory open, auto-collapse it
-    if (SAGE.World.player.invScreen.isOpen) SAGE.World.player.invScreen.close();
+    if (SAGE.invScreen.isOpen) SAGE.invScreen.close();
   }
 
   // Conditional console.log (if debugMode is true)

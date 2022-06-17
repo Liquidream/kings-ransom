@@ -60,17 +60,17 @@ export class UI_Overlay {
     this.inventoryIcon.buttonMode = true;
     // Events
     this.inventoryIcon.on("pointertap", () => {
-      if (SAGE.World.player.invScreen.isOpen)
-        SAGE.World.player.invScreen.close();
+      if (SAGE.invScreen.isOpen)
+        SAGE.invScreen.close();
       else
-        SAGE.World.player.invScreen.open(false);
+        SAGE.invScreen.open(false);
     });
     this.inventoryIcon.on("pointerover", () => {
       this.inventoryIcon.alpha = this.ICON_ALPHA_ACTIVE;
       SAGE.Dialog.showMessage(this.ICON_HINT_TEXT, DialogType.Caption, -1);
     });
     this.inventoryIcon.on("pointerout", () => {
-      if (!SAGE.World.player.invScreen.isOpen) this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
+      if (!SAGE.invScreen.isOpen) this.inventoryIcon.alpha = this.ICON_ALPHA_INACTIVE;
       // If dialog being displayed is name "on hover"...
       if (SAGE.Dialog.currentDialogType === DialogType.Caption) {
         SAGE.Dialog.clearMessage();

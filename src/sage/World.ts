@@ -1,4 +1,4 @@
-import { replacer, Serialization } from "../utils/Serialization";
+import { Serialization } from "../utils/Serialization";
 import { IPlayerData, Player } from "./Player";
 import { ISceneData, Scene } from "./Scene";
 import { PropData } from "./PropData";
@@ -154,7 +154,7 @@ export class World implements IWorldData, Serialization<World> {
     }
 
     serialize(): string {
-        return JSON.stringify(this, replacer());
+        return JSON.stringify(this); //, replacer());
     }
 }
 

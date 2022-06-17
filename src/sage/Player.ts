@@ -2,16 +2,12 @@ import { SAGE } from "../Manager";
 import { Serialization } from "../utils/Serialization";
 import { Prop } from "./Prop";
 import { IPropData, PropData } from "./PropData";
-import { InventoryScreen } from "./ui/InventoryPanel";
 
 
 
 export class Player implements IPlayerData, Serialization<Player> {
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  public invScreen: InventoryScreen;
-
+  
 
   public constructor() {
     // Anything?
@@ -29,7 +25,7 @@ export class Player implements IPlayerData, Serialization<Player> {
   /** Remove (and return) the specified prop, if present */
   public addToInventory(propData: IPropData) {
     SAGE.World.player.inventory.push(propData);
-    SAGE.World.player.invScreen.addProp(new Prop(propData))
+    SAGE.invScreen.addProp(new Prop(propData))
   }
 
   /** Remove (and return) the specified prop, if present */
@@ -38,7 +34,7 @@ export class Player implements IPlayerData, Serialization<Player> {
     let propData;
     if (index !== -1) propData = this.inventory.splice(index,1);
     //const propData = this.inventory.splice(this.inventory.findIndex(item => item.id === propId), 1);
-    const prop = SAGE.World.player.invScreen.removeProp(propId)
+    const prop = SAGE.invScreen.removeProp(propId)
     prop?.destroy();
     if (propData) return propData[0];
     return;

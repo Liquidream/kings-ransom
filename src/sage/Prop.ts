@@ -123,7 +123,7 @@ export class Prop {
       this.sprite.alpha = this.DRAG_ALPHA;
       SAGE.Dialog.clearMessage();
       // Disable auto-close of inventory          
-      SAGE.World.player.invScreen.autoClose = false;
+      SAGE.invScreen.autoClose = false;
     }
   }
 
@@ -159,7 +159,7 @@ export class Prop {
       // Play sound
       SAGE.Sound.play("Pick-Up")
       // Auto-open player inventory
-      SAGE.World.player.invScreen.open(true);
+      SAGE.invScreen.open(true);
       return;
     }
     // Interacted while in player inventory?
@@ -167,7 +167,7 @@ export class Prop {
     if (this.inInventory) {
       this.onSecondaryAction();
       // Disable auto-close of inventory          
-      SAGE.World.player.invScreen.autoClose = false;
+      SAGE.invScreen.autoClose = false;
       return;
     }
   }

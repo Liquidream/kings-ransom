@@ -55,7 +55,7 @@ export class Scene implements ISceneData, Serialization<Scene> {
     SAGE.World.currentScene = this;
 
     // DEBUG
-    //console.log(SAGE.World.serialize());
+    console.log(SAGE.World.serialize());
 
     // Run any OnEnter action?
     if (this.on_enter) {

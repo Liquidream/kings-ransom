@@ -21,6 +21,7 @@ export class Actions {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onKeyUse = async (keyProp: Prop, onObj: any): Promise<boolean> => {
     // Confirm key prop used on correct target    
     if (onObj.data.id === "dor_fortress_int") {

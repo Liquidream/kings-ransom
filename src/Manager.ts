@@ -252,6 +252,7 @@ export class SAGE {
   }
 
   // Conditional console.log (if debugMode is true)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public static debugLog(message: any) {
     if (SAGE.debugMode) console.debug(message);
   }

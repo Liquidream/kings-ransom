@@ -13,6 +13,7 @@ import { DialogChoice } from "./sage/Dialog";
 // --- Icons ---
 // https://www.flaticon.com/free-icons/backpack - Backpack icons created by bqlqn
 // https://www.flaticon.com/free-icons/settings - Settings icons created by Pixel perfect
+// https://www.flaticon.com/free-icon/expand_1124606
 
 export class Actions {
   onStart = async () => {
@@ -79,32 +80,33 @@ export class Actions {
 
     //SAGE.Sound.playLoop("Test-Loop", false);
 
-    if (!SAGE.World.property["intro-done"]) {
-      SAGE.World.property["intro-done"] = true;
-      await SAGE.Script.wait(3);
-      await SAGE.Dialog.say("Narrator", "The King has been kidnapped by marauders, who are keeping him hostage", "#00ff00", "Intro-1");
-      await SAGE.Dialog.say("Narrator", "Your task is a simple one...", undefined, "Intro-2")
-      await SAGE.Dialog.say("Narrator", "Retrieve the gold\nthat will pay the King's Ransom!", undefined, "Intro-3")
-    }
+    // if (!SAGE.World.property["intro-done"]) {
+    //   SAGE.World.property["intro-done"] = true;
+    //   await SAGE.Script.wait(3);
+    //   await SAGE.Dialog.say("Narrator", "The King has been kidnapped by marauders, who are keeping him hostage", "#00ff00", "Intro-1");
+    //   await SAGE.Dialog.say("Narrator", "Your task is a simple one...", undefined, "Intro-2")
+    //   await SAGE.Dialog.say("Narrator", "Retrieve the gold\nthat will pay the King's Ransom!", undefined, "Intro-3")
+    // }
 
     // await SAGE.Script.wait(3);
-    // await this.testDialogOptions();
+    //await this.testDialogOptions();
   }
 
   async testDialogOptions() {
     await SAGE.Dialog.showChoices([
-      new DialogChoice("Why did you stop me, something important here no doubt?", async () => {
-        await SAGE.Dialog.say("Tentacle", "I'm lonely...", "Lime");
+      // new DialogChoice("Why did you bring me here?", async () => {
+      //   await SAGE.Dialog.say("Narrator", "I'm lonely...", "Lime");
+      //   SAGE.Dialog.property["asked_why"] = true;
+      // }),
+      new DialogChoice("Where am i?", async () => {
+        await SAGE.Dialog.say("Narrator", "You're in Paul's demo adventure", "Lime");
         SAGE.Dialog.property["asked_why"] = true;
       }),
-      new DialogChoice("Where am i?", async () => {
-        await SAGE.Dialog.say("Tentacle", "You're in Paul's demo adventure", "Lime");
-      }),
       new DialogChoice("Who are you?", async () => {
-        await SAGE.Dialog.say("Tentacle", "I'm Tentacle, of course!", "Lime");
+        await SAGE.Dialog.say("Narrator", "I'm the narrator, of course!", "Lime");
       }, "asked_why"),
       new DialogChoice("Nevermind", async () => {
-        await SAGE.Dialog.say("Tentacle", "Fine, be like that!", "Lime");
+        await SAGE.Dialog.say("Narrator", "Fine, be like that!", "Lime");
         SAGE.Dialog.end();
       })]
       //, { col: "red", suppressChoiceSelectRepeat: true }

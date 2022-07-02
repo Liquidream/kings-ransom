@@ -61,7 +61,7 @@ export class World implements IWorldData, Serialization<World> {
     
     stop() {
       if (this.currentScene) {
-        this.currentScene.screen.tidyUp();
+        this.currentScene.screen.tidyUp(true);
       }
     }
 

@@ -17,6 +17,7 @@ export class Sound {
   }
 
   public playLoop(soundName: string, fadeIn: boolean) {
+    SAGE.debugLog(`playLoop(${soundName})`)
     //fadeIn = false
     if (fadeIn) {
       const sfx = sound.find(soundName)
@@ -60,6 +61,7 @@ export class Sound {
   }
 
   public stopAll() {
+    SAGE.debugLog(`>> Sound.stopAll()`)
     sound.stopAll();
   }
   
@@ -73,6 +75,7 @@ export class Sound {
     try {
       // Poss workaround for current iOS issues
     //sound.useLegacy = true;
+     SAGE.debugLog(`playCore(${soundName})`)
       return sound.play(soundName, { loop: loop });
     }
     catch(e) {

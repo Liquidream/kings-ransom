@@ -60,7 +60,8 @@ export class SceneScreen extends Container implements IScreen {
   //     // Anything?
   // }
 
-  public tidyUp() {
+  public tidyUp(restartGame?: boolean) {
+    SAGE.debugLog(`>> SceneScreen tidyUp()`)
     // Unsubscribe from events, etc.
     for (const prop of this.props) {
       prop.tidyUp();
@@ -74,7 +75,7 @@ export class SceneScreen extends Container implements IScreen {
 
     // Fade out scene music
     if (this.scene.sound) {
-      SAGE.Sound.stop(this.scene.sound, true);
+      SAGE.Sound.stop(this.scene.sound, !restartGame);
     }
   }
 
